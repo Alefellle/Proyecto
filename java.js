@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 4. CUENTA ATRÁS
     const reloj = document.getElementById("reloj");
     if (reloj) {
-        const fechaPartido = new Date("Dec 30, 2025 21:00:00").getTime();
+        const fechaPartido = new Date("Dec 10, 2025 21:00:00").getTime();
         const intervalo = setInterval(function() {
             const ahora = new Date().getTime();
             const distancia = fechaPartido - ahora;
@@ -144,4 +144,23 @@ function validarFormulario(event) {
             exito.style.display = "block";
         }, 1500);
     }
+}
+/* --- BOTÓN VOLVER ARRIBA (Scroll) --- */
+
+// Detectar cuando el usuario hace scroll
+window.onscroll = function() { mostrarBotonSubir() };
+
+function mostrarBotonSubir() {
+    let boton = document.getElementById("btnSubir");
+    // Si bajamos más de 300px, mostramos el botón
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        if(boton) boton.style.display = "block";
+    } else {
+        if(boton) boton.style.display = "none";
+    }
+}
+
+// Función para subir suavemente
+function subirArriba() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }

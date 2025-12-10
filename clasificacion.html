@@ -2,26 +2,27 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SuperLiga Europea</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="header-content">
-            <h1>⚽ SuperLiga</h1>
+            <h1>⚽ SuperLiga Europea</h1>
             <nav>
-                <a href="Index.html" target="_blank">Inicio</a>
-                <a href="clasificacion.html" class="activo" target="_blank">Clasificación</a>
-                <a href="historia.html" target="_blank">Historia</a>
-                <a href="contacto.html" target="_blank">Contacto</a>
+                <a href="Index.html">Inicio</a>
+                <a href="clasificacion.html" class="activo">Clasificación</a>
+                <a href="historia.html">Historia</a>
+                <a href="contacto.html">Contacto</a>
             </nav>
-            <button id="btnTema">🌙 Oscuro</button>
+            <button id="btnTema" onclick="cambiarTema()">🌙 Oscuro</button>
         </div>
     </header>
 
     <main class="hidden">
         <h2>🏆 Clasificación en Vivo</h2>
-        <p>Haz clic en los encabezados (PTS, GF, etc.) para ordenar la tabla.</p>
+        <p>Haz clic en los apartados de  (PTS, GF, etc.) para ordenar la tabla de arriba a abajo o lo contrario.</p> 
 
         <div class="leyenda-box">
             <span><span class="dot green"></span> Playoffs Título</span>
@@ -76,5 +77,6 @@
 
     <footer><p>© 2025 SuperLiga Europea. Gestionada por A22 Sports.</p></footer>
     <script src="java.js"></script>
+    <button id="btnSubir" onclick="subirArriba()" title="Volver arriba">⬆</button>
 </body>
 </html>
