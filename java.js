@@ -1,4 +1,59 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // ANIMACIÓN DE CONTEO EN TROFEOS (palmares) MEJORADA
+    const trofeos = document.querySelectorAll('.trofeo-numero');
+    trofeos.forEach(trofeo => {
+        const final = parseInt(trofeo.textContent);
+        trofeo.textContent = '0';
+        let actual = 0;
+        const duracion = 1200;
+        const fps = 60;
+        const totalFrames = Math.round((duracion / 1000) * fps);
+        let frame = 0;
+        const easeOutBounce = t => {
+            if (t < (1/2.75)) {
+                return 7.5625*t*t;
+            } else if (t < (2/2.75)) {
+                t -= (1.5/2.75);
+                return 7.5625*t*t + 0.75;
+            } else if (t < (2.5/2.75)) {
+                t -= (2.25/2.75);
+                return 7.5625*t*t + 0.9375;
+            } else {
+                t -= (2.625/2.75);
+                return 7.5625*t*t + 0.984375;
+            }
+        };
+        function animate() {
+            frame++;
+            let progress = frame / totalFrames;
+            let val = Math.round(final * easeOutBounce(progress > 1 ? 1 : progress));
+            trofeo.textContent = val;
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                trofeo.textContent = final;
+                trofeo.classList.add('rebote-trofeo');
+                // SONIDO OPCIONAL (descomentar si tienes un archivo de sonido)
+                // let audio = new Audio('celebracion.mp3'); audio.play();
+                setTimeout(()=>trofeo.classList.remove('rebote-trofeo'), 800);
+            }
+        }
+        setTimeout(animate, 300);
+    });
+
+    // TOOLTIP ANIMADO EN NOMBRES DE EQUIPOS (tabla clasificacion) MEJORADO
+    const equipoCeldas = document.querySelectorAll('.tabla-pro td:nth-child(2), .tabla-pro th:nth-child(2)');
+    equipoCeldas.forEach(celda => {
+        const nombre = celda.textContent.trim();
+        if (!nombre || nombre === 'Equipo') return;
+        celda.classList.add('equipo-tooltip');
+        // Buscar la posición si está en la misma fila
+        let pos = '';
+        if (celda.parentElement && celda.parentElement.children[0] && celda.parentElement.children[0] !== celda) {
+            pos = celda.parentElement.children[0].textContent.trim();
+        }
+        celda.setAttribute('data-tooltip', `ℹ️ ${nombre}${pos ? ' (Posición: ' + pos + ')' : ''}`);
+    });
     
     // 1. MODO OSCURO
     const temaGuardado = localStorage.getItem("temaLiga");
@@ -22,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // (Eliminado: animación de conteo duplicada, ahora mejorada más abajo)
 
     // 2. ANIMACIÓN SCROLL
     const observer = new IntersectionObserver((entries) => {

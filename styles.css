@@ -1,3 +1,58 @@
+/* --- ANIMACIÓN REBOTE PARA TROFEOS --- */
+.rebote-trofeo {
+    animation: reboteTrofeo 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes reboteTrofeo {
+    0% { transform: scale(1); }
+    60% { transform: scale(1.25,0.85); }
+    80% { transform: scale(0.95,1.1); }
+    100% { transform: scale(1); }
+}
+
+/* --- TOOLTIP ANIMADO PARA NOMBRES DE EQUIPO EN TABLA MEJORADO --- */
+.equipo-tooltip {
+    position: relative;
+    cursor: pointer;
+    transition: color 0.2s;
+    z-index: 1;
+}
+.equipo-tooltip:hover {
+    color: #ffd700;
+}
+.equipo-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%) scale(0.8);
+    background: linear-gradient(90deg,#002244 60%,#ffd700 100%);
+    color: #fff;
+    padding: 9px 18px;
+    border-radius: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.22);
+    font-size: 1.05em;
+    font-weight: 600;
+    z-index: 10;
+    border: 2px solid #ffd700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.25s, transform 0.25s;
+}
+.equipo-tooltip:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+    animation: popTooltip 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes popTooltip {
+    0% { transform: translateX(-50%) scale(0.7); opacity: 0; }
+    60% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+    100% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+}
+
 /* --- ESTILOS GENERALES Y FUENTES --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap');
 
@@ -8,9 +63,10 @@ body {
     color: #333;
     display: flex; flex-direction: column; min-height: 100vh;
     overflow-x: hidden; /* Evita scroll horizontal indeseado */
-    background-image: url(trofeo.jpg);
+    background-image: url(trofeo\ superliga.png);
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
 h1, h2, h3, nav a { font-family: 'Montserrat', sans-serif; }
@@ -42,6 +98,17 @@ nav {
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+}
+
+.cont-texto{
+    background-color: #00336681;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+}
+
+.pa p,h3{
+    color: #ffffff;
 }
 
 nav a {
@@ -142,6 +209,16 @@ footer { background: #001a33; color: #888; text-align: center; padding: 30px; ma
 body.dark-mode { background-color: #0f172a; color: #e2e8f0; }
 body.dark-mode header { background: rgba(15, 23, 42, 0.95); }
 body.dark-mode .trofeo-card, body.dark-mode table.tabla-pro, body.dark-mode .form-box, body.dark-mode .info-card {
+    background-color: #1e293b; color: #e2e8f0; border: 1px solid #334155;
+}
+
+body.dark-mode .trofeo-card h3,
+body.dark-mode .trofeo-card p,
+body.dark-mode .trofeo-numero {
+    color: #fff !important;
+}
+
+body.dark-mode .trofeo-card, body.dark-mode table.tabla-pro, body.dark-mode .form-box, body.dark-mode .info-card, body.dark-mode .faq-container {
     background-color: #1e293b; color: #e2e8f0; border: 1px solid #334155;
 }
 body.dark-mode table.tabla-pro tr:hover { background-color: #334155; }
@@ -495,7 +572,7 @@ input:focus, select:focus, textarea:focus {
 .info-card h3 {
     margin: 0 0 10px 0;
     font-size: 1.1rem;
-    color: #333;
+    color: #ffffff;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -503,7 +580,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .info-card:nth-child(1) h3 {
-    color: #002244; /* Azul para Sede Central */
+    color: #ffffff; /* Azul para Sede Central */
 }
 
 .info-card:nth-child(2) h3 {
@@ -544,7 +621,7 @@ input:focus, select:focus, textarea:focus {
 
 .faq-container h3 {
     margin-top: 0;
-    color: #002244;
+    color: #fcfcfc;
     font-size: 1.5rem;
     margin-bottom: 20px;
     text-transform: uppercase;
@@ -601,7 +678,7 @@ body.dark-mode .faq-container {
 }
 
 body.dark-mode .form-box h3,
-body.dark-mode .faq-container h3 { color: #ffd700; border-bottom-color: #334155; }
+body.dark-mode .faq-container h3 { color: #ffd700; border-bottom-color: #ffffff; }
 
 body.dark-mode .info-card:nth-child(1) h3 { color: #5dade2; } /* Azul claro para Sede Central */
 body.dark-mode .info-card:nth-child(2) h3 { color: #f1948a; } /* Rojo claro para Síguenos */
