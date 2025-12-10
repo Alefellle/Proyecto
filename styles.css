@@ -1,0 +1,564 @@
+/* --- ESTILOS GENERALES Y FUENTES --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0; padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex; flex-direction: column; min-height: 100vh;
+    overflow-x: hidden; /* Evita scroll horizontal indeseado */
+}
+
+h1, h2, h3, nav a { font-family: 'Montserrat', sans-serif; }
+
+/* CABECERA CON EFECTO VIDRIO (GLASSMORPHISM) */
+header {
+    background: rgba(0, 34, 68, 0.95); /* Semi-transparente */
+    backdrop-filter: blur(10px); /* Efecto borroso detrás */
+    color: white;
+    position: sticky; top: 0; z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 15px 20px; }
+
+/* NAVEGACIÓN ANIMADA */
+nav a {
+    color: white; text-decoration: none; margin: 0 15px;
+    font-weight: 700; text-transform: uppercase; font-size: 0.85rem;
+    position: relative; transition: color 0.3s;
+}
+nav a::after {
+    content: ''; position: absolute; width: 0; height: 2px;
+    bottom: -5px; left: 0; background-color: #ffd700;
+    transition: width 0.3s;
+}
+nav a:hover::after, nav a.activo::after { width: 100%; }
+nav a:hover { color: #ffd700; }
+
+/* BOTÓN MODO OSCURO */
+#btnTema {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
+    color: white; padding: 8px 15px; cursor: pointer; border-radius: 30px;
+    font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
+    transition: all 0.3s ease;
+}
+#btnTema:hover { background: #ffd700; color: #002244; transform: translateY(-2px); }
+
+/* --- CARRUSEL (SLIDER) --- */
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.slider-wrapper { display: flex; transition: transform 0.5s ease-in-out; }
+.slide { min-width: 100%; position: relative; }
+.slide img { width: 100%; display: block; height: 400px; object-fit: cover; filter: brightness(0.7); }
+.caption {
+    position: absolute; bottom: 40px; left: 40px; color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    max-width: 60%;
+}
+.caption h3 { font-size: 2rem; margin: 0 0 10px 0; color: #ffd700; }
+
+/* --- CUENTA ATRÁS --- */
+.countdown-box {
+    background: linear-gradient(135deg, #002244, #004080);
+    color: white; padding: 40px; text-align: center;
+    margin: 30px auto; max-width: 800px; border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 34, 68, 0.4);
+}
+#reloj {
+    display: flex; justify-content: center; gap: 20px;
+    font-size: 2.5rem; font-weight: bold; margin-top: 20px;
+}
+.tiempo-unidad { display: flex; flex-direction: column; }
+.tiempo-unidad span { font-size: 0.8rem; font-weight: normal; text-transform: uppercase; color: #ffd700; }
+
+/* --- ANIMACIONES DE SCROLL (FADE IN) --- */
+.hidden { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+.show { opacity: 1; transform: translateY(0); }
+
+/* --- TABLA ORDENABLE --- */
+th { cursor: pointer; position: relative; user-select: none; }
+th:hover { background-color: #003366; }
+th::after { content: '↕'; position: absolute; right: 5px; opacity: 0.3; font-size: 0.8em; }
+
+/* --- ESTILOS GENERALES DE CONTENIDO (Mantenidos y pulidos) --- */
+main { flex: 1; max-width: 1200px; margin: 30px auto; padding: 0 20px; width: 90%; }
+.contenedor-tabla { overflow-x: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 10px; }
+table.tabla-pro { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
+table.tabla-pro th { background-color: #002244; color: white; padding: 18px; text-align: center; }
+table.tabla-pro td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; font-weight: 500; }
+table.tabla-pro tr:nth-child(even) { background-color: #f9f9f9; }
+table.tabla-pro tr:hover { background-color: #e6f7ff; transform: scale(1.01); transition: transform 0.2s; }
+
+/* Zonas de color tabla */
+.zona-champions { border-left: 5px solid #2ecc71; }
+.zona-europa { border-left: 5px solid #f1c40f; }
+.zona-descenso { border-left: 5px solid #e74c3c; }
+
+/* Tarjetas Historia */
+.palmares-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
+.trofeo-card {
+    background: white; padding: 0; text-align: center;
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+.trofeo-card:hover { transform: translateY(-10px); }
+.trofeo-card h3 { margin: 15px 0 5px; color: #002244; }
+
+/* Footer */
+footer { background: #001a33; color: #888; text-align: center; padding: 30px; margin-top: auto; font-size: 0.9rem; }
+
+/* MODO OSCURO */
+body.dark-mode { background-color: #0f172a; color: #e2e8f0; }
+body.dark-mode header { background: rgba(15, 23, 42, 0.95); }
+body.dark-mode .trofeo-card, body.dark-mode table.tabla-pro, body.dark-mode .form-box, body.dark-mode .info-card {
+    background-color: #1e293b; color: #e2e8f0; border: 1px solid #334155;
+}
+body.dark-mode table.tabla-pro tr:hover { background-color: #334155; }
+body.dark-mode table.tabla-pro td { border-bottom: 1px solid #334155; }
+/* --- ESTILOS DEL NUEVO TIMELINE VERTICAL --- */
+.timeline-container {
+    position: relative;
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px 0;
+}
+
+/* La línea vertical central */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: #e0e0e0; /* Color de la línea */
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+    border-radius: 2px;
+}
+
+/* Cada evento individual */
+.timeline-event {
+    position: relative;
+    width: 50%;
+    padding: 20px 40px;
+    box-sizing: border-box;
+}
+
+/* Eventos a la izquierda */
+.timeline-event:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
+
+/* Eventos a la derecha */
+.timeline-event:nth-child(even) {
+    left: 50%;
+    text-align: left;
+}
+
+/* El punto (círculo) en la línea central */
+.timeline-point {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -10px; /* Ajuste para izquierda */
+    background-color: white;
+    border: 4px solid #002244; /* Color por defecto */
+    top: 25px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+/* Ajuste del punto para eventos a la derecha */
+.timeline-event:nth-child(even) .timeline-point {
+    left: -10px;
+}
+
+/* La tarjeta de contenido */
+.timeline-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Título del evento */
+.timeline-title {
+    margin-top: 0;
+    color: #002244;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Fecha */
+.timeline-date {
+    font-weight: bold;
+    color: #666;
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+/* Colores específicos para cada punto (como en la imagen) */
+.timeline-event:nth-child(1) .timeline-point { border-color: #2980b9; } /* Azul */
+.timeline-event:nth-child(1) .timeline-title { color: #2980b9; }
+
+.timeline-event:nth-child(2) .timeline-point { border-color: #27ae60; } /* Verde */
+.timeline-event:nth-child(2) .timeline-title { color: #27ae60; }
+
+.timeline-event:nth-child(3) .timeline-point { border-color: #f39c12; } /* Naranja */
+.timeline-event:nth-child(3) .timeline-title { color: #f39c12; }
+
+.timeline-event:nth-child(4) .timeline-point { border-color: #c0392b; } /* Rojo */
+.timeline-event:nth-child(4) .timeline-title { color: #c0392b; }
+
+/* Modo Oscuro para el timeline */
+body.dark-mode .timeline-container::before { background-color: #334155; }
+body.dark-mode .timeline-content { background-color: #1e293b; color: #e2e8f0; }
+body.dark-mode .timeline-point { background-color: #0f172a; }
+body.dark-mode .timeline-date { color: #aaa; }
+
+/* Responsive: En móviles, todo a una columna */
+@media (max-width: 768px) {
+    .timeline-container::before { left: 30px; }
+    .timeline-event { width: 100%; padding-left: 70px; padding-right: 20px; }
+    .timeline-event:nth-child(odd), .timeline-event:nth-child(even) { left: 0; text-align: left; }
+    .timeline-point, .timeline-event:nth-child(even) .timeline-point { left: 20px; }
+}
+/* --- CORRECCIONES ESPECÍFICAS PARA TABLA EN MODO OSCURO --- */
+
+/* Fondo general de la tabla en modo oscuro */
+body.dark-mode table.tabla-pro {
+    background-color: #1e293b; /* Fondo oscuro sutil */
+    color: #e2e8f0; /* Color de texto claro */
+}
+
+/* Color de los encabezados (TH) */
+body.dark-mode table.tabla-pro th {
+    background-color: #0d1b2a;
+    border-bottom: 2px solid #ffd700;
+    color: #e2e8f0;
+}
+
+/* 1. Líneas de separación (Bordes de las celdas TD) */
+body.dark-mode table.tabla-pro td {
+    border-bottom: 1px solid #334155; /* Borde gris oscuro visible */
+    color: #ccc; /* Texto gris claro */
+}
+
+/* 2. Rayado de filas (Para mejor lectura) */
+body.dark-mode table.tabla-pro tr:nth-child(even) {
+    background-color: #1a2333; /* Color más oscuro para filas pares */
+}
+body.dark-mode table.tabla-pro tr:nth-child(odd) {
+    background-color: #1e293b; /* Color menos oscuro para filas impares */
+}
+
+/* Color del texto clave (Nombres de equipo y Puntos) */
+body.dark-mode table.tabla-pro td:nth-child(2),
+body.dark-mode table.tabla-pro td:last-child {
+    color: white; /* Blanco puro para nombres y puntos */
+}
+
+/* Fondo de la leyenda para que no sea un bloque negro */
+body.dark-mode .leyenda-box { 
+    background-color: #1e293b; 
+    border: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+/* --- ESTILOS NUEVOS PARA CONTACTO --- */
+
+/* Botones Sociales */
+.social-links { display: flex; gap: 15px; margin-top: 10px; }
+.social-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; text-decoration: none; transition: transform 0.3s;
+}
+.social-btn:hover { transform: translateY(-3px); }
+.twitter { background: #000; }
+.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.youtube { background: #ff0000; }
+
+/* Acordeón FAQ */
+.faq-container { margin-top: 50px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.faq-item { border-bottom: 1px solid #eee; }
+.faq-question {
+    background: none; border: none; width: 100%; text-align: left;
+    padding: 20px 0; font-size: 1.1rem; font-weight: bold; color: #002244;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+}
+.faq-answer {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
+    color: #555; line-height: 1.6;
+}
+.faq-item.active .faq-answer { max-height: 150px; } /* Se abre */
+.faq-item.active .fa-chevron-down { transform: rotate(180deg); } /* Flecha gira */
+
+/* Modo Oscuro FAQ */
+body.dark-mode .faq-container { background: #1e293b; color: white; border: 1px solid #334155; }
+body.dark-mode .faq-question { color: #ffd700; }
+body.dark-mode .faq-answer { color: #ccc; }
+/* --- CONTACTO ESTILO "CUADROS" (BOXY & ORGANIZED) --- */
+
+/* 1. Contenedor Principal (Grid) */
+.contacto-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Izquierda más ancha que derecha */
+    gap: 30px;
+    margin-top: 30px;
+    align-items: start;
+}
+
+/* 2. Estilo Base para las "Cajas" (Todas las tarjetas iguales) */
+.form-box, .info-card, .faq-container, .mapa-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 4px; /* Bordes ligeramente cuadrados */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra elegante */
+    border: 1px solid #e0e0e0; /* Borde fino para definir la caja */
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- COLUMNA IZQUIERDA: FORMULARIO (Acento Azul) --- */
+.form-box {
+    border-top: 5px solid #002244; /* Línea superior Azul */
+}
+
+.form-box h3 {
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f2f5; /* Línea separadora sutil */
+    color: #002244;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Inputs cuadrados y modernos */
+.campo label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #444;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #eee; /* Borde suave inicial */
+    border-radius: 2px; /* Casi cuadrado */
+    background-color: #f9f9f9;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Importante para que no se salgan */
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #002244; /* Borde azul al escribir */
+    background-color: #fff;
+    outline: none;
+}
+
+/* Botón Cuadrado */
+.btn-enviar {
+    background-color: #002244;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+.btn-enviar:hover { 
+    background-color: #003366; 
+    transform: translateY(-2px);
+}
+
+
+/* --- COLUMNA DERECHA: SIDEBAR (Acento Dorado) --- */
+.info-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    border-left: 5px solid #ffd700; /* Línea lateral Dorada */
+    padding: 20px 25px;
+}
+
+.info-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Mapa encajado */
+.mapa-box {
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    height: 250px;
+}
+.mapa-box iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+
+/* --- SECCIÓN FAQ (Acento Rojo) --- */
+.faq-container {
+    grid-column: 1 / -1; /* Hace que ocupe todo el ancho abajo */
+    margin-top: 20px;
+    border-top: 5px solid #e74c3c; /* Línea superior Roja */
+}
+
+.faq-container h3 {
+    margin-top: 0;
+    color: #002244;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.faq-item {
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    background: #fdfdfd;
+}
+
+.faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 15px 20px;
+    text-align: left;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.faq-question:hover { background: #f4f4f4; }
+
+.faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    background: #fff;
+    color: #666;
+    border-top: 1px solid transparent;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 150px;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+}
+.faq-item.active .fa-chevron-down { transform: rotate(180deg); }
+
+
+/* --- MODO OSCURO (Adaptación) --- */
+body.dark-mode .form-box, 
+body.dark-mode .info-card, 
+body.dark-mode .faq-container {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: none;
+}
+
+body.dark-mode .form-box h3,
+body.dark-mode .info-card h3,
+body.dark-mode .faq-container h3 { color: #ffd700; border-bottom-color: #334155; }
+
+body.dark-mode .info-card p,
+body.dark-mode .campo label { color: #ccc; }
+
+body.dark-mode input, 
+body.dark-mode select, 
+body.dark-mode textarea {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: white;
+}
+body.dark-mode input:focus { border-color: #ffd700; }
+
+body.dark-mode .faq-item { background-color: #0f172a; border-color: #334155; }
+body.dark-mode .faq-question { color: #e2e8f0; }
+body.dark-mode .faq-question:hover { background-color: #1e293b; }
+body.dark-mode .faq-answer { background-color: #1e293b; color: #aaa; border-top-color: #334155; }
+
+
+/* RESPONSIVE (Móvil) */
+@media (max-width: 768px) {
+    .contacto-grid { grid-template-columns: 1fr; }
+}
+/* --- ARREGLO DEL CHECKBOX (PRIVACIDAD) --- */
+
+.campo-check {
+    display: flex;              /* Los pone en la misma línea */
+    align-items: center;        /* Los centra verticalmente */
+    justify-content: flex-start; /* Los pega a la izquierda */
+    gap: 12px;                  /* Espacio entre el cuadradito y el texto */
+    margin: 20px 0;             /* Separación arriba y abajo */
+}
+
+/* Forzamos al input del checkbox a que sea pequeño */
+.campo-check input[type="checkbox"] {
+    width: 20px !important;     /* Tamaño fijo pequeño */
+    height: 20px;
+    margin: 0;                  /* Sin márgenes extra */
+    cursor: pointer;
+    border: 2px solid #002244;  /* Borde azul para que se vea bien */
+    border-radius: 4px;
+}
+
+/* Estilo del texto de al lado */
+.campo-check label {
+    margin: 0;
+    font-weight: normal;        /* Letra normal, no negrita */
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: #555;
+    text-transform: none;       /* Respetar mayúsculas/minúsculas */
+}

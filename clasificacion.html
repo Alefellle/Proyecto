@@ -2,48 +2,79 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Clasificación - SuperLiga</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SuperLiga Europea</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="header-content">
             <h1>⚽ SuperLiga</h1>
             <nav>
-                <a href="index.html" target="_blank">Inicio</a>
+                <a href="Index.html" target="_blank">Inicio</a>
                 <a href="clasificacion.html" class="activo" target="_blank">Clasificación</a>
                 <a href="historia.html" target="_blank">Historia</a>
                 <a href="contacto.html" target="_blank">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌗 Modo</button>
+            <button id="btnTema">🌙 Oscuro</button>
         </div>
     </header>
 
-    <main>
-        <h2>🏆 Tabla General</h2>
-        <table>
-            <thead>
-                <tr><th>Pos</th><th>Equipo</th><th>Pts</th></tr>
-            </thead>
-            <tbody>
-                <tr class="champions"><td>1</td><td>Real Madrid FC</td><td>70</td></tr>
-                <tr class="champions"><td>2</td><td>Atlético Urbano</td><td>65</td></tr>
-                <tr class="champions"><td>3</td><td>Deportivo Norte</td><td>63</td></tr>
-                <tr><td>4</td><td>Valencia CF</td><td>53</td></tr>
-                <tr class="descenso"><td>19</td><td>Granada CF</td><td>17</td></tr>
-                <tr class="descenso"><td>20</td><td>UD Almería</td><td>13</td></tr>
-            </tbody>
-        </table>
-        
+    <main class="hidden">
+        <h2>🏆 Clasificación en Vivo</h2>
+        <p>Haz clic en los encabezados (PTS, GF, etc.) para ordenar la tabla.</p>
+
+        <div class="leyenda-box">
+            <span><span class="dot green"></span> Playoffs Título</span>
+            <span><span class="dot yellow"></span> Zona Clasificación</span>
+            <span><span class="dot red"></span> Eliminados</span>
+        </div>
         <br>
-        <h2>⚽ Goleadores</h2>
-        <ul>
-            <li>kylian M. (22 Goles)</li>
-            <li>Robert L. (19 Goles)</li>
-        </ul>
+
+        <div class="contenedor-tabla">
+            <table class="tabla-pro">
+                <thead>
+                    <tr>
+                        <th title="Ordenar por posición">Pos</th>
+                        <th style="text-align: left;" title="Ordenar por nombre">Equipo</th>
+                        <th title="Partidos Jugados">PJ</th>
+                        <th title="Ganados">PG</th>
+                        <th title="Empatados">PE</th>
+                        <th title="Perdidos">PP</th>
+                        <th title="Goles Favor">GF</th>
+                        <th title="Goles Contra">GC</th>
+                        <th title="Ordenar por Puntos">PTS ↕</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="zona-champions"><td>1</td><td style="text-align: left;"><b>Real Madrid</b></td><td>28</td><td>23</td><td>3</td><td>2</td><td>72</td><td>21</td><td><b>72</b></td></tr>
+                    <tr class="zona-champions"><td>2</td><td style="text-align: left;"><b>Manchester City</b></td><td>28</td><td>22</td><td>4</td><td>2</td><td>68</td><td>24</td><td><b>70</b></td></tr>
+                    <tr class="zona-champions"><td>3</td><td style="text-align: left;"><b>Bayern München</b></td><td>28</td><td>20</td><td>5</td><td>3</td><td>65</td><td>28</td><td><b>65</b></td></tr>
+                    <tr class="zona-champions"><td>4</td><td style="text-align: left;"><b>FC Barcelona</b></td><td>28</td><td>19</td><td>4</td><td>5</td><td>60</td><td>30</td><td><b>61</b></td></tr>
+                    
+                    <tr class="zona-europa"><td>5</td><td style="text-align: left;">Liverpool FC</td><td>28</td><td>18</td><td>6</td><td>4</td><td>58</td><td>32</td><td><b>60</b></td></tr>
+                    <tr class="zona-europa"><td>6</td><td style="text-align: left;">Paris Saint-Germain</td><td>28</td><td>17</td><td>7</td><td>4</td><td>62</td><td>35</td><td><b>58</b></td></tr>
+                    <tr class="zona-europa"><td>7</td><td style="text-align: left;">Juventus</td><td>28</td><td>16</td><td>8</td><td>4</td><td>45</td><td>25</td><td><b>56</b></td></tr>
+                    <tr class="zona-europa"><td>8</td><td style="text-align: left;">Inter de Milán</td><td>28</td><td>15</td><td>7</td><td>6</td><td>48</td><td>29</td><td><b>52</b></td></tr>
+                    <tr class="zona-europa"><td>9</td><td style="text-align: left;">Arsenal FC</td><td>28</td><td>14</td><td>8</td><td>6</td><td>50</td><td>33</td><td><b>50</b></td></tr>
+                    <tr class="zona-europa"><td>10</td><td style="text-align: left;">AC Milan</td><td>28</td><td>13</td><td>6</td><td>9</td><td>42</td><td>36</td><td><b>45</b></td></tr>
+                    
+                    <tr class="zona-media"><td>11</td><td style="text-align: left;">Atlético de Madrid</td><td>28</td><td>12</td><td>8</td><td>8</td><td>38</td><td>30</td><td><b>44</b></td></tr>
+                    <tr class="zona-media"><td>12</td><td style="text-align: left;">Chelsea FC</td><td>28</td><td>11</td><td>9</td><td>8</td><td>40</td><td>38</td><td><b>42</b></td></tr>
+                    <tr class="zona-media"><td>13</td><td style="text-align: left;">Borussia Dortmund</td><td>28</td><td>10</td><td>8</td><td>10</td><td>45</td><td>45</td><td><b>38</b></td></tr>
+                    <tr class="zona-media"><td>14</td><td style="text-align: left;">Manchester United</td><td>28</td><td>10</td><td>6</td><td>12</td><td>39</td><td>44</td><td><b>36</b></td></tr>
+                    <tr class="zona-media"><td>15</td><td style="text-align: left;">Benfica</td><td>28</td><td>9</td><td>7</td><td>12</td><td>35</td><td>42</td><td><b>34</b></td></tr>
+                    <tr class="zona-media"><td>16</td><td style="text-align: left;">Athletic Bilbao</td><td>28</td><td>8</td><td>8</td><td>12</td><td>33</td><td>40</td><td><b>32</b></td></tr>
+                    <tr class="zona-media"><td>17</td><td style="text-align: left;">Napoli</td><td>28</td><td>7</td><td>9</td><td>12</td><td>30</td><td>41</td><td><b>30</b></td></tr>
+
+                    <tr class="zona-descenso"><td>18</td><td style="text-align: left;">Ajax Amsterdam</td><td>28</td><td>6</td><td>6</td><td>16</td><td>28</td><td>55</td><td><b>24</b></td></tr>
+                    <tr class="zona-descenso"><td>19</td><td style="text-align: left;">FC Porto</td><td>28</td><td>5</td><td>5</td><td>18</td><td>22</td><td>50</td><td><b>20</b></td></tr>
+                    <tr class="zona-descenso"><td>20</td><td style="text-align: left;">Olympique Marseille</td><td>28</td><td>3</td><td>4</td><td>21</td><td>18</td><td>65</td><td><b>13</b></td></tr>
+                </tbody>
+            </table>
+        </div>
     </main>
 
-    <footer><p>© 2025 SuperLiga Profesional</p></footer>
+    <footer><p>© 2025 SuperLiga Europea. Gestionada por A22 Sports.</p></footer>
     <script src="java.js"></script>
 </body>
 </html>

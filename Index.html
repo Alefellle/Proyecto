@@ -2,37 +2,65 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio - SuperLiga</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperLiga Europea</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="header-content">
             <h1>⚽ SuperLiga</h1>
             <nav>
-                <a href="index.html" class="activo" target="_blank">Inicio</a>
-                <a href="clasificacion.html" target="_blank">Clasificación</a>
-                <a href="historia.html" target="_blank">Historia</a>
-                <a href="contacto.html" target="_blank">Contacto</a>
+                <a href="Index.html" class="activo">Inicio</a>
+                <a href="clasificacion.html">Clasificación</a>
+                <a href="historia.html">Historia</a>
+                <a href="contacto.html">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌗 Modo</button>
+            <button id="btnTema">🌙 Oscuro</button>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <h2>El Mejor Fútbol del Mundo</h2>
-            <p>Jornada 28 - Temporada 2024/2025</p>
+        <section class="slider-container hidden">
+            <div class="slider-wrapper">
+                <div class="slide">
+                    <img src="estadio lleno.jpeg" alt="Estadio lleno">
+                    <div class="caption">
+                        <h3>Noches Mágicas</h3>
+                        <p>Vive la emoción del mejor fútbol del mundo en directo.</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="madid-city.jpg" alt="Bernabéu">
+                    <div class="caption">
+                        <h3>El Templo Blanco</h3>
+                        <p>El Real Madrid defiende su liderato esta jornada.</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="san mames.jpeg" alt="San Mames">
+                    <div class="caption">
+                        <h3>Aurrera Athletic!" (¡Adelante Athletic!)</h3>
+                        <p>La atmósfera de San Mamés espera al PSG.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section class="contenido-texto">
-            <h3>📰 Noticias Destacadas</h3>
-            <p>¡Bienvenidos a la web oficial! La lucha por el título está más viva que nunca. El Real Madrid y el Atlético Urbano se enfrentan la próxima semana en un duelo decisivo.</p>
-            <img src="https://placehold.co/800x300/002244/white?text=SUPERLIGA+OFICIAL" alt="Banner" style="width:100%; margin-top:10px;">
+        <section class="countdown-box hidden">
+            <h3>⏳ PRÓXIMO PARTIDAZO</h3>
+            <p>Real Madrid vs Manchester City</p>
+            <div id="reloj">Cargando...</div>
+            <a href="clasificacion.html" class="btn-cta" style="background: #ffd700; color: #002244; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-top: 20px; display: inline-block;">Ver Clasificación</a>
+        </section>
+
+        <section class="contenido-texto hidden">
+            <h3>📰 Última Hora</h3>
+            <p>El presidente de la SuperLiga ha anunciado hoy nuevas medidas para mejorar la experiencia de los aficionados. "El fútbol es de los fans, y esta liga lo demuestra cada fin de semana con partidos de alto voltaje y los precios van a ser los más competitivos de la historia para una competición de este tipo", declaró.</p>
         </section>
     </main>
 
-    <footer><p>© 2025 SuperLiga Profesional</p></footer>
+    <footer><p>© 2025 SuperLiga Europea. Powered by A22 Sports.</p></footer>
     <script src="java.js"></script>
 </body>
 </html>

@@ -2,33 +2,104 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Historia - SuperLiga</title>
-    <link rel="stylesheet" href="style.css">
+    <title>SuperLiga Europea</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <div class="header-content">
             <h1>⚽ SuperLiga</h1>
             <nav>
-                <a href="index.html" target="_blank">Inicio</a>
+                <a href="Index.html" target="_blank">Inicio</a>
                 <a href="clasificacion.html" target="_blank">Clasificación</a>
                 <a href="historia.html" class="activo" target="_blank">Historia</a>
                 <a href="contacto.html" target="_blank">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌗 Modo</button>
+            <button id="btnTema" onclick="cambiarTema()">🌙 Oscuro</button>
         </div>
     </header>
 
     <main>
-        <h2>📜 Nuestros Orígenes</h2>
-        <div class="contenido-texto">
-            <p>La <b>SuperLiga Nacional</b> se fundó en 1929. En aquella época, el fútbol se jugaba con balones de cuero pesado y botas que parecían zapatos de trabajo.</p>
-            <p>El primer campeón fue el FC Barcelona, en una liga de solo 10 equipos. Con el paso de las décadas, la competición creció hasta los 20 equipos actuales.</p>
-            <p>En los años 50 llegaron las primeras estrellas internacionales, y en los 90 la televisión transformó el deporte en un espectáculo global seguido por millones.</p>
+        <h2>📜 El Camino hacia la Excelencia</h2>
+        <p>Cómo los 12 Clubes Fundadores cambiaron la historia del deporte para siempre.</p>
+        <br>
+
+        <div class="timeline-container">
+            
+            <div class="timeline-event">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">ABRIL 2021</span>
+                    <h3 class="timeline-title">El Anuncio</h3>
+                    <p>Doce de los clubes más importantes de Europa anuncian la creación de una nueva competición para salvar el fútbol de la crisis económica y ofrecer mejores partidos a los fans.</p>
+                </div>
+            </div>
+
+            <div class="timeline-event">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">DICIEMBRE 2023</span>
+                    <h3 class="timeline-title">La Sentencia del TJUE</h3>
+                    <p>El Tribunal de Justicia de la Unión Europea falla a favor de la Superliga, declarando que el monopolio de la UEFA y la FIFA es ilegal. El camino queda libre.</p>
+                </div>
+            </div>
+
+            <div class="timeline-event">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">AÑO 2024</span>
+                    <h3 class="timeline-title">El Nuevo Formato</h3>
+                    <p>Se presenta A22 Sports Management con un formato abierto, basado en méritos deportivos, con 64 equipos y streaming gratuito para todos los aficionados.</p>
+                </div>
+            </div>
+
+            <div class="timeline-event">
+                <div class="timeline-point"></div>
+                <div class="timeline-content">
+                    <span class="timeline-date">AÑO 2025</span>
+                    <h3 class="timeline-title">El Pitido Inicial</h3>
+                    <p>Comienza la primera temporada histórica. Los estadios se llenan y las audiencias rompen récords mundiales en la primera jornada.</p>
+                </div>
+            </div>
+
         </div>
+        <br><br><hr>
+        
+        <h2>🏆 Reyes de Europa (Clubes Fundadores)</h2>
+        <p>El prestigio de nuestra liga se mide en las Copas de Europa de nuestros participantes:</p>
+        
+        <div class="palmares-grid">
+        <div class="trofeo-card">
+            <img src="bernabeu.jpeg" alt="Estadio Santiago Bernabéu" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px 5px 0 0; margin-bottom: 10px;">
+            <h3>Real Madrid</h3>
+            <div class="trofeo-numero">15</div>
+            <p>Copas de Europa</p>
+        </div>
+        
+        <div class="trofeo-card">
+            <img src="san siro.jpeg" alt="San Siro" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px 5px 0 0; margin-bottom: 10px;">
+            <h3>AC Milan</h3>
+            <div class="trofeo-numero">7</div>
+            <p>Copas de Europa</p>
+        </div>
+        
+        <div class="trofeo-card">
+            <img src="anfield.jpeg" alt="Anfield" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px 5px 0 0; margin-bottom: 10px;">
+            <h3>Liverpool FC</h3>
+            <div class="trofeo-numero">6</div>
+            <p>Copas de Europa</p>
+        </div>
+        
+        <div class="trofeo-card">
+            <img src="allianz arena.jpeg" alt="Allianz Arena" style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px 5px 0 0; margin-bottom: 10px;">
+            <h3>Bayern München</h3>
+            <div class="trofeo-numero">6</div>
+            <p>Copas de Europa</p>
+        </div>
+</div>
     </main>
 
-    <footer><p>© 2025 SuperLiga Profesional</p></footer>
+    <footer><p>© 2025 SuperLiga Europea. Gestionada por A22 Sports.</p></footer>
     <script src="java.js"></script>
 </body>
 </html>
