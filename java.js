@@ -41,19 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(animate, 300);
     });
 
-    // TOOLTIP ANIMADO EN NOMBRES DE EQUIPOS (tabla clasificacion) MEJORADO
-    const equipoCeldas = document.querySelectorAll('.tabla-pro td:nth-child(2), .tabla-pro th:nth-child(2)');
-    equipoCeldas.forEach(celda => {
-        const nombre = celda.textContent.trim();
-        if (!nombre || nombre === 'Equipo') return;
-        celda.classList.add('equipo-tooltip');
-        // Buscar la posición si está en la misma fila
-        let pos = '';
-        if (celda.parentElement && celda.parentElement.children[0] && celda.parentElement.children[0] !== celda) {
-            pos = celda.parentElement.children[0].textContent.trim();
-        }
-        celda.setAttribute('data-tooltip', `ℹ️ ${nombre}${pos ? ' (Posición: ' + pos + ')' : ''}`);
-    });
+    // TOOLTIP ANIMADO EN NOMBRES DE EQUIPOS - DESACTIVADO
+    // const equipoCeldas = document.querySelectorAll('.tabla-pro td:nth-child(2), .tabla-pro th:nth-child(2)');
+    // equipoCeldas.forEach(celda => {
+    //     const nombre = celda.textContent.trim();
+    //     if (!nombre || nombre === 'Equipo') return;
+    //     celda.classList.add('equipo-tooltip');
+    //     let pos = '';
+    //     if (celda.parentElement && celda.parentElement.children[0] && celda.parentElement.children[0] !== celda) {
+    //         pos = celda.parentElement.children[0].textContent.trim();
+    //     }
+    //     celda.setAttribute('data-tooltip', `ℹ️ ${nombre}${pos ? ' (Posición: ' + pos + ')' : ''}`);
+    // });
     
     // 1. MODO OSCURO
     const temaGuardado = localStorage.getItem("temaLiga");
@@ -103,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 4. CUENTA ATRÁS
     const reloj = document.getElementById("reloj");
     if (reloj) {
-        const fechaPartido = new Date("Dec 10, 2025 21:00:00").getTime();
+        const fechaPartido = new Date("Jan 20, 2026 21:00:00").getTime();
         const intervalo = setInterval(function() {
             const ahora = new Date().getTime();
             const distancia = fechaPartido - ahora;
@@ -144,6 +143,397 @@ document.addEventListener('DOMContentLoaded', function() {
             const item = pregunta.parentElement;
             item.classList.toggle("active");
         });
+    });
+
+    // 1. BUSCADOR EN VIVO PARA TABLA DE CLASIFICACIÓN
+    const inputBuscador = document.getElementById('buscador-equipos');
+    if (inputBuscador) {
+        inputBuscador.addEventListener('keyup', function() {
+            const busqueda = this.value.toLowerCase();
+            const filas = document.querySelectorAll('.tabla-pro tbody tr');
+            filas.forEach(fila => {
+                const nombreEquipo = fila.cells[1].textContent.toLowerCase();
+                if (nombreEquipo.includes(busqueda)) {
+                    fila.style.display = '';
+                    fila.classList.add('fila-destacada');
+                    setTimeout(() => fila.classList.remove('fila-destacada'), 300);
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // 2. CARRUSEL DE NOTICIAS MEJORADO
+    const carruselNoticias = document.querySelector('.carrusel-noticias');
+    if (carruselNoticias) {
+        let indiceNoticia = 0;
+        const noticias = carruselNoticias.querySelectorAll('.noticia-item');
+        const mostrarNoticia = () => {
+            noticias.forEach(n => n.classList.remove('activa'));
+            noticias[indiceNoticia].classList.add('activa');
+        };
+        document.querySelector('.noticia-prev')?.addEventListener('click', () => {
+            indiceNoticia = (indiceNoticia - 1 + noticias.length) % noticias.length;
+            mostrarNoticia();
+        });
+        document.querySelector('.noticia-next')?.addEventListener('click', () => {
+            indiceNoticia = (indiceNoticia + 1) % noticias.length;
+            mostrarNoticia();
+        });
+        setInterval(() => {
+            indiceNoticia = (indiceNoticia + 1) % noticias.length;
+            mostrarNoticia();
+        }, 5000);
+        mostrarNoticia();
+    }
+
+    // 3. NOTIFICACIONES TOAST (deshabilitadas)
+    function mostrarToast(mensaje, tipo = 'success') {
+        // Toast notifications disabled by user request.
+        return;
+    }
+
+    // 9. CONFETI AL VOTAR 5 ESTRELLAS
+    function crearConfeti() {
+        const confeti = document.createElement('div');
+        confeti.className = 'confeti';
+        confeti.style.left = Math.random() * 100 + '%';
+        confeti.style.delay = Math.random() * 0.2 + 's';
+        confeti.style.background = ['#ffd700', '#002244', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 5)];
+        document.body.appendChild(confeti);
+        setTimeout(() => confeti.remove(), 1000);
+    }
+
+    // 3. SISTEMA DE VOTACIÓN CON ESTRELLAS (mejorado con Toast y Confeti)
+    const equipoFilas = document.querySelectorAll('.tabla-pro tbody tr');
+    equipoFilas.forEach((fila) => {
+        const celdaVoto = document.createElement('td');
+        celdaVoto.className = 'celda-voto';
+        const nombreEquipo = fila.cells[1].textContent;
+        
+        // Crear contenedor con 5 estrellas individuales
+        const contenedorEstrellas = document.createElement('div');
+        contenedorEstrellas.className = 'contenedor-estrellas';
+        contenedorEstrellas.style.display = 'flex';
+        contenedorEstrellas.style.gap = '4px';
+        
+        const votosGuardados = parseInt(localStorage.getItem(`voto_${nombreEquipo}`)) || 0;
+        
+        for (let i = 1; i <= 5; i++) {
+            const estrella = document.createElement('span');
+            estrella.className = 'estrella-individual';
+            estrella.textContent = i <= votosGuardados ? '⭐' : '☆';
+            estrella.style.cursor = 'pointer';
+            estrella.style.fontSize = '1.3em';
+            estrella.style.transition = 'all 0.2s ease';
+            estrella.style.display = 'inline-block';
+            estrella.setAttribute('data-valor', i);
+            // Establecer color inicial basado en votosGuardados
+            estrella.style.color = i <= votosGuardados ? '#ffd700' : '#ccc';
+            
+            // Hover effect - preview de votación
+            estrella.addEventListener('mouseover', () => {
+                for (let j = 1; j <= 5; j++) {
+                    const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
+                    if (j <= i) {
+                        est.textContent = '⭐';
+                        est.style.color = '#ffd700';
+                        est.style.transform = 'scale(1.2)';
+                    } else {
+                        est.textContent = '☆';
+                        est.style.color = '#ccc';
+                        est.style.transform = 'scale(1)';
+                    }
+                }
+            });
+            
+            // Click - guardar voto
+            estrella.addEventListener('click', (e) => {
+                e.stopPropagation();
+                localStorage.setItem(`voto_${nombreEquipo}`, i);
+                
+                // Actualizar display inmediatamente
+                for (let j = 1; j <= 5; j++) {
+                    const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
+                    est.textContent = j <= i ? '⭐' : '☆';
+                    est.style.color = j <= i ? '#ffd700' : '#ccc';
+                    est.style.transform = 'scale(1)';
+                }
+                
+                mostrarToast(`✅ ¡Votaste ${nombreEquipo} con ${i} ⭐!`, 'success');
+                
+                if (i === 5) {
+                    for (let k = 0; k < 20; k++) {
+                        setTimeout(() => crearConfeti(), k * 50);
+                    }
+                    mostrarToast(`🎉 ¡5 ESTRELLAS! ¡${nombreEquipo} te ama!`, 'celebrar');
+                }
+            });
+            
+            // Mouse out - restaurar estado
+            estrella.addEventListener('mouseout', () => {
+                for (let j = 1; j <= 5; j++) {
+                    const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
+                    const votosActuales = parseInt(localStorage.getItem(`voto_${nombreEquipo}`)) || 0;
+                    est.textContent = j <= votosActuales ? '⭐' : '☆';
+                    est.style.color = j <= votosActuales ? '#ffd700' : '#ccc';
+                    est.style.transform = 'scale(1)';
+                }
+            });
+            
+            contenedorEstrellas.appendChild(estrella);
+        }
+        
+        celdaVoto.appendChild(contenedorEstrellas);
+        celdaVoto.className = 'celda-voto';
+        celdaVoto.style.textAlign = 'center';
+        fila.appendChild(celdaVoto);
+    });
+
+
+    // 13. HISTÓRICO DE CAMBIOS EN CLASIFICACIÓN
+    const registroClasificacion = localStorage.getItem('clasificacion-historico');
+    if (!registroClasificacion) {
+        const equiposDatos = Array.from(document.querySelectorAll('.tabla-pro tbody tr')).map(r => ({
+            pos: r.cells[0].textContent,
+            nombre: r.cells[1].textContent,
+            puntos: r.cells[8].textContent
+        }));
+        localStorage.setItem('clasificacion-historico', JSON.stringify([{fecha: new Date().toLocaleDateString(), datos: equiposDatos}]));
+    }
+
+    // 14. COMPARADOR DE EQUIPOS (doble clic en equipos)
+    let equiposComparacion = [];
+    document.querySelectorAll('.tabla-pro tbody tr').forEach(fila => {
+        fila.addEventListener('dblclick', () => {
+            const nombreEquipo = fila.cells[1].textContent;
+            if (!equiposComparacion.includes(nombreEquipo)) {
+                equiposComparacion.push(nombreEquipo);
+                fila.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
+            } else {
+                equiposComparacion = equiposComparacion.filter(e => e !== nombreEquipo);
+                fila.style.backgroundColor = '';
+            }
+            if (equiposComparacion.length === 2) {
+                mostrarComparacion(equiposComparacion);
+            }
+        });
+    });
+
+    function mostrarComparacion(equipos) {
+        let comparacion = '<h3>📊 Comparación: ' + equipos.join(' vs ') + '</h3><table class="tabla-comparacion"><tr>';
+        equipos.forEach(nombre => {
+            const fila = Array.from(document.querySelectorAll('.tabla-pro tbody tr')).find(r => r.cells[1].textContent === nombre);
+            if (fila) {
+                comparacion += '<td><b>' + nombre + '</b><br>PJ: ' + fila.cells[2].textContent + '<br>PG: ' + fila.cells[3].textContent + '<br>Pts: ' + fila.cells[8].textContent + '</td>';
+            }
+        });
+        comparacion += '</tr></table>';
+        const modal = document.createElement('div');
+        modal.className = 'modal-comparacion';
+        modal.innerHTML = comparacion + '<button onclick="this.parentElement.remove()">Cerrar</button>';
+        document.body.appendChild(modal);
+    }
+
+    // 21. PREDICTOR DE CAMPEÓN
+    const btnPredictor = document.createElement('button');
+    btnPredictor.id = 'btn-predictor';
+    btnPredictor.innerHTML = '🏆 ¿Quién será campeón?';
+    btnPredictor.style.cssText = 'position: fixed; bottom: 100px; right: 30px; padding: 12px 20px; background: linear-gradient(90deg, #ffd700, #ffed4e); color: #002244; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s;';
+    btnPredictor.onmouseover = () => { btnPredictor.style.transform = 'scale(1.1)'; };
+    btnPredictor.onmouseout = () => { btnPredictor.style.transform = 'scale(1)'; };
+    btnPredictor.onclick = () => {
+        const equipos = Array.from(document.querySelectorAll('.tabla-pro tbody tr'));
+        const campeones = equipos.sort((a, b) => parseInt(b.cells[8].textContent) - parseInt(a.cells[8].textContent)).slice(0, 3);
+        let prediccion = '<h3>🔮 Predicción de Campeón</h3><ol>';
+        campeones.forEach((eq, idx) => {
+            const nombre = eq.cells[1].textContent;
+            const puntos = eq.cells[8].textContent;
+            const porcentaje = Math.round((parseInt(puntos) / 72) * 100);
+            prediccion += `<li><b>${nombre}</b> - ${puntos} pts (${porcentaje}% probabilidad)</li>`;
+        });
+        prediccion += '</ol><p style="font-size: 0.9em; margin-top: 15px;">Basado en puntos actuales de la temporada.</p>';
+        const modal = document.createElement('div');
+        modal.className = 'modal-comparacion';
+        modal.innerHTML = prediccion + '<button onclick="this.parentElement.remove()">Cerrar</button>';
+        document.body.appendChild(modal);
+    };
+    document.body.appendChild(btnPredictor);
+
+    // 18. MODO FAVORITOS (equipos marcados con corazón)
+    // Funcionalidad del corazón para marcar favoritos
+    document.querySelectorAll('.corazon-favorito').forEach(corazon => {
+        const equipo = corazon.getAttribute('data-equipo');
+        const esFavorito = localStorage.getItem(`favorito_${equipo}`);
+        if (esFavorito === 'true') {
+            corazon.textContent = '❤️';
+            corazon.classList.add('favorito-activo');
+        }
+        corazon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const estaFavorito = localStorage.getItem(`favorito_${equipo}`) === 'true';
+            if (estaFavorito) {
+                localStorage.removeItem(`favorito_${equipo}`);
+                corazon.textContent = '🤍';
+                corazon.classList.remove('favorito-activo');
+                mostrarToast(`💔 Eliminaste ${equipo} de favoritos`, 'error');
+            } else {
+                localStorage.setItem(`favorito_${equipo}`, 'true');
+                corazon.textContent = '❤️';
+                corazon.classList.add('favorito-activo');
+                mostrarToast(`❤️ ¡${equipo} agregado a favoritos!`, 'success');
+            }
+        });
+    });
+
+    // Botón + Panel flotante para ver favoritos
+    const panelFavoritos = document.createElement('div');
+    panelFavoritos.id = 'panel-favoritos';
+    panelFavoritos.className = 'panel-favoritos hidden';
+    panelFavoritos.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(panelFavoritos);
+
+    function renderFavoritos() {
+        let html = '<h3>❤️ Tus Equipos Favoritos</h3><div class="lista-favoritos">';
+        const equipos = Array.from(document.querySelectorAll('.tabla-pro tbody tr'));
+        let hayFavoritos = false;
+        equipos.forEach(eq => {
+            const celda = eq.cells[1];
+            const corazon = celda.querySelector('.corazon-favorito');
+            if (corazon && localStorage.getItem(`favorito_${corazon.getAttribute('data-equipo')}`) === 'true') {
+                hayFavoritos = true;
+                const nombre = corazon.getAttribute('data-equipo');
+                const puntos = eq.cells[8].textContent;
+                const posicion = eq.cells[0].textContent;
+                html += `<div class="fav-item"><div><span style="margin-right:8px;">❤️</span><b>#${posicion} ${nombre}</b><div style="font-size:0.85em;color:#666;">${puntos} pts</div></div><div class="fav-acciones"><button class="fav-remove" data-equipo="${nombre}" title="Eliminar favorito">✖</button></div></div>`;
+            }
+        });
+        if (!hayFavoritos) {
+            html += '<p style="text-align: center; color: #999;">No tienes favoritos aún. ¡Haz clic en los corazones para agregar equipos!</p>';
+        }
+        html += '</div>';
+        html += '<div style="text-align:right; margin-top:8px;"><button id="cerrar-fav" style="background:transparent;border:none;color:#666;cursor:pointer;">Cerrar</button></div>';
+        panelFavoritos.innerHTML = html;
+
+        // Delegación para botones de eliminar
+        panelFavoritos.querySelectorAll('.fav-remove').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const equipo = btn.getAttribute('data-equipo');
+                localStorage.removeItem(`favorito_${equipo}`);
+                // Actualizar corazones en la tabla
+                document.querySelectorAll(`.corazon-favorito[data-equipo="${equipo}"]`).forEach(c => {
+                    c.textContent = '🤍';
+                    c.classList.remove('favorito-activo');
+                });
+                renderFavoritos();
+            });
+        });
+
+        const cerrar = panelFavoritos.querySelector('#cerrar-fav');
+        if (cerrar) cerrar.addEventListener('click', () => { togglePanel(false); });
+    }
+
+    function togglePanel(forceOpen) {
+        const open = typeof forceOpen === 'boolean' ? forceOpen : panelFavoritos.classList.contains('hidden');
+        if (open) {
+            renderFavoritos();
+            panelFavoritos.classList.remove('hidden');
+            panelFavoritos.setAttribute('aria-hidden', 'false');
+        } else {
+            panelFavoritos.classList.add('hidden');
+            panelFavoritos.setAttribute('aria-hidden', 'true');
+        }
+    }
+
+    const btnFavoritos = document.createElement('button');
+    btnFavoritos.id = 'btn-favoritos';
+    btnFavoritos.innerHTML = '❤️ Mis Favoritos';
+    btnFavoritos.style.cssText = 'position: fixed; bottom: 160px; right: 30px; padding: 12px 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 1199; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.15s;';
+    btnFavoritos.onmouseover = () => { btnFavoritos.style.transform = 'scale(1.06)'; };
+    btnFavoritos.onmouseout = () => { btnFavoritos.style.transform = 'scale(1)'; };
+    btnFavoritos.onclick = () => { togglePanel(); };
+    document.body.appendChild(btnFavoritos);
+
+    // Cerrar panel al hacer click fuera de él
+    document.addEventListener('click', (e) => {
+        if (!panelFavoritos.classList.contains('hidden')) {
+            const dentroPanel = panelFavoritos.contains(e.target);
+            const esBoton = btnFavoritos.contains(e.target);
+            if (!dentroPanel && !esBoton) togglePanel(false);
+        }
+    });
+
+    // 1. FILTRO POR ZONAS
+    const containerFiltros = document.createElement('div');
+    containerFiltros.id = 'filtros-zonas';
+    containerFiltros.innerHTML = `
+        <button class="btn-filtro" data-zona="todos">Todos</button>
+        <button class="btn-filtro" data-zona="champions">🏆 Champions</button>
+        <button class="btn-filtro" data-zona="europa">🌍 Europa</button>
+        <button class="btn-filtro" data-zona="descenso">⬇️ Descenso</button>
+    `;
+    const tablaContainer = document.querySelector('.contenedor-tabla');
+    if (tablaContainer) {
+        tablaContainer.parentElement.insertBefore(containerFiltros, tablaContainer);
+    }
+    document.querySelectorAll('.btn-filtro').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.btn-filtro').forEach(b => b.classList.remove('activo'));
+            this.classList.add('activo');
+            const zona = this.getAttribute('data-zona');
+            document.querySelectorAll('.tabla-pro tbody tr').forEach(fila => {
+                if (zona === 'todos') {
+                    fila.style.display = '';
+                } else if (zona === 'champions' && fila.classList.contains('zona-champions')) {
+                    fila.style.display = '';
+                } else if (zona === 'europa' && fila.classList.contains('zona-europa')) {
+                    fila.style.display = '';
+                } else if (zona === 'descenso' && fila.classList.contains('zona-descenso')) {
+                    fila.style.display = '';
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+        });
+    });
+    document.querySelector('.btn-filtro[data-zona="todos"]').classList.add('activo');
+
+    // 3. NOTIFICACIONES TOAST (deshabilitadas)
+    function mostrarToast(mensaje, tipo = 'success') {
+        // Toast notifications disabled by user request.
+        return;
+    }
+
+    // 9. CONFETI AL VOTAR 5 ESTRELLAS
+    function crearConfeti() {
+        const confeti = document.createElement('div');
+        confeti.className = 'confeti';
+        confeti.style.left = Math.random() * 100 + '%';
+        confeti.style.delay = Math.random() * 0.2 + 's';
+        confeti.style.background = ['#ffd700', '#002244', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 5)];
+        document.body.appendChild(confeti);
+        setTimeout(() => confeti.remove(), 2000);
+    }
+
+    // 10. TRANSICIÓN SUAVE ENTRE PÁGINAS
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.getAttribute('class') !== 'activo') {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                document.body.style.opacity = '0';
+                document.body.style.transition = 'opacity 0.5s ease-out';
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 500);
+            }
+        });
+    });
+    window.addEventListener('load', () => {
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.5s ease-in';
+        setTimeout(() => { document.body.style.opacity = '1'; }, 10);
     });
 });
 

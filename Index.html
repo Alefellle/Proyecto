@@ -9,19 +9,47 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>⚽ SuperLiga Europea</h1>
+            <h1>SuperLiga Europea</h1>
             <nav>
                 <a href="Index.html" class="activo">Inicio</a>
                 <a href="clasificacion.html">Clasificación</a>
                 <a href="historia.html">Historia</a>
                 <a href="contacto.html">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌙 Oscuro</button>
+            <button id="btnTema" onclick="cambiarTema()">Oscuro</button>
         </div>
     </header>
 
     <main>
-        <section class="slider-container hidden">
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>Bienvenido a la SuperLiga Europea</h2>
+                <p>La revolución del fútbol comienza aquí</p>
+                <a href="clasificacion.html" class="btn-cta">Ver Clasificación</a>
+            </div>
+        </section>
+
+        <!-- CARRUSEL DE NOTICIAS -->
+        <section class="carrusel-noticias">
+            <div class="noticia-item activa">
+                <h3>!ÚLTIMA HORA: Real Madrid vs Manchester City!</h3>
+                <p>Mañana se jugará la jornada más esperada. El líder enfrenta al subcampeón en un encuentro que puede definir la temporada.</p>
+            </div>
+            <div class="noticia-item">
+                <h3>Bayern München ascendió a 3ª posición</h3>
+                <p>Los bávaros superaron a Barcelona con una victoria contundente (5-1) en la última jornada.</p>
+            </div>
+            <div class="noticia-item">
+                <h3>Sentencia favorable del TJUE para la SuperLiga</h3>
+                <p>El Tribunal confirma la legalidad de la competición. La SuperLiga puede continuar expandiéndose sin obstáculos legales.</p>
+            </div>
+            <button class="noticia-prev">❮</button>
+            <button class="noticia-next">❯</button>
+        </section>
+
+        <!-- SLIDER DE IMÁGENES -->
+        <section class="slider-container">
             <div class="slider-wrapper">
                 <div class="slide">
                     <img src="estadio lleno.jpeg" alt="Estadio lleno">
@@ -31,33 +59,34 @@
                     </div>
                 </div>
                 <div class="slide">
-                    <img src="madid-city.jpg" alt="Bernabéu">
+                    <img src="madid-city.jpg" alt="Manchester City">
                     <div class="caption">
                         <h3>El Templo Blanco</h3>
                         <p>El Real Madrid defiende su liderato esta jornada.</p>
                     </div>
                 </div>
                 <div class="slide">
-                    <img src="san mames.jpeg" alt="San Mames">
+                    <img src="san mames.jpeg" alt="San Mamés">
                     <div class="caption">
-                        <h3>Aurrera Athletic!" (¡Adelante Athletic!)</h3>
+                        <h3>¡Aurrera Athletic!</h3>
                         <p>La atmósfera de San Mamés espera al PSG.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="countdown-box hidden">
+        <!-- CUENTA ATRÁS -->
+        <section class="countdown-box">
             <h3>⏳ PRÓXIMO PARTIDAZO</h3>
-            <p>Real Madrid vs Manchester City</p>
+            <p>Arsenal vs. Inter de Milán</p>
             <div id="reloj">Cargando...</div>
-            <a href="clasificacion.html" class="btn-cta" style="background: #ffd700; color: #002244; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: bold; margin-top: 20px; display: inline-block;">Ver Clasificación</a>
         </section>
 
-        <section class="contenido-texto hidden">
+        <!-- CONTENIDO TEXTO -->
+        <section class="contenido-texto">
             <div class="cont-texto">
-                <h3>📰 Última Hora</h3>
-            <p class="pa">El presidente de la SuperLiga ha anunciado hoy nuevas medidas para mejorar la experiencia de los aficionados. "El fútbol es de los fans, y esta liga lo demuestra cada fin de semana con partidos de alto voltaje y los precios van a ser los más competitivos de la historia para una competición de este tipo", declaró.</p>
+                <h2>📰 Última Hora</h2>
+                <p>El presidente de la SuperLiga ha anunciado hoy nuevas medidas para mejorar la experiencia de los aficionados. "El fútbol es de los fans, y esta liga lo demuestra cada fin de semana con partidos de alto voltaje y los precios van a ser los más competitivos de la historia para una competición de este tipo", declaró.</p>
             </div>
         </section>
     </main>
