@@ -1,59 +1,61 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // ANIMACIÓN DE CONTEO EN TROFEOS (palmares) MEJORADA
+    
+    // --- DATOS MAESTROS DE EQUIPOS ---
+    // Esta lista permite que los favoritos se muestren en cualquier página (Inicio, Historia, etc.)
+    // aunque no esté la tabla presente.
+    const datosEquipos = [
+        { pos: 1, nombre: 'Arsenal FC', pts: 38 },
+        { pos: 2, nombre: 'Manchester City', pts: 35 },
+        { pos: 3, nombre: 'FC Barcelona', pts: 32 },
+        { pos: 4, nombre: 'Real Madrid', pts: 31 },
+        { pos: 5, nombre: 'Bayern München', pts: 29 },
+        { pos: 6, nombre: 'Liverpool FC', pts: 28 },
+        { pos: 7, nombre: 'Paris Saint-Germain', pts: 26 },
+        { pos: 8, nombre: 'Inter de Milán', pts: 25 },
+        { pos: 9, nombre: 'Juventus', pts: 24 },
+        { pos: 10, nombre: 'AC Milan', pts: 20 },
+        { pos: 11, nombre: 'Atlético de Madrid', pts: 20 },
+        { pos: 12, nombre: 'Chelsea FC', pts: 19 },
+        { pos: 13, nombre: 'Borussia Dortmund', pts: 18 },
+        { pos: 14, nombre: 'Manchester United', pts: 17 },
+        { pos: 15, nombre: 'Benfica', pts: 15 },
+        { pos: 16, nombre: 'Athletic Bilbao', pts: 14 },
+        { pos: 17, nombre: 'Napoli', pts: 13 },
+        { pos: 18, nombre: 'Ajax Amsterdam', pts: 11 },
+        { pos: 19, nombre: 'FC Porto', pts: 8 },
+        { pos: 20, nombre: 'Olympique Marseille', pts: 5 }
+    ];
+
+    // ANIMACIÓN DE CONTEO EN TROFEOS
     const trofeos = document.querySelectorAll('.trofeo-numero');
     trofeos.forEach(trofeo => {
         const final = parseInt(trofeo.textContent);
         trofeo.textContent = '0';
-        let actual = 0;
         const duracion = 1200;
         const fps = 60;
         const totalFrames = Math.round((duracion / 1000) * fps);
         let frame = 0;
         const easeOutBounce = t => {
-            if (t < (1/2.75)) {
-                return 7.5625*t*t;
-            } else if (t < (2/2.75)) {
-                t -= (1.5/2.75);
-                return 7.5625*t*t + 0.75;
-            } else if (t < (2.5/2.75)) {
-                t -= (2.25/2.75);
-                return 7.5625*t*t + 0.9375;
-            } else {
-                t -= (2.625/2.75);
-                return 7.5625*t*t + 0.984375;
-            }
+            if (t < (1/2.75)) return 7.5625*t*t;
+            else if (t < (2/2.75)) { t -= (1.5/2.75); return 7.5625*t*t + 0.75; }
+            else if (t < (2.5/2.75)) { t -= (2.25/2.75); return 7.5625*t*t + 0.9375; }
+            else { t -= (2.625/2.75); return 7.5625*t*t + 0.984375; }
         };
         function animate() {
             frame++;
             let progress = frame / totalFrames;
             let val = Math.round(final * easeOutBounce(progress > 1 ? 1 : progress));
             trofeo.textContent = val;
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
+            if (progress < 1) requestAnimationFrame(animate);
+            else {
                 trofeo.textContent = final;
                 trofeo.classList.add('rebote-trofeo');
-                // SONIDO OPCIONAL (descomentar si tienes un archivo de sonido)
-                // let audio = new Audio('celebracion.mp3'); audio.play();
                 setTimeout(()=>trofeo.classList.remove('rebote-trofeo'), 800);
             }
         }
         setTimeout(animate, 300);
     });
 
-    // TOOLTIP ANIMADO EN NOMBRES DE EQUIPOS - DESACTIVADO
-    // const equipoCeldas = document.querySelectorAll('.tabla-pro td:nth-child(2), .tabla-pro th:nth-child(2)');
-    // equipoCeldas.forEach(celda => {
-    //     const nombre = celda.textContent.trim();
-    //     if (!nombre || nombre === 'Equipo') return;
-    //     celda.classList.add('equipo-tooltip');
-    //     let pos = '';
-    //     if (celda.parentElement && celda.parentElement.children[0] && celda.parentElement.children[0] !== celda) {
-    //         pos = celda.parentElement.children[0].textContent.trim();
-    //     }
-    //     celda.setAttribute('data-tooltip', `ℹ️ ${nombre}${pos ? ' (Posición: ' + pos + ')' : ''}`);
-    // });
-    
     // 1. MODO OSCURO
     const temaGuardado = localStorage.getItem("temaLiga");
     const cuerpo = document.body;
@@ -76,10 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // (Eliminado: animación de conteo duplicada, ahora mejorada más abajo)
-
-    
 
     // 2. ANIMACIÓN SCROLL
     const observer = new IntersectionObserver((entries) => {
@@ -138,16 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 6. ACORDEÓN FAQ (NUEVO)
-    const faqs = document.querySelectorAll(".faq-question");
-    faqs.forEach(pregunta => {
-        pregunta.addEventListener("click", () => {
-            const item = pregunta.parentElement;
-            item.classList.toggle("active");
-        });
-    });
-
-    // 1. BUSCADOR EN VIVO PARA TABLA DE CLASIFICACIÓN
+    // BUSCADOR EN VIVO
     const inputBuscador = document.getElementById('buscador-equipos');
     if (inputBuscador) {
         inputBuscador.addEventListener('keyup', function() {
@@ -166,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 2. CARRUSEL DE NOTICIAS MEJORADO
+    // CARRUSEL NOTICIAS
     const carruselNoticias = document.querySelector('.carrusel-noticias');
     if (carruselNoticias) {
         let indiceNoticia = 0;
@@ -190,35 +179,44 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarNoticia();
     }
 
-    // 3. NOTIFICACIONES TOAST (deshabilitadas)
+    // CONFETI Y TOAST BÁSICO
     function mostrarToast(mensaje, tipo = 'success') {
-        // Toast notifications disabled by user request.
-        return;
+        const toast = document.createElement('div');
+        toast.textContent = mensaje;
+        toast.style.position = 'fixed';
+        toast.style.bottom = '20px';
+        toast.style.left = '50%';
+        toast.style.transform = 'translateX(-50%)';
+        toast.style.backgroundColor = tipo === 'success' ? '#28a745' : '#dc3545';
+        toast.style.color = 'white';
+        toast.style.padding = '10px 20px';
+        toast.style.borderRadius = '5px';
+        toast.style.zIndex = '2000';
+        toast.style.animation = 'fadeIn 0.5s';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
 
-    // 9. CONFETI AL VOTAR 5 ESTRELLAS
     function crearConfeti() {
         const confeti = document.createElement('div');
         confeti.className = 'confeti';
         confeti.style.left = Math.random() * 100 + '%';
-        confeti.style.delay = Math.random() * 0.2 + 's';
         confeti.style.background = ['#ffd700', '#002244', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 5)];
         document.body.appendChild(confeti);
-        setTimeout(() => confeti.remove(), 1000);
+        setTimeout(() => confeti.remove(), 2000);
     }
 
-    // 3. SISTEMA DE VOTACIÓN CON ESTRELLAS (mejorado con Toast y Confeti)
+    // VOTACIÓN ESTRELLAS
     const equipoFilas = document.querySelectorAll('.tabla-pro tbody tr');
     equipoFilas.forEach((fila) => {
         const celdaVoto = document.createElement('td');
-        celdaVoto.className = 'celda-voto';
-        const nombreEquipo = fila.cells[1].textContent;
+        const nombreEquipo = fila.cells[1].textContent.replace('🤍', '').trim();
         
-        // Crear contenedor con 5 estrellas individuales
         const contenedorEstrellas = document.createElement('div');
         contenedorEstrellas.className = 'contenedor-estrellas';
         contenedorEstrellas.style.display = 'flex';
         contenedorEstrellas.style.gap = '4px';
+        contenedorEstrellas.style.justifyContent = 'center';
         
         const votosGuardados = parseInt(localStorage.getItem(`voto_${nombreEquipo}`)) || 0;
         
@@ -226,90 +224,46 @@ document.addEventListener('DOMContentLoaded', function() {
             const estrella = document.createElement('span');
             estrella.className = 'estrella-individual';
             estrella.textContent = i <= votosGuardados ? '⭐' : '☆';
-            estrella.style.cursor = 'pointer';
-            estrella.style.fontSize = '1.3em';
-            estrella.style.transition = 'all 0.2s ease';
-            estrella.style.display = 'inline-block';
             estrella.setAttribute('data-valor', i);
-            // Establecer color inicial basado en votosGuardados
             estrella.style.color = i <= votosGuardados ? '#ffd700' : '#ccc';
             
-            // Hover effect - preview de votación
             estrella.addEventListener('mouseover', () => {
-                for (let j = 1; j <= 5; j++) {
-                    const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
-                    if (j <= i) {
-                        est.textContent = '⭐';
-                        est.style.color = '#ffd700';
-                        est.style.transform = 'scale(1.2)';
-                    } else {
-                        est.textContent = '☆';
-                        est.style.color = '#ccc';
-                        est.style.transform = 'scale(1)';
-                    }
-                }
-            });
-            
-            // Click - guardar voto
-            estrella.addEventListener('click', (e) => {
-                e.stopPropagation();
-                localStorage.setItem(`voto_${nombreEquipo}`, i);
-                
-                // Actualizar display inmediatamente
                 for (let j = 1; j <= 5; j++) {
                     const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
                     est.textContent = j <= i ? '⭐' : '☆';
                     est.style.color = j <= i ? '#ffd700' : '#ccc';
-                    est.style.transform = 'scale(1)';
-                }
-                
-                mostrarToast(`✅ ¡Votaste ${nombreEquipo} con ${i} ⭐!`, 'success');
-                
-                if (i === 5) {
-                    for (let k = 0; k < 20; k++) {
-                        setTimeout(() => crearConfeti(), k * 50);
-                    }
-                    mostrarToast(`🎉 ¡5 ESTRELLAS! ¡${nombreEquipo} te ama!`, 'celebrar');
                 }
             });
             
-            // Mouse out - restaurar estado
+            estrella.addEventListener('click', (e) => {
+                e.stopPropagation();
+                localStorage.setItem(`voto_${nombreEquipo}`, i);
+                mostrarToast(`✅ Votaste ${i} estrellas a ${nombreEquipo}`);
+                if (i === 5) {
+                   for (let k = 0; k < 20; k++) setTimeout(() => crearConfeti(), k * 50);
+                }
+            });
+            
             estrella.addEventListener('mouseout', () => {
+                const currentVote = parseInt(localStorage.getItem(`voto_${nombreEquipo}`)) || 0;
                 for (let j = 1; j <= 5; j++) {
                     const est = contenedorEstrellas.querySelector(`[data-valor="${j}"]`);
-                    const votosActuales = parseInt(localStorage.getItem(`voto_${nombreEquipo}`)) || 0;
-                    est.textContent = j <= votosActuales ? '⭐' : '☆';
-                    est.style.color = j <= votosActuales ? '#ffd700' : '#ccc';
-                    est.style.transform = 'scale(1)';
+                    est.textContent = j <= currentVote ? '⭐' : '☆';
+                    est.style.color = j <= currentVote ? '#ffd700' : '#ccc';
                 }
             });
             
             contenedorEstrellas.appendChild(estrella);
         }
-        
         celdaVoto.appendChild(contenedorEstrellas);
-        celdaVoto.className = 'celda-voto';
-        celdaVoto.style.textAlign = 'center';
         fila.appendChild(celdaVoto);
     });
 
-
-    // 13. HISTÓRICO DE CAMBIOS EN CLASIFICACIÓN
-    const registroClasificacion = localStorage.getItem('clasificacion-historico');
-    if (!registroClasificacion) {
-        const equiposDatos = Array.from(document.querySelectorAll('.tabla-pro tbody tr')).map(r => ({
-            pos: r.cells[0].textContent,
-            nombre: r.cells[1].textContent,
-            puntos: r.cells[8].textContent
-        }));
-        localStorage.setItem('clasificacion-historico', JSON.stringify([{fecha: new Date().toLocaleDateString(), datos: equiposDatos}]));
-    }
-
-    // 14. COMPARADOR DE EQUIPOS (doble clic en equipos)
+    // COMPARADOR
     let equiposComparacion = [];
     document.querySelectorAll('.tabla-pro tbody tr').forEach(fila => {
         fila.addEventListener('dblclick', () => {
-            const nombreEquipo = fila.cells[1].textContent;
+            const nombreEquipo = fila.cells[1].textContent.replace('🤍', '').replace('❤️', '').trim();
             if (!equiposComparacion.includes(nombreEquipo)) {
                 equiposComparacion.push(nombreEquipo);
                 fila.style.backgroundColor = 'rgba(255, 215, 0, 0.2)';
@@ -318,132 +272,147 @@ document.addEventListener('DOMContentLoaded', function() {
                 fila.style.backgroundColor = '';
             }
             if (equiposComparacion.length === 2) {
-                mostrarComparacion(equiposComparacion);
+                let msg = `Comparación:\n${equiposComparacion[0]} vs ${equiposComparacion[1]}`;
+                alert(msg);
+                equiposComparacion = [];
+                document.querySelectorAll('.tabla-pro tbody tr').forEach(r => r.style.backgroundColor = '');
             }
         });
     });
 
-    function mostrarComparacion(equipos) {
-        let comparacion = '<h3>📊 Comparación: ' + equipos.join(' vs ') + '</h3><table class="tabla-comparacion"><tr>';
-        equipos.forEach(nombre => {
-            const fila = Array.from(document.querySelectorAll('.tabla-pro tbody tr')).find(r => r.cells[1].textContent === nombre);
-            if (fila) {
-                comparacion += '<td><b>' + nombre + '</b><br>PJ: ' + fila.cells[2].textContent + '<br>PG: ' + fila.cells[3].textContent + '<br>Pts: ' + fila.cells[8].textContent + '</td>';
-            }
-        });
-        comparacion += '</tr></table>';
-        const modal = document.createElement('div');
-        modal.className = 'modal-comparacion';
-        modal.innerHTML = comparacion + '<button onclick="this.parentElement.remove()">Cerrar</button>';
-        document.body.appendChild(modal);
-    }
-
-
-    // 18. MODO FAVORITOS (equipos marcados con corazón)
-    // Funcionalidad del corazón para marcar favoritos
+    // ==========================================================
+    // 18. MODO FAVORITOS (GLOBAL - FUNCIONA EN TODAS LAS PÁGINAS)
+    // ==========================================================
+    
+    // A) Funcionalidad de los corazones (Solo si existe la tabla - pág Clasificación)
     document.querySelectorAll('.corazon-favorito').forEach(corazon => {
         const equipo = corazon.getAttribute('data-equipo');
-        const esFavorito = localStorage.getItem(`favorito_${equipo}`);
-        if (esFavorito === 'true') {
+        
+        // 1. Cargar estado inicial
+        if (localStorage.getItem(`favorito_${equipo}`) === 'true') {
             corazon.textContent = '❤️';
             corazon.classList.add('favorito-activo');
         }
+
+        // 2. Click para alternar
         corazon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const estaFavorito = localStorage.getItem(`favorito_${equipo}`) === 'true';
-            if (estaFavorito) {
+            e.stopPropagation(); 
+            const esFavorito = localStorage.getItem(`favorito_${equipo}`) === 'true';
+            
+            if (esFavorito) {
                 localStorage.removeItem(`favorito_${equipo}`);
                 corazon.textContent = '🤍';
                 corazon.classList.remove('favorito-activo');
-                mostrarToast(`💔 Eliminaste ${equipo} de favoritos`, 'error');
+                mostrarToast(`💔 ${equipo} eliminado de favoritos`, 'error');
             } else {
                 localStorage.setItem(`favorito_${equipo}`, 'true');
                 corazon.textContent = '❤️';
                 corazon.classList.add('favorito-activo');
-                mostrarToast(`❤️ ¡${equipo} agregado a favoritos!`, 'success');
+                mostrarToast(`❤️ ¡${equipo} añadido a favoritos!`);
             }
+            // Actualizar panel si está abierto
+            renderFavoritos();
         });
     });
 
-    // Botón + Panel flotante para ver favoritosConference League (15-16)
-
+    // B) Crear el Panel de Favoritos (Se inyecta en todas las páginas automáticamente)
     const panelFavoritos = document.createElement('div');
     panelFavoritos.id = 'panel-favoritos';
     panelFavoritos.className = 'panel-favoritos hidden';
-    panelFavoritos.setAttribute('aria-hidden', 'true');
     document.body.appendChild(panelFavoritos);
 
+    // C) Función para dibujar la lista (Usando los DATOS MAESTROS del principio)
     function renderFavoritos() {
         let html = '<h3>❤️ Tus Equipos Favoritos</h3><div class="lista-favoritos">';
-        const equipos = Array.from(document.querySelectorAll('.tabla-pro tbody tr'));
         let hayFavoritos = false;
-        equipos.forEach(eq => {
-            const celda = eq.cells[1];
-            const corazon = celda.querySelector('.corazon-favorito');
-            if (corazon && localStorage.getItem(`favorito_${corazon.getAttribute('data-equipo')}`) === 'true') {
+
+        // Recorremos la lista maestra de datos en lugar del HTML de la tabla
+        datosEquipos.forEach(eq => {
+            const esFav = localStorage.getItem(`favorito_${eq.nombre}`) === 'true';
+            
+            if (esFav) {
                 hayFavoritos = true;
-                const nombre = corazon.getAttribute('data-equipo');
-                const puntos = eq.cells[8].textContent;
-                const posicion = eq.cells[0].textContent;
-                html += `<div class="fav-item"><div><span style="margin-right:8px;">❤️</span><b>#${posicion} ${nombre}</b><div style="font-size:0.85em;color:#666;">${puntos} pts</div></div><div class="fav-acciones"><button class="fav-remove" data-equipo="${nombre}" title="Eliminar favorito">✖</button></div></div>`;
+                html += `
+                <div class="fav-item">
+                    <div>
+                        <span style="margin-right:8px;">❤️</span>
+                        <b>#${eq.pos} ${eq.nombre}</b>
+                        <div style="font-size:0.85em;color:#666;">${eq.pts} pts</div>
+                    </div>
+                    <div class="fav-acciones">
+                        <button class="fav-remove" data-equipo="${eq.nombre}" title="Eliminar">✖</button>
+                    </div>
+                </div>`;
             }
         });
+
         if (!hayFavoritos) {
-            html += '<p style="text-align: center; color: #999;">No tienes favoritos aún. ¡Haz clic en los corazones para agregar equipos!</p>';
+            html += '<p style="text-align: center; color: #999; font-size: 0.9em;">No tienes favoritos. Ve a "Clasificación" y marca los corazones.</p>';
         }
-        html += '</div>';
-        html += '<div style="text-align:right; margin-top:8px;"><button id="cerrar-fav" style="background:transparent;border:none;color:#666;cursor:pointer;">Cerrar</button></div>';
+
+        html += '</div><div style="text-align:right; margin-top:8px;"><button id="cerrar-fav" style="background:transparent;border:none;cursor:pointer;">Cerrar</button></div>';
+        
         panelFavoritos.innerHTML = html;
 
-        // Delegación para botones de eliminar
+        // Eventos para botones de eliminar dentro del panel
         panelFavoritos.querySelectorAll('.fav-remove').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const equipo = btn.getAttribute('data-equipo');
-                localStorage.removeItem(`favorito_${equipo}`);
-                // Actualizar corazones en la tabla
-                document.querySelectorAll(`.corazon-favorito[data-equipo="${equipo}"]`).forEach(c => {
-                    c.textContent = '🤍';
-                    c.classList.remove('favorito-activo');
-                });
+                const nombre = btn.getAttribute('data-equipo');
+                localStorage.removeItem(`favorito_${nombre}`);
+                
+                // Si estamos en la página de clasificación, apagar el corazón de la tabla visualmente
+                const corazonTabla = document.querySelector(`.corazon-favorito[data-equipo="${nombre}"]`);
+                if (corazonTabla) {
+                    corazonTabla.textContent = '🤍';
+                    corazonTabla.classList.remove('favorito-activo');
+                }
+                
+                // Redibujar el panel
                 renderFavoritos();
             });
         });
 
-        const cerrar = panelFavoritos.querySelector('#cerrar-fav');
-        if (cerrar) cerrar.addEventListener('click', () => { togglePanel(false); });
+        panelFavoritos.querySelector('#cerrar-fav').addEventListener('click', () => togglePanel(false));
     }
 
+    // D) Función para abrir/cerrar panel
     function togglePanel(forceOpen) {
-        const open = typeof forceOpen === 'boolean' ? forceOpen : panelFavoritos.classList.contains('hidden');
-        if (open) {
-            renderFavoritos();
+        const isHidden = panelFavoritos.classList.contains('hidden');
+        const shouldOpen = forceOpen !== undefined ? forceOpen : isHidden;
+
+        if (shouldOpen) {
+            renderFavoritos(); // Actualizar datos antes de mostrar
             panelFavoritos.classList.remove('hidden');
-            panelFavoritos.setAttribute('aria-hidden', 'false');
         } else {
             panelFavoritos.classList.add('hidden');
-            panelFavoritos.setAttribute('aria-hidden', 'true');
         }
     }
 
+    // E) Botón Flotante (Siempre visible en todas las páginas)
     const btnFavoritos = document.createElement('button');
-    btnFavoritos.id = 'btn-favoritos';
-    btnFavoritos.innerHTML = '❤️ Mis Favoritos';
-    btnFavoritos.style.cssText = 'position: fixed; bottom: 160px; right: 30px; padding: 12px 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 1199; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.15s;';
-    btnFavoritos.onmouseover = () => { btnFavoritos.style.transform = 'scale(1.06)'; };
-    btnFavoritos.onmouseout = () => { btnFavoritos.style.transform = 'scale(1)'; };
-    btnFavoritos.onclick = () => { togglePanel(); };
+    btnFavoritos.innerHTML = '❤️ Favoritos';
+    btnFavoritos.style.cssText = 'position: fixed; bottom: 100px; right: 20px; padding: 10px 20px; background: linear-gradient(90deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 1199; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.2s;';
+    
+    // Ajuste para móviles para que no tape el botón de subir
+    if(window.innerWidth < 768) {
+        btnFavoritos.style.bottom = "80px"; 
+        btnFavoritos.style.right = "15px";
+        btnFavoritos.style.padding = "8px 15px";
+    }
+
+    btnFavoritos.onmouseover = () => btnFavoritos.style.transform = 'scale(1.05)';
+    btnFavoritos.onmouseout = () => btnFavoritos.style.transform = 'scale(1)';
+    btnFavoritos.onclick = () => togglePanel();
     document.body.appendChild(btnFavoritos);
 
-    // Cerrar panel al hacer click fuera de él
+    // Cerrar panel al hacer click fuera
     document.addEventListener('click', (e) => {
-        if (!panelFavoritos.classList.contains('hidden')) {
-            const dentroPanel = panelFavoritos.contains(e.target);
-            const esBoton = btnFavoritos.contains(e.target);
-            if (!dentroPanel && !esBoton) togglePanel(false);
+        if (!panelFavoritos.classList.contains('hidden') && !panelFavoritos.contains(e.target) && !btnFavoritos.contains(e.target)) {
+            togglePanel(false);
         }
     });
 
-    // 1. FILTRO POR ZONAS
+    // FILTRO ZONAS
     const containerFiltros = document.createElement('div');
     containerFiltros.id = 'filtros-zonas';
     containerFiltros.innerHTML = `
@@ -451,9 +420,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <button class="btn-filtro" data-zona="champions">Champions</button>
         <button class="btn-filtro" data-zona="europa">Europa</button>
         <button class="btn-filtro" data-zona="conference">Conference</button> 
-        <button class="btn-filtro" data-zona="descenso">⬇Descenso</button>
+        <button class="btn-filtro" data-zona="descenso">Descenso</button>
     `;
-    // Nota: He añadido la línea del botón Conference justo encima de Descenso
 
     const tablaContainer = document.querySelector('.contenedor-tabla');
     if (tablaContainer) {
@@ -465,133 +433,69 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('activo');
             const zona = this.getAttribute('data-zona');
             document.querySelectorAll('.tabla-pro tbody tr').forEach(fila => {
-                if (zona === 'todos') {
-                    fila.style.display = '';
-                } else if (zona === 'champions' && fila.classList.contains('zona-champions')) {
-                    fila.style.display = '';
-                } else if (zona === 'europa' && fila.classList.contains('zona-europa')) {
-                    fila.style.display = '';
-                } else if (zona === 'conference' && fila.classList.contains('zona-conference')) { // <--- AGREGAR ESTA CONDICIÓN
-                    fila.style.display = '';
-                } else if (zona === 'descenso' && fila.classList.contains('zona-descenso')) {
-                    fila.style.display = '';
-                } else {
-                    fila.style.display = 'none';
-                }
+                if (zona === 'todos') fila.style.display = '';
+                else if (fila.classList.contains('zona-' + zona)) fila.style.display = '';
+                else fila.style.display = 'none';
             });
         });
     });
-    document.querySelector('.btn-filtro[data-zona="todos"]').classList.add('activo');
+    const btnTodos = document.querySelector('.btn-filtro[data-zona="todos"]');
+    if(btnTodos) btnTodos.classList.add('activo');
 
-    // 3. NOTIFICACIONES TOAST (deshabilitadas)
-    function mostrarToast(mensaje, tipo = 'success') {
-        // Toast notifications disabled by user request.
-        return;
-    }
-
-    // 9. CONFETI AL VOTAR 5 ESTRELLAS
-    function crearConfeti() {
-        const confeti = document.createElement('div');
-        confeti.className = 'confeti';
-        confeti.style.left = Math.random() * 100 + '%';
-        confeti.style.delay = Math.random() * 0.2 + 's';
-        confeti.style.background = ['#ffd700', '#002244', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 5)];
-        document.body.appendChild(confeti);
-        setTimeout(() => confeti.remove(), 2000);
-    }
-
-    // 10. TRANSICIÓN SUAVE ENTRE PÁGINAS
+    // TRANSICIÓN PÁGINAS
     document.querySelectorAll('nav a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (this.getAttribute('class') !== 'activo') {
                 e.preventDefault();
                 const href = this.getAttribute('href');
                 document.body.style.opacity = '0';
-                document.body.style.transition = 'opacity 0.5s ease-out';
-                setTimeout(() => {
-                    window.location.href = href;
-                }, 500);
+                setTimeout(() => window.location.href = href, 500);
             }
         });
     });
     window.addEventListener('load', () => {
         document.body.style.opacity = '0';
         document.body.style.transition = 'opacity 0.5s ease-in';
-        setTimeout(() => { document.body.style.opacity = '1'; }, 10);
+        setTimeout(() => document.body.style.opacity = '1', 10);
     });
+
 });
 
-// 7. FUNCIÓN DE VALIDACIÓN (RESTAURADA FUERA DEL DOMContentLoaded)
+// FUNCIONES GLOBALES
 function validarFormulario(event) {
     event.preventDefault();
     const nombre = document.getElementById("nombre");
     const email = document.getElementById("email");
-    const departamento = document.getElementById("departamento");
     const mensaje = document.getElementById("mensaje");
     const politica = document.getElementById("politica");
     let hayErrores = false;
-
-    // Limpiar errores previos
+    
     document.querySelectorAll('.error-msg').forEach(el => el.innerText = '');
-    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-
-    // Validaciones
-    if (nombre.value.trim() === "") {
-        document.getElementById("error-nombre").innerText = "⚠️ Nombre obligatorio.";
-        nombre.classList.add("input-error");
-        hayErrores = true;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.value)) {
-        document.getElementById("error-email").innerText = "⚠️ Email inválido.";
-        email.classList.add("input-error");
-        hayErrores = true;
-    }
-    if (departamento.value === "") {
-        document.getElementById("error-dep").innerText = "⚠️ Selecciona departamento.";
-        departamento.classList.add("input-error");
-        hayErrores = true;
-    }
-    if (mensaje.value.length < 10) {
-        document.getElementById("error-mensaje").innerText = "⚠️ Mensaje muy corto.";
-        mensaje.classList.add("input-error");
-        hayErrores = true;
-    }
-    if (!politica.checked) {
-        document.getElementById("error-politica").innerText = "⚠️ Acepta la política.";
-        hayErrores = true;
-    }
+    
+    if (nombre.value.trim() === "") { document.getElementById("error-nombre").innerText = "⚠️ Nombre obligatorio."; hayErrores = true; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { document.getElementById("error-email").innerText = "⚠️ Email inválido."; hayErrores = true; }
+    if (mensaje.value.length < 10) { document.getElementById("error-mensaje").innerText = "⚠️ Mensaje corto."; hayErrores = true; }
+    if (!politica.checked) { document.getElementById("error-politica").innerText = "⚠️ Acepta la política."; hayErrores = true; }
 
     if (!hayErrores) {
-        const boton = document.getElementById("btnEnviar");
         const form = document.getElementById("formContacto");
         const exito = document.getElementById("mensajeExito");
-        
-        boton.innerHTML = 'Enviando...';
-        boton.disabled = true;
-
+        document.getElementById("btnEnviar").innerHTML = 'Enviando...';
         setTimeout(() => {
             form.style.display = "none";
             exito.style.display = "block";
         }, 1500);
     }
 }
-/* --- BOTÓN VOLVER ARRIBA (Scroll) --- */
 
-// Detectar cuando el usuario hace scroll
-window.onscroll = function() { mostrarBotonSubir() };
-
-function mostrarBotonSubir() {
+window.onscroll = function() { 
     let boton = document.getElementById("btnSubir");
-    // Si bajamos más de 300px, mostramos el botón
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        if(boton) boton.style.display = "block";
-    } else {
-        if(boton) boton.style.display = "none";
+    if(boton) {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) boton.style.display = "block";
+        else boton.style.display = "none";
     }
-}
+};
 
-// Función para subir suavemente
 function subirArriba() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
