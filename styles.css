@@ -296,8 +296,12 @@ body.dark-mode .btn-filtro.active {
     margin: 0 auto 10px;
     flex-wrap: wrap;
 }
-.leyenda-box.darkmode{
-    background-color: rgba(0,0,0,0.98)
+body.dark-mode .leyenda-box {
+    background-color: rgba(40,40,40,0.95);
+}
+/* Corrección para que el texto de la leyenda sea blanco en modo oscuro */
+body.dark-mode .leyenda-box span {
+    color: #ffffff;
 }
 
 .leyenda-box span { display:flex; align-items:center; gap:8px; color:#223344; font-weight:600; }
@@ -437,6 +441,16 @@ body.dark-mode .tabla-pro tbody tr:nth-child(odd) {
     background: white;
     color: #333;
     transition: all 0.3s;
+}
+
+body.dark-mode #buscador-equipos {
+    background: #2a2a2a;
+    color: #ffffff;
+    border-color: #555;
+}
+
+body.dark-mode #buscador-equipos::placeholder {
+    color: #bbb; /* Para que el texto de ayuda se lea bien */
 }
 
 #buscador-equipos:focus {
@@ -698,8 +712,8 @@ body.dark-mode .tabla-pro tbody tr:nth-child(odd) {
 
 .countdown-box {
     /* fondo más suave y tamaño reducido */
-    background: linear-gradient(135deg, #f7c948 0%, #fbdc80 100%);
-    color: #09203f;
+    background: linear-gradient(135deg, #002244, #004080);
+    color: #ffffff;
     padding: 24px;
     border-radius: 12px;
     margin: 30px 0;
@@ -717,6 +731,7 @@ body.dark-mode .tabla-pro tbody tr:nth-child(odd) {
     font-size: 1.05em;
     margin-bottom: 12px;
     font-weight: 600;
+    color: rgb(255, 255, 255);
 }
 
 #reloj {
@@ -725,6 +740,9 @@ body.dark-mode .tabla-pro tbody tr:nth-child(odd) {
     font-family: 'Courier New', monospace;
     margin: 12px 0;
     letter-spacing: 3px;
+}
+body.dark-mode .countdown-box h3,p {
+    color: #ffffff;
 }
 
 /* dark mode: tonos fríos y sobrios */
@@ -747,7 +765,7 @@ body.dark-mode .countdown-box {
 }
 
 body.dark-mode .contenido-texto {
-    background: linear-gradient(180deg, #0f1316 0%, #171a1f 100%);
+    background: rgb(42, 42, 42);
     color: #dbe8f8;
 }
 
@@ -883,7 +901,7 @@ body.dark-mode .timeline-title {
 }
 
 /* ========================================
-   12. SECCIONES DE CONTENIDO
+   12. SECCIONES DE CONTENIDO (CORREGIDO)
    ======================================== */
 
 .cont-texto {
@@ -891,25 +909,42 @@ body.dark-mode .timeline-title {
     margin: 20px auto;
     text-align: center;
     padding: 20px;
+    /* Estilo tipo tarjeta (igual que la tabla/leyenda) */
+    background-color: rgba(255, 255, 255, 0.98); 
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .cont-texto h2 {
     font-size: 2em;
     margin-bottom: 10px;
-    color: #002244;
-}
-
-body.dark-mode .cont-texto h2 {
-    color: #ffd700;
+    color: #002244; /* Color oscuro para modo claro */
+    background-color: transparent; /* Nos aseguramos de que no tenga fondo propio */
 }
 
 .cont-texto p {
     font-size: 1.1em;
-    color: #666;
+    color: #333;
+    background-color: transparent;
+}
+
+/* --- MODO OSCURO --- */
+
+body.dark-mode .cont-texto {
+    /* Fondo para todo el bloque en modo oscuro */
+    background-color: rgba(40, 40, 40, 0.95); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    color: #e0e0e0;
+}
+
+body.dark-mode .cont-texto h2 {
+    color: #ffffff;
+    background-color: transparent; /* Importante: quitar el fondo gris de las letras */
 }
 
 body.dark-mode .cont-texto p {
-    color: #b0b0b0;
+    color: #e0e0e0;
+    background-color: transparent; /* Importante: quitar el fondo gris de las letras */
 }
 
 /* ========================================

@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
     btnPredictor.onclick = () => {
         const equipos = Array.from(document.querySelectorAll('.tabla-pro tbody tr'));
         const campeones = equipos.sort((a, b) => parseInt(b.cells[8].textContent) - parseInt(a.cells[8].textContent)).slice(0, 3);
-        let prediccion = '<h3>🔮 Predicción de Campeón</h3><ol>';
+        let prediccion = '<h3>🔮 Predicción de Campeón</h3><ol class="conference-league">';
         campeones.forEach((eq, idx) => {
             const nombre = eq.cells[1].textContent;
             const puntos = eq.cells[8].textContent;
@@ -387,7 +387,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Botón + Panel flotante para ver favoritos
+    // Botón + Panel flotante para ver favoritosConference League (15-16)
+
     const panelFavoritos = document.createElement('div');
     panelFavoritos.id = 'panel-favoritos';
     panelFavoritos.className = 'panel-favoritos hidden';
@@ -470,7 +471,8 @@ document.addEventListener('DOMContentLoaded', function() {
     containerFiltros.innerHTML = `
         <button class="btn-filtro" data-zona="todos">Todos</button>
         <button class="btn-filtro" data-zona="champions">🏆 Champions</button>
-        <button class="btn-filtro" data-zona="europa">🌍 Europa</button>
+        <button class="btn-filtro" data-zona="europa">🌍 Europa</Conference League (15-16)
+button>
         <button class="btn-filtro" data-zona="descenso">⬇️ Descenso</button>
     `;
     const tablaContainer = document.querySelector('.contenedor-tabla');
