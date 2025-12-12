@@ -336,30 +336,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(modal);
     }
 
-    // 21. PREDICTOR DE CAMPEÓN
-    const btnPredictor = document.createElement('button');
-    btnPredictor.id = 'btn-predictor';
-    btnPredictor.innerHTML = '🏆 ¿Quién será campeón?';
-    btnPredictor.style.cssText = 'position: fixed; bottom: 100px; right: 30px; padding: 12px 20px; background: linear-gradient(90deg, #ffd700, #ffed4e); color: #002244; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s;';
-    btnPredictor.onmouseover = () => { btnPredictor.style.transform = 'scale(1.1)'; };
-    btnPredictor.onmouseout = () => { btnPredictor.style.transform = 'scale(1)'; };
-    btnPredictor.onclick = () => {
-        const equipos = Array.from(document.querySelectorAll('.tabla-pro tbody tr'));
-        const campeones = equipos.sort((a, b) => parseInt(b.cells[8].textContent) - parseInt(a.cells[8].textContent)).slice(0, 3);
-        let prediccion = '<h3>🔮 Predicción de Campeón</h3><ol class="conference-league">';
-        campeones.forEach((eq, idx) => {
-            const nombre = eq.cells[1].textContent;
-            const puntos = eq.cells[8].textContent;
-            const porcentaje = Math.round((parseInt(puntos) / 72) * 100);
-            prediccion += `<li><b>${nombre}</b> - ${puntos} pts (${porcentaje}% probabilidad)</li>`;
-        });
-        prediccion += '</ol><p style="font-size: 0.9em; margin-top: 15px;">Basado en puntos actuales de la temporada.</p>';
-        const modal = document.createElement('div');
-        modal.className = 'modal-comparacion';
-        modal.innerHTML = prediccion + '<button onclick="this.parentElement.remove()">Cerrar</button>';
-        document.body.appendChild(modal);
-    };
-    document.body.appendChild(btnPredictor);
 
     // 18. MODO FAVORITOS (equipos marcados con corazón)
     // Funcionalidad del corazón para marcar favoritos

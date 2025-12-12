@@ -384,19 +384,19 @@ body.dark-mode .leyenda-box span {
 
 /* Zonas de Color */
 .tabla-pro .zona-champions {
-    border-left: 5px solid #2ecc71;
+    border-left: 5px solid var(--color-champions);
 }
 
 .tabla-pro .zona-europa {
-    border-left: 5px solid #f1c40f;
+    border-left: 5px solid var(--color-europa);
 }
 
 .tabla-pro .zona-conference {
-    border-left: 5px solid #9b59b6;
+    border-left: 5px solid var(--color-conference);
 }
 
 .tabla-pro .zona-descenso {
-    border-left: 5px solid #e74c3c;
+    border-left: 5px solid var(--color-descenso);
 }
 
 /* Modo Oscuro - Tabla */
@@ -741,7 +741,9 @@ body.dark-mode #buscador-equipos::placeholder {
     margin: 12px 0;
     letter-spacing: 3px;
 }
-body.dark-mode .countdown-box h3,p {
+/* Corrección: solo afecta a los párrafos DENTRO de la caja de cuenta atrás */
+body.dark-mode .countdown-box h3,
+body.dark-mode .countdown-box p { 
     color: #ffffff;
 }
 
