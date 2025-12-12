@@ -79,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // (Eliminado: animación de conteo duplicada, ahora mejorada más abajo)
 
+    
+
     // 2. ANIMACIÓN SCROLL
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -446,11 +448,13 @@ document.addEventListener('DOMContentLoaded', function() {
     containerFiltros.id = 'filtros-zonas';
     containerFiltros.innerHTML = `
         <button class="btn-filtro" data-zona="todos">Todos</button>
-        <button class="btn-filtro" data-zona="champions">🏆 Champions</button>
-        <button class="btn-filtro" data-zona="europa">🌍 Europa</Conference League (15-16)
-button>
-        <button class="btn-filtro" data-zona="descenso">⬇️ Descenso</button>
+        <button class="btn-filtro" data-zona="champions">Champions</button>
+        <button class="btn-filtro" data-zona="europa">Europa</button>
+        <button class="btn-filtro" data-zona="conference">Conference</button> 
+        <button class="btn-filtro" data-zona="descenso">⬇Descenso</button>
     `;
+    // Nota: He añadido la línea del botón Conference justo encima de Descenso
+
     const tablaContainer = document.querySelector('.contenedor-tabla');
     if (tablaContainer) {
         tablaContainer.parentElement.insertBefore(containerFiltros, tablaContainer);
@@ -466,6 +470,8 @@ button>
                 } else if (zona === 'champions' && fila.classList.contains('zona-champions')) {
                     fila.style.display = '';
                 } else if (zona === 'europa' && fila.classList.contains('zona-europa')) {
+                    fila.style.display = '';
+                } else if (zona === 'conference' && fila.classList.contains('zona-conference')) { // <--- AGREGAR ESTA CONDICIÓN
                     fila.style.display = '';
                 } else if (zona === 'descenso' && fila.classList.contains('zona-descenso')) {
                     fila.style.display = '';

@@ -49,6 +49,18 @@ main {
 }
 
 /* ========================================
+   ESTILOS PARA FILTROS (Centrado)
+   ======================================== */
+#filtros-zonas {
+    display: flex;
+    justify-content: center; /* Esto alinea los botones al centro */
+    flex-wrap: wrap;         /* Permite que bajen de línea en móviles */
+    gap: 10px;               /* Espacio entre botones */
+    margin: 20px auto;       /* Margen vertical y centrado del bloque */
+    max-width: 1000px;
+}
+
+/* ========================================
    2. CABECERA Y NAVEGACIÓN
    ======================================== */
 
