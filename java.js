@@ -26,6 +26,247 @@ document.addEventListener('DOMContentLoaded', function() {
         { pos: 20, nombre: 'Olympique Marseille', pts: 5 }
     ];
 
+    // ==========================================
+    // ⬇️ PEGA ESTO JUSTO DEBAJO DE LA LISTA DE EQUIPOS ⬇️
+    // ==========================================
+    
+    // Referencias al HTML
+    const selectLocal = document.getElementById('simLocal');
+    const selectVisitante = document.getElementById('simVisitante');
+    const btnSimular = document.getElementById('btnSimular');
+    const divResultado = document.getElementById('resultadoSimulacion');
+
+    // 1. Rellenar los selectores con los equipos
+    if (selectLocal && selectVisitante) {
+        // Ordenamos alfabéticamente para que sea más fácil buscar
+        const equiposOrdenados = [...datosEquipos].sort((a, b) => a.nombre.localeCompare(b.nombre));
+        
+        equiposOrdenados.forEach(equipo => {
+            // Opción para el Local
+            const optionL = document.createElement('option');
+            optionL.value = equipo.nombre;
+            optionL.textContent = equipo.nombre;
+            selectLocal.appendChild(optionL);
+
+            // Opción para el Visitante
+            const optionV = document.createElement('option');
+            optionV.value = equipo.nombre;
+            optionV.textContent = equipo.nombre;
+            selectVisitante.appendChild(optionV);
+        });
+    }
+
+   // ==========================================
+    // 3. SIMULADOR + APUESTAS PRO (CUOTAS DINÁMICAS)
+    // ==========================================
+    
+    // Variables para guardar las cuotas actuales
+    let currentCuota1 = 2.0;
+    let currentCuotaX = 3.0;
+    let currentCuota2 = 2.0;
+
+    // A) GESTIÓN DEL SALDO
+    let saldo = parseInt(localStorage.getItem('superliga_saldo'));
+    if (isNaN(saldo)) saldo = 1000; 
+
+    const saldoDisplay = document.getElementById('saldoUsuario');
+    if (saldoDisplay) saldoDisplay.textContent = saldo;
+
+    function actualizarSaldo(nuevoSaldo) {
+        saldo = nuevoSaldo;
+        localStorage.setItem('superliga_saldo', saldo);
+        if (saldoDisplay) {
+            saldoDisplay.textContent = saldo;
+            saldoDisplay.style.color = (nuevoSaldo > parseInt(saldoDisplay.textContent)) ? '#2ecc71' : '#e74c3c';
+            setTimeout(() => saldoDisplay.style.color = '', 500);
+        }
+    }
+
+    // B) FUNCIÓN PARA CALCULAR CUOTAS REALISTAS
+    function calcularYMostrarCuotas() {
+        const localVal = document.getElementById('simLocal').value;
+        const visitVal = document.getElementById('simVisitante').value;
+
+        // Referencias a los labels de los radio buttons
+        const label1 = document.querySelector('input[value="1"]').parentElement;
+        const labelX = document.querySelector('input[value="X"]').parentElement;
+        const label2 = document.querySelector('input[value="2"]').parentElement;
+
+        if (!localVal || !visitVal || localVal === visitVal) {
+            // Si no hay equipos válidos, resetear textos
+            label1.innerHTML = `<input type="radio" name="apuesta" value="1" checked> Local (-)`;
+            labelX.innerHTML = `<input type="radio" name="apuesta" value="X"> Empate (-)`;
+            label2.innerHTML = `<input type="radio" name="apuesta" value="2"> Visitante (-)`;
+            return;
+        }
+
+        // Obtener datos
+        const stats1 = datosEquipos.find(e => e.nombre === localVal);
+        const stats2 = datosEquipos.find(e => e.nombre === visitVal);
+
+        // --- ALGORITMO DE CUOTAS ---
+        // Basado en diferencia de puntos
+        const diferencia = stats1.pts - stats2.pts; 
+
+        // Probabilidad base (50% - 50%)
+        let prob1 = 0.35; 
+        let prob2 = 0.35;
+        let probX = 0.30; // 30% probabilidad de empate base
+
+        // Ajustar probabilidad según puntos (Cada punto de diferencia mueve un 1.5% la probabilidad)
+        const ajuste = diferencia * 0.015; 
+        
+        prob1 += ajuste;
+        prob2 -= ajuste;
+
+        // Factor Campo (Pequeña ventaja local del 5%)
+        prob1 += 0.05;
+        prob2 -= 0.05;
+
+        // Limites de seguridad (para que no de negativo)
+        if (prob1 < 0.1) prob1 = 0.1;
+        if (prob2 < 0.1) prob2 = 0.1;
+        if (prob1 > 0.8) prob1 = 0.8;
+        if (prob2 > 0.8) prob2 = 0.8;
+
+        // Recalcular empate basado en lo igualados que estén
+        probX = 1 - (prob1 + prob2);
+        if (probX < 0.1) probX = 0.15; // Mínimo de empate
+
+        // Convertir Probabilidad a Cuota (Cuota = 1 / Probabilidad * margen casa)
+        // Margen de la casa del 10% (x0.9)
+        currentCuota1 = (1 / prob1 * 0.9).toFixed(2);
+        currentCuota2 = (1 / prob2 * 0.9).toFixed(2);
+        currentCuotaX = (1 / probX * 0.9).toFixed(2);
+
+        // Actualizar el HTML visualmente
+        label1.innerHTML = `<input type="radio" name="apuesta" value="1" checked> ${localVal} (x${currentCuota1})`;
+        labelX.innerHTML = `<input type="radio" name="apuesta" value="X"> Empate (x${currentCuotaX})`;
+        label2.innerHTML = `<input type="radio" name="apuesta" value="2"> ${visitVal} (x${currentCuota2})`;
+    }
+
+    // Eventos para recalcular cuotas cuando cambias de equipo
+    if (document.getElementById('simLocal')) {
+        document.getElementById('simLocal').addEventListener('change', calcularYMostrarCuotas);
+        document.getElementById('simVisitante').addEventListener('change', calcularYMostrarCuotas);
+    }
+
+    // C) LÓGICA DEL BOTÓN JUGAR
+    if (btnSimular) {
+        // Clonamos para limpiar eventos viejos
+        const nuevoBtn = btnSimular.cloneNode(true);
+        btnSimular.parentNode.replaceChild(nuevoBtn, btnSimular);
+        
+        nuevoBtn.addEventListener('click', () => {
+            const localVal = document.getElementById('simLocal').value;
+            const visitVal = document.getElementById('simVisitante').value;
+            const inputDinero = document.getElementById('cantidadApuesta');
+            const cantidadApostada = parseInt(inputDinero.value) || 0;
+
+            // VALIDACIONES
+            if (!localVal || !visitVal || localVal === visitVal) {
+                mostrarToast("⚠️ Selecciona equipos válidos", "error");
+                return;
+            }
+            if (cantidadApostada > saldo) {
+                mostrarToast(`🚫 Saldo insuficiente (${saldo}€)`, "error");
+                return;
+            }
+            if (cantidadApostada < 0) return;
+
+// --- SIMULACIÓN DEL PARTIDO V3 (ANTI-GOLEADAS) ---
+            const stats1 = datosEquipos.find(e => e.nombre === localVal);
+            const stats2 = datosEquipos.find(e => e.nombre === visitVal);
+
+            // 1. Calcular "Fuerza Base" pero con un LÍMITE (Tope)
+            // Usamos Math.min para que la fuerza por puntos nunca supere 2.5
+            // Así, aunque tengan 100 puntos, no meterán 10 goles.
+            let potencia1 = Math.min(stats1.pts / 20, 2.5); 
+            let potencia2 = Math.min(stats2.pts / 20, 2.5);
+
+            // 2. Factor Aleatorio (La "suerte" del día) - Entre 0 y 2 goles extra
+            let suerte1 = Math.random() * 2.0;
+            let suerte2 = Math.random() * 2.0;
+
+            // 3. Ventaja Local (Sutil, solo 0.3 goles extra)
+            potencia1 += 0.3;
+
+            // 4. Cálculo final de goles (Redondeado hacia abajo)
+            let goles1 = Math.floor(potencia1 + suerte1);
+            let goles2 = Math.floor(potencia2 + suerte2);
+
+            // 5. FRENO DE EMERGENCIA (Opcional)
+            // Para evitar resultados tipo 7-1 o 8-0 si se da una casualidad matemática extrema
+            if(goles1 > 5 && Math.random() > 0.2) goles1 = 5; // 80% prob de bajar a 5 si se pasa
+            if(goles2 > 5 && Math.random() > 0.2) goles2 = 5;
+
+            // (El resto del código de actualizar DB y mostrar resultados sigue igual...)
+            // ACTUALIZAR DB
+            stats1.pj++; stats1.gf += goles1; stats1.gc += goles2;
+            stats2.pj++; stats2.gf += goles2; stats2.gc += goles1;
+            
+            // ... sigue con tu código de if(goles1 > goles2)...
+
+            // ACTUALIZAR DB
+            stats1.pj++; stats1.gf += goles1; stats1.gc += goles2;
+            stats2.pj++; stats2.gf += goles2; stats2.gc += goles1;
+
+            if (goles1 > goles2) {
+                stats1.pts += 3; stats1.pg++; stats2.pp++;
+            } else if (goles2 > goles1) {
+                stats2.pts += 3; stats2.pg++; stats1.pp++;
+            } else {
+                stats1.pts += 1; stats1.pe++; stats2.pts += 1; stats2.pe++;
+            }
+            
+            localStorage.setItem('superliga_db', JSON.stringify(datosEquipos));
+            if (typeof renderizarTabla === "function") renderizarTabla(); 
+
+            // RESULTADO VISUAL
+            const divRes = document.getElementById('resultadoSimulacion');
+            divRes.classList.add('resultado-visible');
+            document.getElementById('scoreLocal').textContent = goles1;
+            document.getElementById('scoreVisitante').textContent = goles2;
+            
+            let comentario = goles1 > goles2 ? `¡Gana ${localVal}!` : (goles2 > goles1 ? `¡Gana ${visitVal}!` : "¡Empate!");
+            document.getElementById('comentarioPartido').textContent = comentario;
+
+            // --- RESOLVER APUESTA CON CUOTAS DINÁMICAS ---
+            const resultadoApuestaEl = document.getElementById('resultadoApuesta');
+
+            if (cantidadApostada > 0) {
+                const opcionElegida = document.querySelector('input[name="apuesta"]:checked').value;
+                let resultadoReal = 'X';
+                if (goles1 > goles2) resultadoReal = '1';
+                else if (goles2 > goles1) resultadoReal = '2';
+
+                if (opcionElegida === resultadoReal) {
+                    // GANADOR: Usamos la cuota que calculamos antes
+                    let cuotaAplicada = 1.0;
+                    if (resultadoReal === '1') cuotaAplicada = parseFloat(currentCuota1);
+                    if (resultadoReal === 'X') cuotaAplicada = parseFloat(currentCuotaX);
+                    if (resultadoReal === '2') cuotaAplicada = parseFloat(currentCuota2);
+
+                    let ganancia = Math.floor(cantidadApostada * cuotaAplicada);
+                    let beneficio = ganancia - cantidadApostada;
+                    
+                    actualizarSaldo(saldo + beneficio);
+                    
+                    resultadoApuestaEl.innerHTML = `🤑 ¡ACERTASTE! Cuota x${cuotaAplicada}. Ganas +${beneficio}€`;
+                    resultadoApuestaEl.style.color = "#27ae60"; 
+                    if(typeof crearConfeti === 'function') crearConfeti();
+                } else {
+                    // PERDEDOR
+                    actualizarSaldo(saldo - cantidadApostada);
+                    resultadoApuestaEl.innerHTML = `💸 Fallaste. Pierdes -${cantidadApostada}€`;
+                    resultadoApuestaEl.style.color = "#c0392b";
+                }
+            } else {
+                resultadoApuestaEl.textContent = "";
+            }
+        });
+    }
+
     // ANIMACIÓN DE CONTEO EN TROFEOS
     const trofeos = document.querySelectorAll('.trofeo-numero');
     trofeos.forEach(trofeo => {
@@ -63,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (temaGuardado === "oscuro") {
         cuerpo.classList.add("dark-mode");
-        if(boton) boton.innerHTML = "☀️ Claro";
+        if(boton) boton.innerHTML = "Claro";
     }
 
     if (boton) {
@@ -71,10 +312,10 @@ document.addEventListener('DOMContentLoaded', function() {
             cuerpo.classList.toggle("dark-mode");
             if (cuerpo.classList.contains("dark-mode")) {
                 localStorage.setItem("temaLiga", "oscuro");
-                boton.innerHTML = "☀️ Claro";
+                boton.innerHTML = "Claro";
             } else {
                 localStorage.setItem("temaLiga", "claro");
-                boton.innerHTML = "🌙 Oscuro";
+                boton.innerHTML = "Oscuro";
             }
         });
     }
@@ -499,3 +740,4 @@ window.onscroll = function() {
 function subirArriba() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+// FIN FUNCIONES GLOBALES
