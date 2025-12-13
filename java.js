@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             if (cantidadApostada > saldo) {
-                mostrarToast(`🚫 Saldo insuficiente (${saldo}€)`, "error");
+                mostrarToast(`Saldo insuficiente (${saldo}€)`, "error");
                 return;
             }
             if (cantidadApostada < 0) return;
@@ -222,14 +222,27 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('superliga_db', JSON.stringify(datosEquipos));
             if (typeof renderizarTabla === "function") renderizarTabla(); 
 
-            // RESULTADO VISUAL
+// RESULTADO VISUAL
             const divRes = document.getElementById('resultadoSimulacion');
             divRes.classList.add('resultado-visible');
             document.getElementById('scoreLocal').textContent = goles1;
             document.getElementById('scoreVisitante').textContent = goles2;
             
             let comentario = goles1 > goles2 ? `¡Gana ${localVal}!` : (goles2 > goles1 ? `¡Gana ${visitVal}!` : "¡Empate!");
-            document.getElementById('comentarioPartido').textContent = comentario;
+            
+            // 1. LLAMADA A NARRATIVA (Funcionalidad 5)
+            // Generamos el HTML de la alineación
+            const htmlNarrativa = generarNarrativa(localVal, visitVal); 
+            
+            const divComentario = document.getElementById('comentarioPartido');
+            divComentario.textContent = comentario; // Ponemos el texto principal
+            divComentario.insertAdjacentHTML('beforeend', htmlNarrativa); // Agregamos la caja gris debajo
+
+
+
+            // --- RESOLVER APUESTA CON CUOTAS DINÁMICAS ---
+
+            // --- RESOLVER APUESTA CON CUOTAS DINÁMICAS ---
 
             // --- RESOLVER APUESTA CON CUOTAS DINÁMICAS ---
             const resultadoApuestaEl = document.getElementById('resultadoApuesta');
@@ -252,13 +265,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     actualizarSaldo(saldo + beneficio);
                     
-                    resultadoApuestaEl.innerHTML = `🤑 ¡ACERTASTE! Cuota x${cuotaAplicada}. Ganas +${beneficio}€`;
+                    resultadoApuestaEl.innerHTML = `¡ACERTASTE! Cuota x${cuotaAplicada}. Ganas +${beneficio}€`;
                     resultadoApuestaEl.style.color = "#27ae60"; 
                     if(typeof crearConfeti === 'function') crearConfeti();
                 } else {
                     // PERDEDOR
                     actualizarSaldo(saldo - cantidadApostada);
-                    resultadoApuestaEl.innerHTML = `💸 Fallaste. Pierdes -${cantidadApostada}€`;
+                    resultadoApuestaEl.innerHTML = `Fallaste. Pierdes -${cantidadApostada}€`;
                     resultadoApuestaEl.style.color = "#c0392b";
                 }
             } else {
@@ -741,3 +754,111 @@ function subirArriba() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 // FIN FUNCIONES GLOBALES
+
+// --- FUNCIONALIDAD 5: GENERADOR DE NARRATIVA ACTUALIZADO ---
+function generarNarrativa(equipoLocal, equipoVisitante) {
+    const formaciones = ['4-3-3', '4-4-2', '3-5-2', '5-4-1', '4-2-3-1'];
+    
+    // BASE DE DATOS DE CAPITANES REALES (Actualizada 2025)
+    // La clave debe ser IGUAL al nombre del equipo en tu lista 'datosEquipos'
+    const capitanesDB = {
+        'Arsenal FC': 'Martin Ødegaard',
+        'Manchester City': 'Ruben Dias',
+        'FC Barcelona': 'Raphinha',
+        'Real Madrid': 'Fede Valverde',
+        'Bayern München': 'Manuel Neuer',
+        'Liverpool FC': 'Virgil van Dijk',
+        'Paris Saint-Germain': 'Marquinhos',
+        'Inter de Milán': 'Lautaro Martínez',
+        'Juventus': 'Manuel Locatelli',
+        'AC Milan': 'Mike Maignan',
+        'Atlético de Madrid': 'Koke',
+        'Chelsea FC': 'Reece James',
+        'Borussia Dortmund': 'Emre Can',
+        'Manchester United': 'Bruno Fernandes',
+        'Benfica': 'Nicolás Otamendi',
+        'Athletic Bilbao': 'Iñaki Williams',
+        'Napoli': 'Giovanni Di Lorenzo',
+        'Ajax Amsterdam': 'Jordan Henderson',
+        'FC Porto': 'Jorge Costa', 
+        'Olympique Marseille': 'Valentin Rongier'
+    };
+    
+    // Elegir formaciones aleatorias
+    const formL = formaciones[Math.floor(Math.random() * formaciones.length)];
+    const formV = formaciones[Math.floor(Math.random() * formaciones.length)];
+    
+    // Buscar el capitán específico. Si no existe, pone "Capitán"
+    const capitanL = capitanesDB[equipoLocal] || "Capitán Local";
+    const capitanV = capitanesDB[equipoVisitante] || "Capitán Visitante";
+    
+    const asistencia = Math.floor(Math.random() * (85000 - 40000) + 40000).toLocaleString();
+
+    return `
+        <div class="narrativa-box">
+            <div class="dato-tactico"> <strong>Asistencia:</strong> ${asistencia} espectadores</div>
+            <div class="dato-tactico"> <strong>${equipoLocal}:</strong> Juega con ${formL}. Capitán: <strong>${capitanL}</strong>.</div>
+            <div class="dato-tactico"> <strong>${equipoVisitante}:</strong> Juega con ${formV}. Capitán: <strong>${capitanV}</strong>.</div>
+        </div>
+    `;
+}
+
+// --- FUNCIONALIDAD: GENERAR HISTORIAL PREVIO (FAKE) ---
+function actualizarFormaReciente() {
+    const local = document.getElementById('simLocal').value;
+    const visit = document.getElementById('simVisitante').value;
+    const panel = document.getElementById('panelForma');
+
+    // Si falta algún equipo, ocultamos el panel
+    if (!local || !visit || local === visit) {
+        panel.style.display = 'none';
+        return;
+    }
+
+    panel.style.display = 'flex';
+    document.getElementById('tituloFormaLocal').textContent = `Forma: ${local}`;
+    document.getElementById('tituloFormaVisitante').textContent = `Forma: ${visit}`;
+
+    // Generar listas
+    document.getElementById('listaFormaLocal').innerHTML = generarPartidosFake(local);
+    document.getElementById('listaFormaVisitante').innerHTML = generarPartidosFake(visit);
+}
+
+function generarPartidosFake(miEquipo) {
+    let html = '';
+    // Hacemos 5 partidos
+    for (let i = 0; i < 5; i++) {
+        // 1. Elegir rival aleatorio que no sea yo
+        let rival;
+        do {
+            rival = datosEquipos[Math.floor(Math.random() * datosEquipos.length)].nombre;
+        } while (rival === miEquipo);
+
+        // 2. Generar resultado aleatorio (ligeramente realista)
+        // 0 a 3 goles para cada uno
+        const golesMios = Math.floor(Math.random() * 4); 
+        const golesRival = Math.floor(Math.random() * 4);
+        
+        // 3. Determinar si fue Win (W), Draw (D) o Loss (L)
+        let letra = 'D';
+        let clase = 'badge-D';
+        
+        if (golesMios > golesRival) { letra = 'W'; clase = 'badge-W'; }
+        else if (golesMios < golesRival) { letra = 'L'; clase = 'badge-L'; }
+
+        // 4. Crear HTML de la fila
+        html += `
+            <li class="item-partido">
+                <span>
+                    <span class="badge-res ${clase}">${letra}</span>
+                    <span style="font-size:0.9em">vs ${rival.substring(0, 10)}.</span>
+                </span>
+                <strong>${golesMios}-${golesRival}</strong>
+            </li>
+        `;
+    }
+    return html;
+}
+
+
+

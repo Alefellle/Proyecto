@@ -257,6 +257,7 @@ body.dark-mode .btn-filtro.active {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
+    justify-content: center; 
 }
 
 .social-btn {
@@ -1570,4 +1571,266 @@ body.dark-mode .opciones-apuesta label {
     background: #333;
     color: white;
     border-color: #555;
+}
+
+/* ========================================
+   ESTILOS NUEVOS: HISTORIAL Y NARRATIVA
+   ======================================== */
+
+/* 1. Estilos del Historial (Ticker) */
+.ticker-container {
+    margin-top: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    text-align: left;
+    max-width: 100%;
+}
+
+.ticker-container h4 {
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.lista-resultados {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-resultados li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #ddd;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.lista-resultados li:last-child {
+    border-bottom: none;
+}
+
+.resultado-badge {
+    background: #002244;
+    color: #ffd700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+/* Modo Oscuro para el Historial */
+body.dark-mode .ticker-container {
+    background: #2a2a2a;
+    border-color: #444;
+}
+body.dark-mode .ticker-container h4 {
+    color: #e0e0e0;
+}
+body.dark-mode .lista-resultados li {
+    border-bottom-color: #444;
+    color: #ccc;
+}
+
+/* 2. Estilos de la Narrativa (Alineaciones) */
+.narrativa-box {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    font-size: 0.9em;
+    color: #555;
+    text-align: left;
+    background: rgba(0,0,0,0.02);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dato-tactico {
+    margin-bottom: 5px;
+}
+
+.dato-tactico strong {
+    color: #002244;
+}
+
+body.dark-mode .narrativa-box {
+    border-top-color: #444;
+    color: #bbb;
+    background: rgba(255,255,255,0.05);
+}
+body.dark-mode .dato-tactico strong {
+    color: #ffd700;
+}
+
+/* ========================================
+   ESTILOS FORMA RECIENTE (LAST 5 MATCHES)
+   ======================================== */
+.panel-forma {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.85em;
+}
+
+.columna-forma {
+    width: 48%;
+    text-align: left;
+}
+
+.columna-forma h5 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.lista-forma {
+    list-style: none;
+    padding: 0;
+}
+
+.item-partido {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.badge-res {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-right: 8px;
+}
+.badge-W { background: #2ecc71; } /* Ganado */
+.badge-D { background: #95a5a6; } /* Empate */
+.badge-L { background: #e74c3c; } /* Perdido */
+
+/* Modo Oscuro */
+body.dark-mode .panel-forma {
+    background: #252525;
+    border-color: #444;
+}
+body.dark-mode .columna-forma h5 {
+    color: #ccc;
+    border-color: #444;
+}
+body.dark-mode .item-partido {
+    border-bottom-color: #444;
+    color: #bbb;
+}
+
+/* ========================================
+   MEJORAS VISUALES PARA APUESTAS
+   ======================================== */
+
+/* Mejora del contenedor principal para que parezca una tarjeta */
+.simulador-container {
+    background: #ffffff; /* Fondo blanco limpio */
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra más elegante */
+    border: none; /* Quitamos borde gris simple */
+    text-align: center;
+}
+
+/* Modo oscuro para el contenedor */
+body.dark-mode .simulador-container {
+    background: #2a2a2a;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Títulos dentro del simulador */
+.simulador-container h3 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+body.dark-mode .simulador-container h3 {
+    border-bottom-color: #444;
+}
+
+/* Mejora inputs de selección */
+.equipo-select select {
+    width: 100%;
+    padding: 12px;
+    background-color: #f9f9f9;
+    transition: all 0.3s;
+}
+.equipo-select select:hover {
+    background-color: #fff;
+    border-color: #ffd700;
+}
+
+/* Zona de apuestas destacada */
+.zona-apuestas {
+    background: linear-gradient(135deg, rgba(0,34,68,0.05) 0%, rgba(0,34,68,0.1) 100%);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+body.dark-mode .zona-apuestas {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.titulo-zona {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #002244;
+}
+body.dark-mode .titulo-zona { color: #ffd700; }
+
+/* Botón jugar más grande y llamativo */
+.btn-simular {
+    width: 100%;
+    max-width: 300px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 34, 68, 0.4);
+}
+
+/* Marcador final grande */
+.marcador-final {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.resultado-apuesta-texto {
+    font-size: 1.2em;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: rgba(0,0,0,0.05);
 }
