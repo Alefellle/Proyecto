@@ -1,5 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+// ... definición de datosEquipos ...
+
+    // INICIAR TABLA AUTOMÁTICAMENTE
+    renderizarTabla(); 
+
+    // ... resto del código ...
+    
     // --- DATOS MAESTROS DE EQUIPOS ---
     // Esta lista permite que los favoritos se muestren en cualquier página (Inicio, Historia, etc.)
     // aunque no esté la tabla presente.
@@ -165,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // VALIDACIONES
             if (!localVal || !visitVal || localVal === visitVal) {
-                mostrarToast("⚠️ Selecciona equipos válidos", "error");
+                mostrarToast("Selecciona equipos válidos", "error");
                 return;
             }
             if (cantidadApostada > saldo) {
@@ -173,6 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             if (cantidadApostada < 0) return;
+
+            
 
 // --- SIMULACIÓN DEL PARTIDO V3 (ANTI-GOLEADAS) ---
             const stats1 = datosEquipos.find(e => e.nombre === localVal);
@@ -265,13 +274,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     actualizarSaldo(saldo + beneficio);
                     
-                    resultadoApuestaEl.innerHTML = `¡ACERTASTE! Cuota x${cuotaAplicada}. Ganas +${beneficio}€`;
+                    resultadoApuestaEl.innerHTML = `¡Ganaste! Cuota x${cuotaAplicada}. Ganas +${beneficio}€`;
                     resultadoApuestaEl.style.color = "#27ae60"; 
                     if(typeof crearConfeti === 'function') crearConfeti();
                 } else {
                     // PERDEDOR
                     actualizarSaldo(saldo - cantidadApostada);
-                    resultadoApuestaEl.innerHTML = `Fallaste. Pierdes -${cantidadApostada}€`;
+                    resultadoApuestaEl.innerHTML = `Perdiste. Pierdes -${cantidadApostada}€`;
                     resultadoApuestaEl.style.color = "#c0392b";
                 }
             } else {
@@ -862,3 +871,146 @@ function generarPartidosFake(miEquipo) {
 
 
 
+// ==========================================
+// 🚀 3. RENDERIZADO DINÁMICO DE LA TABLA
+// ==========================================
+
+function renderizarTabla() {
+    const tbody = document.getElementById('tabla-cuerpo');
+    if (!tbody) return; // Si no estamos en la página de clasificación, salimos.
+
+    tbody.innerHTML = ''; // 1. Limpiamos la tabla actual
+
+    // 2. Ordenar equipos: Puntos > Diferencia Goles > Goles a Favor
+    datosEquipos.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        const difA = (a.gf || 0) - (a.gc || 0);
+        const difB = (b.gf || 0) - (b.gc || 0);
+        if (difB !== difA) return difB - difA;
+        return (b.gf || 0) - (a.gf || 0);
+    });
+
+    // 3. Generar filas
+    datosEquipos.forEach((equipo, index) => {
+        // Calcular posición real (index + 1)
+        equipo.pos = index + 1;
+        const diferenciaGoles = (equipo.gf || 0) - (equipo.gc || 0);
+
+        // Determinar Zona (Colores)
+        let claseZona = '';
+        if (index < 4) claseZona = 'zona-champions';       // 1-4 Champions
+        else if (index < 6) claseZona = 'zona-europa';     // 5-6 Europa League
+        else if (index === 6) claseZona = 'zona-conference'; // 7 Conference
+        else if (index >= 17) claseZona = 'zona-descenso'; // 18-20 Descenso
+
+        // Verificar Favorito
+        const esFavorito = localStorage.getItem(`favorito_${equipo.nombre}`) === 'true';
+        const corazon = esFavorito ? '❤️' : '🤍';
+        const claseFav = esFavorito ? 'favorito-activo' : '';
+
+        // Generar Estrellas (Recuperando votos guardados)
+        const votosGuardados = parseInt(localStorage.getItem(`voto_${equipo.nombre}`)) || 0;
+        let htmlEstrellas = '<div class="contenedor-estrellas" style="display:flex; justify-content:center; gap:2px;">';
+        for (let i = 1; i <= 5; i++) {
+            const color = i <= votosGuardados ? '#ffd700' : '#ccc';
+            const simbolo = i <= votosGuardados ? '⭐' : '☆';
+            htmlEstrellas += `<span class="estrella-dinamica" data-equipo="${equipo.nombre}" data-valor="${i}" style="color:${color}; cursor:pointer;">${simbolo}</span>`;
+        }
+        htmlEstrellas += '</div>';
+
+        // Construir la fila HTML
+        const filaHTML = `
+            <tr class="${claseZona}">
+                <td>${equipo.pos}</td>
+                <td style="text-align:left; font-weight:bold; display:flex; align-items:center; gap:10px;">
+                    ${equipo.nombre} 
+                    <span class="corazon-favorito ${claseFav}" data-equipo="${equipo.nombre}" title="Añadir a favoritos">${corazon}</span>
+                </td>
+                <td><strong>${equipo.pts}</strong></td>
+                <td>${equipo.pj || 0}</td>
+                <td>${equipo.pg || 0}</td>
+                <td>${equipo.pe || 0}</td>
+                <td>${equipo.pp || 0}</td>
+                <td>${equipo.gf || 0}</td>
+                <td>${equipo.gc || 0}</td>
+                <td>${diferenciaGoles}</td>
+                <td>${htmlEstrellas}</td>
+            </tr>
+        `;
+        tbody.innerHTML += filaHTML;
+    });
+
+    // 4. REACTIVAR LOS LISTENERS (Importante: porque hemos borrado y creado nuevos elementos)
+    activarListenersTabla();
+}
+
+// Función auxiliar para reconectar los clicks (Corazones, Estrellas, Comparador)
+function activarListenersTabla() {
+    
+    // A) Favoritos (Corazones)
+    document.querySelectorAll('.corazon-favorito').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar que salte el comparador
+            const nombre = btn.getAttribute('data-equipo');
+            const estadoActual = localStorage.getItem(`favorito_${nombre}`) === 'true';
+            
+            if (estadoActual) {
+                localStorage.removeItem(`favorito_${nombre}`);
+                mostrarToast(`💔 ${nombre} eliminado de favoritos`, 'error');
+            } else {
+                localStorage.setItem(`favorito_${nombre}`, 'true');
+                mostrarToast(`❤️ ${nombre} añadido a favoritos`);
+            }
+            renderizarTabla(); // Re-renderizar para actualizar icono
+            if(typeof renderFavoritos === 'function') renderFavoritos(); // Actualizar panel lateral
+        });
+    });
+
+    // B) Votación Estrellas
+    document.querySelectorAll('.estrella-dinamica').forEach(star => {
+        star.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const nombre = star.getAttribute('data-equipo');
+            const valor = star.getAttribute('data-valor');
+            localStorage.setItem(`voto_${nombre}`, valor);
+            mostrarToast(`Has votado ${valor} estrellas a ${nombre}`);
+            if(valor == 5) crearConfeti();
+            renderizarTabla(); // Actualizar visualmente
+        });
+    });
+
+    // C) Comparador (Doble Click en la fila)
+    let equiposComparacion = [];
+    document.querySelectorAll('#tabla-cuerpo tr').forEach(fila => {
+        fila.addEventListener('dblclick', function() {
+            // Buscamos el nombre dentro de la celda (cuidado con el texto del corazón)
+            const celdaNombre = this.querySelector('td:nth-child(2)');
+            // Hack para obtener solo el texto del equipo y no el corazón
+            const nombreEquipo = celdaNombre.firstChild.textContent.trim(); 
+
+            if (!equiposComparacion.includes(nombreEquipo)) {
+                equiposComparacion.push(nombreEquipo);
+                this.style.backgroundColor = 'rgba(255, 215, 0, 0.4)'; // Resaltar
+            } else {
+                equiposComparacion = equiposComparacion.filter(e => e !== nombreEquipo);
+                this.style.backgroundColor = ''; // Quitar resaltado
+            }
+
+            if (equiposComparacion.length === 2) {
+                // Aquí podrías hacer algo más complejo, de momento un alert:
+                const eq1 = datosEquipos.find(e => e.nombre === equiposComparacion[0]);
+                const eq2 = datosEquipos.find(e => e.nombre === equiposComparacion[1]);
+                
+                alert(`📊 COMPARATIVA:\n\n${eq1.nombre}: ${eq1.pts} pts (${eq1.gf} GF)\nVs\n${eq2.nombre}: ${eq2.pts} pts (${eq2.gf} GF)`);
+                
+                // Resetear
+                equiposComparacion = [];
+                renderizarTabla(); // Limpia los colores de fondo
+            }
+        });
+    });
+}
+
+// ==========================================
+// FIN RENDERIZADO DINÁMICO
+// ==========================================

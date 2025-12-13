@@ -1834,3 +1834,177 @@ body.dark-mode .titulo-zona { color: #ffd700; }
     border-radius: 5px;
     background: rgba(0,0,0,0.05);
 }
+
+/* ========================================
+   23. CORRECCIONES MÓVIL (Mejoras visuales)
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* --- 1. CABECERA Y NAVEGACIÓN --- */
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        padding-bottom: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5em; /* Título un poco más pequeño */
+        margin-bottom: 5px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        width: 100%;
+    }
+
+    nav a {
+        font-size: 0.85em;
+        padding: 8px 10px;
+        flex-grow: 1; /* Los botones ocupan el ancho disponible */
+        text-align: center;
+        background: rgba(255,255,255,0.1); /* Fondo sutil para distinguir botones */
+        margin: 2px;
+    }
+
+    #btnTema {
+        margin-top: 10px;
+        width: 100%; /* Botón tema ancho completo en móvil */
+    }
+
+    /* --- 2. SLIDER Y HERO --- */
+    .hero-section {
+        padding: 40px 15px; /* Menos relleno */
+        margin: 15px 0;
+    }
+    
+    .hero-content h2 {
+        font-size: 1.8em;
+    }
+
+    .slider-container {
+        margin: 20px 0; /* Menos margen vertical */
+    }
+
+    .slide {
+        height: 50vh; /* Altura ajustada para móvil */
+        min-height: 250px;
+    }
+
+    .caption {
+        padding: 15px;
+    }
+    .caption h3 { font-size: 1.2em; }
+    .caption p { font-size: 0.9em; }
+
+    /* --- 3. TABLAS (SCROLL HORIZONTAL MEJORADO) --- */
+    .contenedor-tabla {
+        box-shadow: none; /* Quitar sombra para ganar espacio */
+        margin: 0 -15px; /* Expandir tabla de borde a borde */
+        width: calc(100% + 30px);
+        border-radius: 0;
+    }
+
+    .tabla-pro {
+        border-radius: 0;
+        border: none;
+        font-size: 0.85rem; /* Fuente legible, no muy pequeña */
+    }
+
+    .tabla-pro th, .tabla-pro td {
+        padding: 10px 5px; /* Menos padding lateral en celdas */
+        white-space: nowrap; /* Evita que los nombres se partan mal */
+    }
+    
+    /* El nombre del equipo (columna 2) puede ajustarse si es muy largo */
+    .tabla-pro td:nth-child(2) {
+        white-space: normal;
+        min-width: 120px;
+    }
+
+    /* --- 4. SECCIÓN HISTORIA (TIMELINE) --- */
+    .timeline-container::before {
+        left: 15px; /* Línea pegada a la izquierda */
+    }
+    
+    .timeline-point {
+        left: 15px; /* Punto alineado con la línea */
+    }
+
+    .timeline-event, 
+    .timeline-event:nth-child(even), 
+    .timeline-event:nth-child(odd) {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 45px; /* Espacio para la línea vertical */
+        margin-bottom: 30px;
+        text-align: left; /* Todo alineado a la izquierda */
+        border-left: none; /* Quitar bordes extraños */
+    }
+
+    .timeline-content {
+        width: 100%; /* Tarjeta ancho completo */
+    }
+
+    /* --- 5. BOTONES FLOTANTES (FAVORITOS Y SUBIR) --- */
+    /* Evitar que se solapen */
+    #btnSubir {
+        bottom: 90px; /* Subirlo para que no tape el footer */
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+
+    /* El panel de favoritos que no ocupe toda la pantalla */
+    .panel-favoritos {
+        width: 92%;
+        right: 4%;
+        bottom: 150px; /* Más arriba */
+        max-height: 50vh;
+    }
+    
+    /* Botón flotante de favoritos */
+    button[onclick="togglePanel()"] { 
+        /* Nota: este selector apunta al botón creado en JS */
+        bottom: 20px !important;
+        right: 15px !important;
+        padding: 8px 15px !important;
+        font-size: 0.9em !important;
+        width: auto;
+    }
+
+    /* --- 6. SIMULADOR Y APUESTAS --- */
+    .simulador-wrapper {
+        flex-direction: column;
+    }
+    
+    .equipo-select {
+        width: 100%;
+    }
+    
+    .vs-badge {
+        transform: rotate(90deg); /* Girar el VS para que quede vertical */
+        margin: 5px 0;
+    }
+    
+    .score-board {
+        font-size: 0.8em; /* Ajustar tamaño marcador */
+    }
+    
+    #scoreLocal, #scoreVisitante {
+        font-size: 2.5em;
+    }
+
+    .opciones-apuesta {
+        flex-direction: column; /* Botones de apuesta uno debajo de otro */
+    }
+}
+
+/* Ajustes para móviles muy pequeños (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    header h1 { font-size: 1.2em; }
+    nav a { width: 100%; } /* Botones menú apilados verticalmente */
+}
