@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // A) GESTIÓN DEL SALDO
     let saldo = parseInt(localStorage.getItem('superliga_saldo'));
-    if (isNaN(saldo)) saldo = 1000; 
+    if (isNaN(saldo)) saldo = 100; 
 
     const saldoDisplay = document.getElementById('saldoUsuario');
     if (saldoDisplay) saldoDisplay.textContent = saldo;
@@ -84,10 +84,30 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('superliga_saldo', saldo);
         if (saldoDisplay) {
             saldoDisplay.textContent = saldo;
+            // Efecto visual de cambio
             saldoDisplay.style.color = (nuevoSaldo > parseInt(saldoDisplay.textContent)) ? '#2ecc71' : '#e74c3c';
-            setTimeout(() => saldoDisplay.style.color = '', 500);
+            // En la barra verde, forzamos color blanco/amarillo para que se vea
+            saldoDisplay.style.textShadow = "0 0 10px #fff"; 
+            setTimeout(() => {
+                saldoDisplay.style.color = '';
+                saldoDisplay.style.textShadow = '';
+            }, 500);
         }
     }
+
+    // --- NUEVO: LÓGICA DEL BOTÓN RECARGAR ---
+    const btnRecargar = document.getElementById('btnRecargar');
+    if (btnRecargar) {
+        btnRecargar.addEventListener('click', () => {
+            actualizarSaldo(saldo + 100);
+            mostrarToast("💰 ¡Recarga exitosa! +100€");
+            
+            // Animación extra del botón
+            btnRecargar.style.transform = "rotate(360deg)";
+            setTimeout(() => btnRecargar.style.transform = "", 300);
+        });
+    }
+    // ----------------------------------------
 
     // B) FUNCIÓN PARA CALCULAR CUOTAS REALISTAS
     function calcularYMostrarCuotas() {
