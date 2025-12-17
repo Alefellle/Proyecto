@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperLiga Europea - Apuestas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>SuperLiga Europea</h1>
+            <nav>
+                <a href="Index.html">Inicio</a>
+                <a href="clasificacion.html">Clasificación</a>
+                <a href="apuestas.html" class="activo">Apuestas</a>
+                <a href="historia.html">Historia</a>
+                <a href="contacto.html">Contacto</a>
+            </nav>
+            <button id="btnTema" onclick="cambiarTema()">Oscuro</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="cont-texto">
+            <h2>Simulador y Casa de Apuestas</h2>
+            <p>Pon a prueba tus conocimientos futbolísticos. Simula partidos con nuestro algoritmo de IA y multiplica tu saldo virtual.</p>
+        </div>
+        <br>
+
+        <div class="banca-container">
+            <i class="fa-solid fa-wallet"></i> Saldo: <span id="saldoUsuario">1000</span> €
+        </div>
+
+        <div class="banca-container">
+            <i class="fa-solid fa-wallet"></i> Saldo: <span id="saldoUsuario">100</span> €
+            <button id="btnRecargar" class="btn-recargar" title="Recargar 100€">+</button>
+        </div>
+
+        <div class="simulador-container">
+            <h3>Configurar Apuesta</h3>
+            
+            <div class="simulador-wrapper">
+                <div class="equipo-select">
+                    <label>Equipo Local</label>
+                    <select id="simLocal">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+                
+                <div class="vs-badge">VS</div>
+                
+                <div class="equipo-select">
+                    <label>Equipo Visitante</label>
+                    <select id="simVisitante">
+                        <option value="">-- Seleccionar --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="panelForma" class="panel-forma" style="display:none;">
+                <div class="columna-forma">
+                    <h5 id="tituloFormaLocal">Local</h5>
+                    <ul id="listaFormaLocal" class="lista-forma"></ul>
+                </div>
+                <div class="separador-forma"></div>
+                <div class="columna-forma">
+                    <h5 id="tituloFormaVisitante">Visitante</h5>
+                    <ul id="listaFormaVisitante" class="lista-forma"></ul>
+                </div>
+            </div>
+
+            <div class="zona-apuestas">
+                <label class="titulo-zona">Tu Pronóstico</label>
+                
+                <div class="opciones-apuesta">
+                    <label><input type="radio" name="apuesta" value="1" checked> Local (x1.5)</label>
+                    <label><input type="radio" name="apuesta" value="X"> Empate (x3.0)</label>
+                    <label><input type="radio" name="apuesta" value="2"> Visitante (x1.5)</label>
+                </div>
+                
+                <div class="input-dinero">
+                    <label>Cantidad a apostar (€):</label>
+                    <input type="number" id="cantidadApuesta" value="1" min="1" max="1000" placeholder="Mínimo 1">
+                </div>
+            </div>
+
+            <button id="btnSimular" class="btn-simular">
+                <i class="fa-solid fa-play"></i> JUGAR PARTIDO
+            </button>
+            
+            <div id="resultadoSimulacion" class="resultado-oculto">
+                <div class="marcador-final">
+                    <span id="scoreLocal">0</span>
+                    <span class="guion">-</span>
+                    <span id="scoreVisitante">0</span>
+                </div>
+                <p id="comentarioPartido">¡Selecciona dos equipos!</p>
+                <div id="resultadoApuesta" class="resultado-apuesta-texto"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer><p>© 2025 SuperLiga Europea. Gestionada por A22 Sports.</p></footer>
+    
+    <script src="java.js"></script>
+    <button id="btnSubir" onclick="subirArriba()" title="Volver arriba">⬆</button>
+</body>
+</html>

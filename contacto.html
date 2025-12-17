@@ -10,20 +10,23 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>⚽ SuperLiga Europea</h1>
+            <h1>SuperLiga Europea</h1>
             <nav>
                 <a href="Index.html">Inicio</a>
                 <a href="clasificacion.html">Clasificación</a>
+                <a href="apuestas.html">Apuestas</a>
                 <a href="historia.html">Historia</a>
                 <a href="contacto.html" class="activo">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌙 Oscuro</button>
+            <button id="btnTema" onclick="cambiarTema()">Oscuro</button>
         </div>
     </header>
 
     <main>
-        <h2>📩 Oficina de Atención</h2>
+        <div class="cont-texto">
+        <h2>Oficina de Atención</h2>
         <p>Estamos aquí para ayudarte. El tiempo de respuesta medio es de 24h.</p>
+        </div>
         <br>
 
         <div class="contacto-grid">
@@ -73,35 +76,34 @@
                     </button>
                 </form>
                 
-                <div id="mensajeExito" class="alerta-exito" style="display: none;">
-                    <h4>✅ ¡Mensaje Enviado!</h4>
+                <div id="mensajeExito" class="alerta-exito">
+                    <h4> ¡Mensaje Enviado!</h4>
                     <p>Gracias por contactar con la SuperLiga. Hemos recibido tu solicitud y te responderemos en breve.</p>
                 </div>
             </div>
 
             <div class="info-sidebar">
                 <div class="info-card">
-                    <h3>📍 Sede Central</h3>
+                    <h3>Sede Central</h3>
                     <p>Calle José Ortega y Gasset, 29,<br>5ª Planta, 28006 Madrid, España</p>
                 </div>
                 
                 <div class="info-card">
-                    <h3>📱 Síguenos</h3>
+                    <h3>Síguenos</h3>
                     <div class="social-links">
                         <a href="#" class="social-btn twitter" title="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
                         <a href="#" class="social-btn instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-btn youtube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
 
                 <div class="info-card">
-                    <h3>📞 Atención Directa</h3>
+                    <h3> Atención Directa</h3>
                     <p><strong>Tel:</strong> +34 91 123 45 67</p>
                     <p><strong>Email:</strong> soporte@superliga.com</p>
                 </div>
 
                 <div class="mapa-box">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3035.1234567890!2d-3.6877!3d40.4254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4225f5e5e5e5e5d%3A0x1234567890abcdef!2sC.%20Jos%C3%A9%20Ortega%20y%20Gasset%2C%2029%2C%2028006%20Madrid!5e0!3m2!1ses!2ses!4v1710000000000" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    <iframe class="contacto-mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3035.1234567890!2d-3.6877!3d40.4254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4225f5e5e5e5e5d%3A0x1234567890abcdef!2sC.%20Jos%C3%A9%20Ortega%20y%20Gasset%2C%2029%2C%2028006%20Madrid!5e0!3m2!1ses!2ses!4v1710000000000" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
         </div>

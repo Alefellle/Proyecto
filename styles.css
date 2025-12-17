@@ -1,820 +1,2072 @@
-/* --- ESTILOS GENERALES Y FUENTES --- */
+/* ========================================
+   SUPERLIGA EUROPEA - ESTILOS PRINCIPALES
+   ======================================== */
+
+/* --- IMPORTACIONES Y VARIABLES --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400&display=swap');
 
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0; padding: 0;
-    background-color: #f0f2f5;
-    color: #333;
-    display: flex; flex-direction: column; min-height: 100vh;
-    overflow-x: hidden; /* Evita scroll horizontal indeseado */
-    background-image: url(trofeo.jpg);
-    background-size: cover;
-    background-position: center;
+:root {
+    --color-primary: #002244;
+    --color-accent: #ffd700;
+    /* Zones: champions (blue), europa (orange), conference (green), descenso (red) */
+    --color-champions: #1e90ff; /* azul */
+    --color-europa: #ff8c00;    /* naranja */
+    --color-conference: #28a745; /* verde */
+    --color-descenso: #e74c3c;
+    --header-offset: 90px; /* altura aproximada del header para sticky */
 }
 
-h1, h2, h3, nav a { font-family: 'Montserrat', sans-serif; }
+/* ========================================
+   1. ESTILOS GENERALES
+   ======================================== */
 
-/* CABECERA CON EFECTO VIDRIO (GLASSMORPHISM) */
-header {
-    background: rgba(0, 34, 68, 0.95); /* Semi-transparente */
-    backdrop-filter: blur(10px); /* Efecto borroso detrás */
-    color: white;
-    position: sticky; top: 0; z-index: 1000;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.header-content { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 15px 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-/* NAVEGACIÓN ANIMADA */
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-}
-
-nav a {
-    color: white; text-decoration: none; margin: 0;
-    font-weight: 700; text-transform: uppercase; font-size: 0.85rem;
-    position: relative; transition: color 0.3s;
-    padding: 5px 10px;
-}
-nav a::after {
-    content: ''; position: absolute; width: 0; height: 2px;
-    bottom: -5px; left: 0; background-color: #ffd700;
-    transition: width 0.3s;
-}
-nav a:hover::after, nav a.activo::after { width: 100%; }
-nav a:hover { color: #ffd700; }
-
-/* BOTÓN MODO OSCURO */
-#btnTema {
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
-    color: white; padding: 8px 15px; cursor: pointer; border-radius: 30px;
-    font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
-    transition: all 0.3s ease;
-}
-#btnTema:hover { background: #ffd700; color: #002244; transform: translateY(-2px); }
-
-/* --- CARRUSEL (SLIDER) --- */
-.slider-container {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 20px auto;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-.slider-wrapper { display: flex; transition: transform 0.5s ease-in-out; }
-.slide { min-width: 100%; position: relative; }
-.slide img { width: 100%; display: block; height: 400px; object-fit: cover; filter: brightness(0.7); }
-.caption {
-    position: absolute; bottom: 40px; left: 40px; color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-    max-width: 60%;
-}
-.caption h3 { font-size: 2rem; margin: 0 0 10px 0; color: #ffd700; }
-
-/* --- CUENTA ATRÁS --- */
-.countdown-box {
-    background: linear-gradient(135deg, #002244, #004080);
-    color: white; padding: 40px; text-align: center;
-    margin: 30px auto; max-width: 800px; border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 34, 68, 0.4);
-}
-#reloj {
-    display: flex; justify-content: center; gap: 20px;
-    font-size: 2.5rem; font-weight: bold; margin-top: 20px;
-}
-.tiempo-unidad { display: flex; flex-direction: column; }
-.tiempo-unidad span { font-size: 0.8rem; font-weight: normal; text-transform: uppercase; color: #ffd700; }
-
-/* --- ANIMACIONES DE SCROLL (FADE IN) --- */
-.hidden { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
-.show { opacity: 1; transform: translateY(0); }
-
-/* --- TABLA ORDENABLE --- */
-th { cursor: pointer; position: relative; user-select: none; }
-th:hover { background-color: #003366; }
-th::after { content: '↕'; position: absolute; right: 5px; opacity: 0.3; font-size: 0.8em; }
-
-/* --- ESTILOS GENERALES DE CONTENIDO (Mantenidos y pulidos) --- */
-main { flex: 1; max-width: 1200px; margin: 30px auto; padding: 0 20px; width: 90%; }
-.contenedor-tabla { overflow-x: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-radius: 10px; }
-table.tabla-pro { width: 100%; border-collapse: collapse; background: white; min-width: 600px; }
-table.tabla-pro th { background-color: #002244; color: white; padding: 18px; text-align: center; }
-table.tabla-pro td { padding: 15px; border-bottom: 1px solid #eee; text-align: center; font-weight: 500; }
-table.tabla-pro tr:nth-child(even) { background-color: #f9f9f9; }
-table.tabla-pro tr:hover { background-color: #e6f7ff; transform: scale(1.01); transition: transform 0.2s; }
-
-/* Zonas de color tabla */
-.zona-champions { border-left: 5px solid #2ecc71; }
-.zona-europa { border-left: 5px solid #f1c40f; }
-.zona-descenso { border-left: 5px solid #e74c3c; }
-
-/* Tarjetas Historia */
-.palmares-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 30px; }
-.trofeo-card {
-    background: white; padding: 0; text-align: center;
-    border-radius: 10px; overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
-}
-.trofeo-card:hover { transform: translateY(-10px); }
-.trofeo-card h3 { margin: 15px 0 5px; color: #002244; }
-
-/* Footer */
-footer { background: #001a33; color: #888; text-align: center; padding: 30px; margin-top: auto; font-size: 0.9rem; }
-
-/* MODO OSCURO */
-body.dark-mode { background-color: #0f172a; color: #e2e8f0; }
-body.dark-mode header { background: rgba(15, 23, 42, 0.95); }
-body.dark-mode .trofeo-card, body.dark-mode table.tabla-pro, body.dark-mode .form-box, body.dark-mode .info-card {
-    background-color: #1e293b; color: #e2e8f0; border: 1px solid #334155;
-}
-body.dark-mode table.tabla-pro tr:hover { background-color: #334155; }
-body.dark-mode table.tabla-pro td { border-bottom: 1px solid #334155; }
-/* --- ESTILOS DEL NUEVO TIMELINE VERTICAL --- */
-.timeline-container {
-    position: relative;
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px 0;
-}
-
-/* La línea vertical central */
-.timeline-container::before {
-    content: '';
-    position: absolute;
-    width: 4px;
-    background-color: #e0e0e0; /* Color de la línea */
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -2px;
-    border-radius: 2px;
-}
-
-/* Cada evento individual */
-.timeline-event {
-    position: relative;
-    width: 50%;
-    padding: 20px 40px;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* Eventos a la izquierda */
-.timeline-event:nth-child(odd) {
-    left: 0;
-    text-align: right;
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    transition: all 0.4s ease;
+    
 }
 
-/* Eventos a la derecha */
-.timeline-event:nth-child(even) {
-    left: 50%;
-    text-align: left;
+body.dark-mode {
+    background: #1a1a1a;
+    color: #e0e0e0;
 }
 
-/* El punto (círculo) en la línea central */
-.timeline-point {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    right: -10px; /* Ajuste para izquierda */
-    background-color: white;
-    border: 4px solid #002244; /* Color por defecto */
-    top: 25px;
-    border-radius: 50%;
-    z-index: 10;
-    transition: all 0.3s ease;
-    cursor: pointer;
+main {
+    min-height: calc(100vh - 200px);
+    padding: 20px;
+    background-image: url("trofeo superliga.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
-.timeline-event:hover .timeline-point {
-    width: 28px;
-    height: 28px;
-    top: 21px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+/* ========================================
+   ESTILOS PARA FILTROS (Centrado)
+   ======================================== */
+#filtros-zonas {
+    display: flex;
+    justify-content: center; /* Esto alinea los botones al centro */
+    flex-wrap: wrap;         /* Permite que bajen de línea en móviles */
+    gap: 10px;               /* Espacio entre botones */
+    margin: 20px auto;       /* Margen vertical y centrado del bloque */
+    max-width: 1000px;
 }
 
-/* Ajuste del punto para eventos a la derecha */
-.timeline-event:nth-child(even) .timeline-point {
-    left: -10px;
+/* ========================================
+   2. CABECERA Y NAVEGACIÓN
+   ======================================== */
+
+header {
+    background: linear-gradient(135deg, #002244 0%, #004080 100%);
+    color: white;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* La tarjeta de contenido */
-.timeline-content {
-    background-color: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    padding-left: 25px;
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+   
+/* Activar sticky en pantallas anchas para slider */
+@media (min-width: 992px) {
+    .slider-container {
+        position: sticky;
+        top: var(--header-offset);
+        z-index: 30;
+        margin-top: 40px;
+    }
+}
+    padding: 0 20px;
+    gap: 20px;
 }
 
-.timeline-content:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-    padding-left: 25px;
-}
-
-/* Título del evento */
-.timeline-title {
-    margin-top: 0;
-    color: #002244;
+header h1 {
+    font-size: 2.2em;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* El color se cambia en los nth-child específicos */
-
-/* Fecha */
-.timeline-date {
-    font-weight: bold;
-    color: #666;
-    display: block;
-    margin-bottom: 10px;
-    font-size: 0.9em;
+nav {
+    display: flex;
+    gap: 20px;
 }
 
-/* Colores específicos para cada punto (como en la imagen) */
-.timeline-event:nth-child(1) .timeline-point { border-color: #2980b9; } /* Azul */
-.timeline-event:nth-child(1) .timeline-title { color: #2980b9; }
-.timeline-event:nth-child(1):hover .timeline-content { border-right-color: #2980b9; }
-.timeline-event:nth-child(1):hover .timeline-point { box-shadow: 0 0 15px rgba(41, 128, 185, 0.6); }
-.timeline-event:nth-child(1):hover .timeline-title { color: #2980b9; }
-
-.timeline-event:nth-child(2) .timeline-point { border-color: #27ae60; } /* Verde */
-.timeline-event:nth-child(2) .timeline-title { color: #27ae60; }
-.timeline-event:nth-child(2):hover .timeline-content { border-left-color: #27ae60; }
-.timeline-event:nth-child(2):hover .timeline-point { box-shadow: 0 0 15px rgba(39, 174, 96, 0.6); }
-.timeline-event:nth-child(2):hover .timeline-title { color: #27ae60; }
-
-.timeline-event:nth-child(3) .timeline-point { border-color: #f39c12; } /* Naranja */
-.timeline-event:nth-child(3) .timeline-title { color: #f39c12; }
-.timeline-event:nth-child(3):hover .timeline-content { border-right-color: #f39c12; }
-.timeline-event:nth-child(3):hover .timeline-point { box-shadow: 0 0 15px rgba(243, 156, 18, 0.6); }
-.timeline-event:nth-child(3):hover .timeline-title { color: #f39c12; }
-
-.timeline-event:nth-child(4) .timeline-point { border-color: #c0392b; } /* Rojo */
-.timeline-event:nth-child(4) .timeline-title { color: #c0392b; }
-.timeline-event:nth-child(4):hover .timeline-content { border-left-color: #c0392b; }
-.timeline-event:nth-child(4):hover .timeline-point { box-shadow: 0 0 15px rgba(192, 57, 43, 0.6); }
-.timeline-event:nth-child(4):hover .timeline-title { color: #c0392b; }
-
-/* Modo Oscuro para el timeline */
-body.dark-mode .timeline-container::before { background-color: #334155; }
-body.dark-mode .timeline-content { 
-    background-color: #1e293b; 
-    color: #e2e8f0;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-}
-body.dark-mode .timeline-content:hover { 
-    box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
-}
-body.dark-mode .timeline-point { background-color: #0f172a; }
-body.dark-mode .timeline-event:hover .timeline-point {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-}
-body.dark-mode .timeline-date { color: #aaa; }
-body.dark-mode .timeline-event:hover .timeline-title {
-    color: #ffd700;
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-/* Responsive: En móviles, todo a una columna */
+nav a:hover,
+nav a.activo {
+    background: #ffd700;
+    color: #002244;
+}
+
+/* Botón Tema Oscuro */
+#btnTema {
+    background: rgba(255, 215, 0, 0.2);
+    color: white;
+    border: 2px solid #ffd700;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#btnTema:hover {
+    background: #ffd700;
+    color: #002244;
+}
+
+/* ========================================
+   3. BOTONES Y ENLACES
+   ======================================== */
+
+/* Botón CTA Principal */
+.btn-cta {
+    background: #ffd700 !important;
+    color: #002244 !important;
+    padding: 10px 20px !important;
+    text-decoration: none !important;
+    border-radius: 20px !important;
+    font-weight: bold !important;
+    margin-top: 20px !important;
+    display: inline-block !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-cta:hover {
+    background: #002244 !important;
+    color: #ffd700 !important;
+    transform: scale(1.05) !important;
+}
+
+/* ========================================
+   4B. HERO SECTION - PÁGINA DE INICIO
+   ======================================== */
+
+.hero-section {
+    /* nueva paleta: azul profundo -> violeta suave */
+    background: linear-gradient(135deg, #071f3a 20%, #15304f 60%, #2b1b4a 100%);
+    color: white;
+    padding: 70px 20px;
+    text-align: center;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content h2 {
+    font-size: 2.6em;
+    margin-bottom: 12px;
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.hero-content p {
+    font-size: 1.15em;
+    margin-bottom: 22px;
+    opacity: 0.95;
+}
+
+.hero-section .btn-cta {
+    font-size: 1.05em;
+    padding: 10px 26px !important;
+}
+
 @media (max-width: 768px) {
-    .timeline-container::before { left: 30px; }
-    .timeline-event { width: 100%; padding-left: 70px; padding-right: 20px; }
-    .timeline-event:nth-child(odd), .timeline-event:nth-child(even) { left: 0; text-align: left; }
-    .timeline-point, .timeline-event:nth-child(even) .timeline-point { left: 20px; }
-}
-/* --- CORRECCIONES ESPECÍFICAS PARA TABLA EN MODO OSCURO --- */
+    .hero-section {
+        padding: 46px 20px;
+    }
 
-/* Fondo general de la tabla en modo oscuro */
-body.dark-mode table.tabla-pro {
-    background-color: #1e293b; /* Fondo oscuro sutil */
-    color: #e2e8f0; /* Color de texto claro */
-}
+    .hero-content h2 {
+        font-size: 1.9em;
+    }
 
-/* Color de los encabezados (TH) */
-body.dark-mode table.tabla-pro th {
-    background-color: #0d1b2a;
-    border-bottom: 2px solid #ffd700;
-    color: #e2e8f0;
+    .hero-content p {
+        font-size: 1.05em;
+    }
 }
 
-/* 1. Líneas de separación (Bordes de las celdas TD) */
-body.dark-mode table.tabla-pro td {
-    border-bottom: 1px solid #334155; /* Borde gris oscuro visible */
-    color: #ccc; /* Texto gris claro */
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 36px 15px;
+    }
+
+    .hero-content h2 {
+        font-size: 1.4em;
+    }
+
+    .hero-content p {
+        font-size: 0.95em;
+    }
 }
 
-/* 2. Rayado de filas (Para mejor lectura) */
-body.dark-mode table.tabla-pro tr:nth-child(even) {
-    background-color: #1a2333; /* Color más oscuro para filas pares */
-}
-body.dark-mode table.tabla-pro tr:nth-child(odd) {
-    background-color: #1e293b; /* Color menos oscuro para filas impares */
-}
-
-/* Color del texto clave (Nombres de equipo y Puntos) */
-body.dark-mode table.tabla-pro td:nth-child(2),
-body.dark-mode table.tabla-pro td:last-child {
-    color: white; /* Blanco puro para nombres y puntos */
+/* Botones Filtro */
+.btn-filtro {
+    background: #e0e0e0;
+    color: #333;
+    padding: 8px 15px;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-/* Fondo de la leyenda para que no sea un bloque negro */
-body.dark-mode .leyenda-box { 
-    background-color: #1e293b; 
-    border: 1px solid #334155;
-    color: #e2e8f0;
+.btn-filtro.active {
+    background: #ffd700;
+    color: #002244;
+    border-color: #002244;
 }
 
-/* --- ESTILOS NUEVOS PARA CONTACTO --- */
+body.dark-mode .btn-filtro {
+    background: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode .btn-filtro.active {
+    background: #ffd700;
+    color: #002244;
+}
 
 /* Botones Sociales */
-.social-links { display: flex; gap: 15px; margin-top: 10px; }
+.social-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center; 
+}
+
 .social-btn {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: white; text-decoration: none; transition: transform 0.3s;
-}
-.social-btn:hover { transform: translateY(-3px); }
-.twitter { background: #000; }
-.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.youtube { background: #ff0000; }
-
-/* Acordeón FAQ */
-.faq-container { margin-top: 50px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-.faq-item { border-bottom: 1px solid #eee; }
-.faq-question {
-    background: none; border: none; width: 100%; text-align: left;
-    padding: 20px 0; font-size: 1.1rem; font-weight: bold; color: #002244;
-    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-}
-.faq-answer {
-    max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
-    color: #555; line-height: 1.6;
-}
-.faq-item.active .faq-answer { max-height: 150px; } /* Se abre */
-.faq-item.active .fa-chevron-down { transform: rotate(180deg); } /* Flecha gira */
-
-/* Modo Oscuro FAQ */
-body.dark-mode .faq-container { background: #1e293b; color: white; border: 1px solid #334155; }
-body.dark-mode .faq-question { color: #ffd700; }
-body.dark-mode .faq-answer { color: #ccc; }
-/* --- CONTACTO ESTILO "CUADROS" (BOXY & ORGANIZED) --- */
-
-/* 1. Contenedor Principal (Grid) */
-.contacto-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Izquierda más ancha que derecha */
-    gap: 30px;
-    margin-top: 30px;
-    align-items: start;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3em;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-/* 2. Estilo Base para las "Cajas" (Todas las tarjetas iguales) */
-.form-box, .info-card, .faq-container, .mapa-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 4px; /* Bordes ligeramente cuadrados */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Sombra elegante */
-    border: 1px solid #e0e0e0; /* Borde fino para definir la caja */
-    position: relative;
+.social-btn.twitter {
+    background: #1DA1F2;
+}
+
+.social-btn.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-btn.youtube {
+    background: #FF0000;
+}
+
+.social-btn:hover {
+    transform: scale(1.1);
+}
+
+/* ========================================
+    4. TABLA DE CLASIFICACIÓN
+    ======================================== */
+/* ========================================
+    4B. LEYENDA Y TABLA DE CLASIFICACIÓN
+    ======================================== */
+
+.leyenda-box {
+    display: flex;
+    justify-content: center; /* centrar los apartados en el medio */
+    align-items: center;
+    gap: 18px;
+    background-color: rgba(255,255,255,0.98);
+    padding: 10px 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    max-width: 1000px;
+    margin: 0 auto 10px;
+    flex-wrap: wrap;
+}
+body.dark-mode .leyenda-box {
+    background-color: rgba(40,40,40,0.95);
+}
+/* Corrección para que el texto de la leyenda sea blanco en modo oscuro */
+body.dark-mode .leyenda-box span {
+    color: #ffffff;
+}
+
+.leyenda-box span { display:flex; align-items:center; gap:8px; color:#223344; font-weight:600; }
+.leyenda-box .punto-azul, .leyenda-box .punto-naranja, .leyenda-box .punto-verde, .leyenda-box .punto-rojo {
+    width: 12px; height: 12px; border-radius:50%; display:inline-block;
+}
+.leyenda-box .punto-azul { background: var(--color-champions); }
+.leyenda-box .punto-naranja { background: var(--color-europa); }
+.leyenda-box .punto-verde { background: var(--color-conference); }
+.leyenda-box .punto-rojo { background: var(--color-descenso); }
+
+/* Resaltar filas de la tabla según la zona */
+.tabla-pro tbody tr.zona-champions { background: rgba(30,144,255,0.05); }
+.tabla-pro tbody tr.zona-europa { background: rgba(255,140,0,0.05); }
+.tabla-pro tbody tr.zona-conference { background: rgba(40,167,69,0.05); }
+.tabla-pro tbody tr.zona-descenso { background: rgba(231,76,60,0.05); }
+
+/* Asegurar que las filas de zona tengan prioridad sobre el patrón de filas alternadas */
+.tabla-pro tbody tr.zona-champions:nth-child(even),
+.tabla-pro tbody tr.zona-europa:nth-child(even),
+.tabla-pro tbody tr.zona-conference:nth-child(even),
+.tabla-pro tbody tr.zona-descenso:nth-child(even) {
+    background: rgba(255,255,255,0.02);
+}
+
+.contenedor-tabla {
+    max-width: 1000px;
+    margin: 12px auto 40px;
+    overflow: auto; /* permite scroll horizontal en móvil */
+    -webkit-overflow-scrolling: touch;
+}
+
+.tabla-pro {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
     overflow: hidden;
 }
 
-/* --- COLUMNA IZQUIERDA: FORMULARIO (Acento Azul) --- */
-.form-box {
-    border-top: 5px solid #002244; /* Línea superior Azul */
-}
-
-.form-box h3 {
-    margin-top: 0;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #f0f2f5; /* Línea separadora sutil */
-    color: #002244;
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Inputs cuadrados y modernos */
-.campo label {
-    display: block;
+.tabla-pro th {
+    background: linear-gradient(135deg, #002244, #004080);
+    color: white;
+    padding: 15px;
     font-weight: 700;
-    margin-bottom: 8px;
-    color: #444;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
 }
 
-input, select, textarea {
+/* Sticky header inside scrollable container */
+.contenedor-tabla thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.tabla-pro td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+/* Alineación izquierda para nombres de equipos */
+.tabla-pro td:nth-child(2),
+.tabla-pro th:nth-child(2) {
+    text-align: left !important;
+}
+
+/* Filas alternadas */
+.tabla-pro tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+.tabla-pro tbody tr:hover {
+    background: #fffacd;
+}
+
+/* Zonas de Color */
+.tabla-pro .zona-champions {
+    border-left: 5px solid var(--color-champions);
+}
+
+.tabla-pro .zona-europa {
+    border-left: 5px solid var(--color-europa);
+}
+
+.tabla-pro .zona-conference {
+    border-left: 5px solid var(--color-conference);
+}
+
+.tabla-pro .zona-descenso {
+    border-left: 5px solid var(--color-descenso);
+}
+
+/* Modo Oscuro - Tabla */
+body.dark-mode .tabla-pro {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .tabla-pro th {
+    background: #1a1a1a;
+    border-bottom: 2px solid #ffd700;
+}
+
+body.dark-mode .tabla-pro td {
+    border-bottom-color: #444;
+}
+
+body.dark-mode .tabla-pro tbody tr:nth-child(even) {
+    background: #333;
+}
+
+body.dark-mode .tabla-pro tbody tr:hover {
+    background: #3a3a3a;
+    color: #ffd700;
+}
+
+body.dark-mode .tabla-pro tbody tr:nth-child(odd) {
+    background: #2a2a2a;
+}
+
+/* ========================================
+   5. BUSCADOR Y FILTROS
+   ======================================== */
+
+#buscador-equipos {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid #eee; /* Borde suave inicial */
-    border-radius: 2px; /* Casi cuadrado */
-    background-color: #f9f9f9;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    box-sizing: border-box; /* Importante para que no se salgan */
+    margin: 15px 0;
+    border: 2px solid #002244;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
+    transition: all 0.3s;
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: #002244; /* Borde azul al escribir */
-    background-color: #fff;
+body.dark-mode #buscador-equipos {
+    background: #2a2a2a;
+    color: #ffffff;
+    border-color: #555;
+}
+
+body.dark-mode #buscador-equipos::placeholder {
+    color: #bbb; /* Para que el texto de ayuda se lea bien */
+}
+
+#buscador-equipos:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     outline: none;
 }
 
-/* Botón Cuadrado */
-.btn-enviar {
-    background-color: #002244;
-    color: white;
-    border: none;
-    padding: 15px;
-    width: 100%;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 2px;
+.fila-destacada {
+    animation: destaque 0.3s ease-in-out;
+}
+
+@keyframes destaque {
+    0%, 100% { background-color: transparent; }
+    50% { background-color: rgba(255, 215, 0, 0.3); }
+}
+
+/* ========================================
+   6. VOTACIÓN CON ESTRELLAS
+   ======================================== */
+
+.contenedor-estrellas {
+    display: flex;
+    gap: 8px;
+    font-size: 1.8em;
     cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
+    align-items: center;
     margin-top: 10px;
 }
-.btn-enviar:hover { 
-    background-color: #003366; 
-    transform: translateY(-2px);
+
+.estrella-individual {
+    transition: all 0.2s ease;
+    cursor: pointer;
+    filter: brightness(1);
 }
 
+.estrella-individual:hover {
+    transform: scale(1.2);
+    text-shadow: 0 0 8px #ffd700;
+}
 
-/* --- COLUMNA DERECHA: SIDEBAR (Acento Dorado) --- */
+.estrella-individual.votada {
+    color: #ffd700;
+}
+
+/* ========================================
+   7. CORAZÓN FAVORITO
+   ======================================== */
+
+.corazon-favorito {
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.corazon-favorito:hover {
+    transform: scale(1.3);
+}
+
+.corazon-favorito.activo {
+    animation: latidoCorazon 0.6s ease-in-out;
+}
+
+/* Ventana flotante de favoritos */
+.panel-favoritos {
+    position: fixed;
+    bottom: 220px;
+    right: 30px;
+    width: 320px;
+    max-height: 60vh;
+    overflow: auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,250,0.98));
+    color: #222;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    z-index: 1200;
+    padding: 12px;
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    transform-origin: bottom right;
+}
+.panel-favoritos.hidden {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    pointer-events: none;
+}
+.panel-favoritos h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.05em;
+}
+.lista-favoritos { display: flex; flex-direction: column; gap: 8px; }
+.fav-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px; border-radius:8px; background: rgba(0,0,0,0.02); }
+.fav-item b { font-size: 0.95em; }
+.fav-item .fav-acciones { display:flex; gap:8px; align-items:center; }
+.fav-remove { background: transparent; border: none; color: var(--color-descenso); cursor: pointer; font-size: 1.1em; }
+.fav-remove:hover { transform: scale(1.05); }
+
+/* Ajustes en móvil: panel ocupa 90% ancho y se coloca encima del botón */
+@media (max-width: 520px) {
+    .panel-favoritos { right: 5%; width: 90%; bottom: 120px; }
+}
+
+@keyframes latidoCorazon {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1.15); }
+    75% { transform: scale(1.25); }
+}
+
+/* Notificaciones toast deshabilitadas: estilos eliminados */
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   9. CONFETI
+   ======================================== */
+
+.confeti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #ffd700;
+    pointer-events: none;
+    border-radius: 50%;
+    z-index: 999;
+}
+
+@keyframes caerConfeti {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   10. CARRUSEL DE NOTICIAS
+   ======================================== */
+
+.carrusel-noticias {
+    position: relative;
+    background: linear-gradient(135deg, #002244, #004080);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px 0;
+    color: white;
+    overflow: hidden;
+}
+
+.noticia-item {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.noticia-item.activa {
+    display: block;
+}
+
+.noticia-item h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.noticia-item p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.botones-carrusel {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.botones-carrusel button {
+    background: #ffd700;
+    color: #002244;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.botones-carrusel button:hover {
+    background: #fff;
+    transform: scale(1.05);
+}
+
+/* ========================================
+   10B. SLIDER DE IMÁGENES
+   ======================================== */
+
+.slider-container {
+    /* por defecto estático; en pantallas grandes se activa sticky */
+    max-width: 1000px;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;;
+}
+
+.slide {
+    width: 100%;
+    flex-shrink: 0;
+    position: relative;
+    height: 60vh; /* alto responsivo */
+    max-height: 520px;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: relative;
+}
+
+.caption {
+    position: relative;
+    
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    color: white;
+    padding: 40px 20px 20px;
+    text-align: center;
+}
+
+.caption h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.caption p {
+    font-size: 1em;
+}
+
+/* ========================================
+   10C. COUNTDOWN BOX
+   ======================================== */
+
+.countdown-box {
+    /* fondo más suave y tamaño reducido */
+    background: linear-gradient(135deg, #002244, #004080);
+    color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    margin: 30px 0;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.countdown-box h3 {
+    font-size: 1.25em;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.countdown-box p {
+    font-size: 1.05em;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+}
+
+#reloj {
+    font-size: 1.6em; /* reducido */
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    margin: 12px 0;
+    letter-spacing: 3px;
+}
+/* Corrección: solo afecta a los párrafos DENTRO de la caja de cuenta atrás */
+body.dark-mode .countdown-box h3,
+body.dark-mode .countdown-box p { 
+    color: #ffffff;
+}
+
+/* dark mode: tonos fríos y sobrios */
+body.dark-mode .countdown-box {
+    background: linear-gradient(135deg, #1f2330 0%, #263444 100%);
+    color: #e6eef8;
+}
+
+/* ========================================
+   10C. COUNTDOWN BOX (Reloj Horizontal)
+   ======================================== */
+
+.countdown-box {
+    /* Mantiene el diseño vertical general (títulos arriba, reloj abajo) */
+    background: linear-gradient(135deg, #002244, #004080);
+    color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    margin: 30px 0;
+    text-align: center; /* Centra todo */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.countdown-box h3 {
+    font-size: 1.25em;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.countdown-box p {
+    font-size: 1.2em; /* Un poco más grande para destacar el partido */
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #ffd700;
+}
+
+/* --- AQUÍ ESTÁ EL CAMBIO PARA EL TIEMPO --- */
+#reloj {
+    display: flex;           /* Pone los números en fila horizontal */
+    justify-content: center; /* Los centra en la pantalla */
+    gap: 20px;               /* Espacio entre Días, Horas, Minutos */
+    align-items: center;     /* Alineación perfecta */
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1.5em; /* Tamaño de los números */
+}
+
+/* Estilo para los bloques individuales (generados por JS) */
+.tiempo-unidad {
+    display: flex;
+    flex-direction: column; /* Número arriba, texto "Días" abajo */
+    align-items: center;
+}
+
+.tiempo-unidad span {
+    font-size: 0.4em;       /* Texto pequeño debajo del número */
+    text-transform: uppercase;
+    font-family: sans-serif;
+    margin-top: 5px;
+    opacity: 0.8;
+    font-weight: normal;
+}
+
+/* Ajustes para modo oscuro */
+body.dark-mode .countdown-box {
+    background: linear-gradient(135deg, #1f2330 0%, #263444 100%);
+    color: #e6eef8;
+}
+
+/* En móviles muy pequeños, reducimos un poco el espacio */
+@media (max-width: 480px) {
+    #reloj {
+        gap: 10px;
+        font-size: 1.2em;
+    }
+}
+
+/* ========================================
+   11. TIMELINE VERTICAL
+   ======================================== */
+
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #ffd700 0%, #002244 100%);
+    border-radius: 10px;
+}
+
+.timeline-event {
+    display: flex;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.timeline-event:nth-child(odd) {
+    flex-direction: row;
+    padding-right: 52%;
+    text-align: right;
+}
+
+.timeline-event:nth-child(even) {
+    flex-direction: row-reverse;
+    padding-left: 52%;
+}
+
+.timeline-point {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 4px solid #ffd700;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20px;
+    z-index: 2;
+}
+
+.timeline-content {
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex: 1;
+}
+
+.timeline-date {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #ffd700;
+    text-transform: uppercase;
+}
+
+.timeline-title {
+    font-size: 1.3em;
+    margin: 8px 0;
+    color: #002244;
+    font-weight: 700;
+}
+
+.timeline-event:nth-child(1) .timeline-point { border-color: #ff6b6b; }
+.timeline-event:nth-child(2) .timeline-point { border-color: #4ecdc4; }
+.timeline-event:nth-child(3) .timeline-point { border-color: #ffd93d; }
+.timeline-event:nth-child(4) .timeline-point { border-color: #95e1d3; }
+
+/* Modo Oscuro - Timeline */
+body.dark-mode .timeline-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+body.dark-mode .timeline-title {
+    color: #ffd700;
+}
+
+/* Mobile Timeline */
+@media (max-width: 768px) {
+    .timeline-container::before {
+        left: 20px;
+    }
+
+    .timeline-event {
+        flex-direction: column !important;
+        padding: 0 !important;
+        padding-left: 60px !important;
+    }
+
+    .timeline-point {
+        left: 20px;
+    }
+
+    .timeline-event:nth-child(odd),
+    .timeline-event:nth-child(even) {
+        text-align: left;
+    }
+}
+
+/* ========================================
+   12. SECCIONES DE CONTENIDO (CORREGIDO)
+   ======================================== */
+
+.cont-texto {
+    max-width: 1000px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 20px;
+    /* Estilo tipo tarjeta (igual que la tabla/leyenda) */
+    background-color: rgba(255, 255, 255, 0.98); 
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.cont-texto h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #002244; /* Color oscuro para modo claro */
+    background-color: transparent; /* Nos aseguramos de que no tenga fondo propio */
+}
+
+.cont-texto p {
+    font-size: 1.1em;
+    color: #333;
+    background-color: transparent;
+}
+
+/* --- MODO OSCURO --- */
+
+body.dark-mode .cont-texto {
+    /* Fondo para todo el bloque en modo oscuro */
+    background-color: rgba(40, 40, 40, 0.95); 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    color: #e0e0e0;
+}
+
+body.dark-mode .cont-texto h2 {
+    color: #ffffff;
+    background-color: transparent; /* Importante: quitar el fondo gris de las letras */
+}
+
+body.dark-mode .cont-texto p {
+    color: #e0e0e0;
+    background-color: transparent; /* Importante: quitar el fondo gris de las letras */
+}
+
+/* ========================================
+   13. TARJETAS (PALMARÉS, TROFEOS)
+   ======================================== */
+
+.palmares-grid,
+.contacto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.trofeo-card,
+.info-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.trofeo-card:hover,
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+body.dark-mode .trofeo-card,
+body.dark-mode .info-card {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.trofeo-card h3,
+.info-card h3 {
+    color: #002244;
+    margin-bottom: 10px;
+}
+
+body.dark-mode .trofeo-card h3,
+body.dark-mode .info-card h3 {
+    color: #ffd700;
+}
+
+.trofeo-numero {
+    font-size: 3em;
+    font-weight: 700;
+    color: #ffd700;
+    margin: 10px 0;
+}
+
+/* Imágenes de Trofeos */
+.trofeo-card img,
+.trofeo-card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px 5px 0 0;
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   14. FORMULARIO DE CONTACTO
+   ======================================== */
+
+.form-box {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .form-box {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.form-box h3 {
+    color: #002244;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+body.dark-mode .form-box h3 {
+    color: #ffd700;
+}
+
+.campo {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+body.dark-mode .campo label {
+    color: #e0e0e0;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+    border-color: #ffd700;
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+body.dark-mode .campo input,
+body.dark-mode .campo textarea,
+body.dark-mode .campo select {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    border-color: #444;
+}
+
+.campo-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.9em;
+    display: block;
+    margin-top: 3px;
+}
+
+.btn-enviar {
+    background: linear-gradient(135deg, #002244, #004080);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-enviar:hover {
+    background: linear-gradient(135deg, #004080, #002244);
+    transform: scale(1.02);
+}
+
+/* Mensaje de Éxito */
+#mensajeExito {
+    display: none !important;
+}
+
+#mensajeExito.mostrar {
+    display: block !important;
+    background: #2ecc71;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Info Sidebar */
 .info-sidebar {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.info-card {
-    padding: 20px 25px;
-    border-top: 5px solid #ffd700; /* Línea superior dorada por defecto */
-}
-
-.info-card:nth-child(1) {
-    border-top-color: #2994ff; /* Azul para Sede Central */
-}
-
-.info-card:nth-child(2) {
-    border-top-color: #e74c3c; /* Rojo para Síguenos */
-}
-
-.info-card:nth-child(3) {
-    border-top-color: #27ae60; /* Verde para Atención Directa */
-}
-
-.info-card h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1rem;
-    color: #333;
-    font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.info-card:nth-child(1) h3 {
-    color: #002244; /* Azul para Sede Central */
-}
-
-.info-card:nth-child(2) h3 {
-    color: #e74c3c; /* Rojo para Síguenos */
-}
-
-.info-card:nth-child(3) h3 {
-    color: #27ae60; /* Verde para Atención Directa */
-}
-
-.info-card p {
-    margin: 0;
-    color: #666;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-/* Mapa encajado */
 .mapa-box {
-    padding: 0;
-    border: none;
-    border-radius: 4px;
-    height: 250px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.mapa-box iframe {
+
+/* ========================================
+   15. MODALES Y POPUP
+   ======================================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 500;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    display: block;
+    background: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s ease;
 }
 
-
-/* --- SECCIÓN FAQ (Acento Rojo) --- */
-.faq-container {
-    grid-column: 1 / -1; /* Hace que ocupe todo el ancho abajo */
-    margin-top: 20px;
-    border-top: 5px solid #e74c3c; /* Línea superior Roja */
-}
-
-.faq-container h3 {
-    margin-top: 0;
-    color: #002244;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-}
-
-.faq-item {
-    border: 1px solid #eee;
-    margin-bottom: 10px;
-    background: #fdfdfd;
-}
-
-.faq-question {
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 15px 20px;
-    text-align: left;
-    font-weight: 700;
-    color: #444;
-    cursor: pointer;
+.modal.activo {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    transition: background 0.2s;
 }
 
-.faq-question:hover { background: #f4f4f4; }
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    position: relative;
+}
 
-.faq-answer {
-    padding: 0 20px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, padding 0.3s ease;
-    background: #fff;
+body.dark-mode .modal-content {
+    background: #2a2a2a;
+    color: #e0e0e0;
+}
+
+.modal-content h2 {
+    color: #002244;
+    margin-bottom: 20px;
+}
+
+body.dark-mode .modal-content h2 {
+    color: #ffd700;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.8em;
+    cursor: pointer;
     color: #666;
-    border-top: 1px solid transparent;
+    transition: color 0.3s;
 }
 
-.faq-item.active .faq-answer {
-    max-height: 150px;
-    padding: 15px 20px;
-    border-top: 1px solid #eee;
-}
-.faq-item.active .fa-chevron-down { transform: rotate(180deg); }
-
-
-/* --- MODO OSCURO (Adaptación) --- */
-body.dark-mode .form-box, 
-body.dark-mode .info-card, 
-body.dark-mode .faq-container {
-    background-color: #1e293b;
-    border-color: #334155;
-    box-shadow: none;
+.modal-close:hover {
+    color: #002244;
 }
 
-body.dark-mode .form-box h3,
-body.dark-mode .faq-container h3 { color: #ffd700; border-bottom-color: #334155; }
+body.dark-mode .modal-close {
+    color: #aaa;
+}
 
-body.dark-mode .info-card:nth-child(1) h3 { color: #5dade2; } /* Azul claro para Sede Central */
-body.dark-mode .info-card:nth-child(2) h3 { color: #f1948a; } /* Rojo claro para Síguenos */
-body.dark-mode .info-card:nth-child(3) h3 { color: #58d68d; } /* Verde claro para Atención Directa */
+/* ========================================
+   16. ANIMACIONES GENERALES
+   ======================================== */
 
-body.dark-mode .info-card p,
-body.dark-mode .campo label { color: #ccc; }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
 
-body.dark-mode input, 
-body.dark-mode select, 
-body.dark-mode textarea {
-    background-color: #0f172a;
-    border-color: #334155;
+@keyframes reboteTrofeo {
+    0% { transform: scale(1); }
+    60% { transform: scale(1.25, 0.85); }
+    80% { transform: scale(0.95, 1.1); }
+    100% { transform: scale(1); }
+}
+
+.rebote-trofeo {
+    animation: reboteTrofeo 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes pageTransition {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Transición entre páginas */
+main {
+    animation: pageTransition 0.5s ease;
+}
+
+/* ========================================
+   17. FOOTER
+   ======================================== */
+
+footer {
+    background: linear-gradient(135deg, #002244, #004080);
     color: white;
-}
-body.dark-mode input:focus { border-color: #ffd700; }
-
-body.dark-mode .faq-item { background-color: #0f172a; border-color: #334155; }
-body.dark-mode .faq-question { color: #e2e8f0; }
-body.dark-mode .faq-question:hover { background-color: #1e293b; }
-body.dark-mode .faq-answer { background-color: #1e293b; color: #aaa; border-top-color: #334155; }
-
-
-/* RESPONSIVE (Móvil) */
-@media (max-width: 768px) {
-    .contacto-grid { grid-template-columns: 1fr; }
-    
-    /* Header Responsive */
-    .header-content {
-        flex-direction: column;
-        gap: 10px;
-        padding: 10px 15px;
-    }
-    
-    h1 {
-        font-size: 1.3rem;
-        margin: 0;
-        width: 100%;
-        text-align: center;
-    }
-    
-    nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        justify-content: center;
-        width: 100%;
-    }
-    
-    nav a {
-        margin: 0;
-        font-size: 0.65rem;
-        padding: 5px 8px;
-    }
-    
-    #btnTema {
-        padding: 6px 12px;
-        font-size: 0.7rem;
-        width: 100%;
-        justify-content: center;
-    }
-    
-    /* Slider responsive */
-    .slider-container {
-        margin: 15px auto;
-        max-width: 100%;
-    }
-    
-    .slide img {
-        height: 250px;
-    }
-    
-    .caption {
-        bottom: 20px;
-        left: 20px;
-        max-width: 70%;
-    }
-    
-    .caption h3 {
-        font-size: 1.2rem;
-    }
-    
-    .caption p {
-        font-size: 0.9rem;
-    }
-    
-    /* Countdown box responsive */
-    .countdown-box {
-        padding: 20px;
-        margin: 20px auto;
-    }
-    
-    #reloj {
-        gap: 10px;
-        font-size: 1.5rem;
-    }
-    
-    /* Tabla responsive */
-    .contenedor-tabla {
-        margin: 0 -20px;
-        padding: 0;
-        border-radius: 0;
-    }
-    
-    table.tabla-pro {
-        font-size: 0.8rem;
-    }
-    
-    table.tabla-pro th, table.tabla-pro td {
-        padding: 8px 5px;
-    }
-    
-    /* Timeline responsive */
-    .timeline-container::before {
-        left: 30px;
-    }
-    
-    .timeline-event {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 20px;
-    }
-    
-    .timeline-event:nth-child(odd), .timeline-event:nth-child(even) {
-        left: 0;
-        text-align: left;
-    }
-    
-    .timeline-point, .timeline-event:nth-child(even) .timeline-point {
-        left: 20px;
-    }
-    
-    /* Palmares grid responsive */
-    .palmares-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-    
-    .trofeo-card img {
-        height: 100px;
-    }
-    
-    /* Contacto grid responsive */
-    .contacto-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .info-sidebar {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .faq-container {
-        grid-column: 1;
-    }
-    
-    /* Footer responsive */
-    footer {
-        padding: 20px;
-        font-size: 0.8rem;
-    }
-}
-/* --- ARREGLO DEL CHECKBOX (PRIVACIDAD) --- */
-
-.campo-check {
-    display: flex;              /* Los pone en la misma línea */
-    align-items: center;        /* Los centra verticalmente */
-    justify-content: flex-start; /* Los pega a la izquierda */
-    gap: 12px;                  /* Espacio entre el cuadradito y el texto */
-    margin: 20px 0;             /* Separación arriba y abajo */
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    font-weight: 600;
 }
 
-/* Forzamos al input del checkbox a que sea pequeño */
-.campo-check input[type="checkbox"] {
-    width: 20px !important;     /* Tamaño fijo pequeño */
-    height: 20px;
-    margin: 0;                  /* Sin márgenes extra */
-    cursor: pointer;
-    border: 2px solid #002244;  /* Borde azul para que se vea bien */
-    border-radius: 4px;
-}
+/* ========================================
+   18. BOTÓN SUBIR ARRIBA
+   ======================================== */
 
-/* Estilo del texto de al lado */
-.campo-check label {
-    margin: 0;
-    font-weight: normal;        /* Letra normal, no negrita */
-    font-size: 0.95rem;
-    cursor: pointer;
-    color: #555;
-    text-transform: none;       /* Respetar mayúsculas/minúsculas */
-}
-/* --- BOTÓN VOLVER ARRIBA --- */
 #btnSubir {
-    display: none; /* Oculto por defecto */
     position: fixed;
     bottom: 20px;
-    right: 30px;
-    z-index: 99;
-    border: none;
-    outline: none;
-    background-color: #ffd700; /* Dorado */
+    right: 20px;
+    background: #ffd700;
     color: #002244;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     cursor: pointer;
-    padding: 15px;
-    border-radius: 50%; /* Redondo */
-    font-size: 18px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.3s, background-color 0.3s;
+    font-size: 1.5em;
+    font-weight: 700;
+    display: none;
+    z-index: 999;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 #btnSubir:hover {
-    background-color: #002244;
+    background: #002244;
     color: #ffd700;
-    transform: translateY(-5px); /* Pequeño salto */
+    transform: scale(1.1);
+}
+
+/* ========================================
+   19. RESPONSIVE - TABLET
+   ======================================== */
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.6em;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    nav a {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    .tabla-pro {
+        font-size: 0.85em;
+    }
+
+    .tabla-pro th,
+    .tabla-pro td {
+        padding: 8px;
+    }
+
+    .palmares-grid,
+    .contacto-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+/* ========================================
+   20. RESPONSIVE - MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.3em;
+    }
+
+    nav {
+        gap: 8px;
+        font-size: 0.85em;
+    }
+
+    nav a {
+        padding: 5px 10px;
+    }
+
+    .tabla-pro {
+        font-size: 0.75em;
+    }
+
+    .tabla-pro th,
+    .tabla-pro td {
+        padding: 5px;
+    }
+
+    .cont-texto h2 {
+        font-size: 1.4em;
+    }
+
+    #btnTema {
+        font-size: 0.9em;
+        padding: 6px 12px;
+    }
+
+    /* toast-notification rules removed */
+
+    #btnSubir {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+}
+/* ========================================
+   21. ESTILOS DEL SIMULADOR
+   ======================================== */
+.simulador-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
+}
+
+body.dark-mode .simulador-container {
+    background: linear-gradient(135deg, #1f2330 0%, #263444 100%);
+    border-color: #444;
+}
+
+.simulador-container h3 {
+    margin-bottom: 20px;
+    color: var(--color-primary);
+}
+body.dark-mode .simulador-container h3 { color: #ffd700; }
+
+.simulador-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.equipo-select {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 200px;
+}
+
+.equipo-select select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.vs-badge {
+    background: #ffd700;
+    color: #002244;
+    font-weight: 800;
+    padding: 10px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px; /* Ajuste visual */
+}
+
+.btn-simular {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 10px rgba(0,34,68,0.3);
+}
+
+.btn-simular:hover {
+    transform: scale(1.05);
+    background: #004080;
+}
+
+/* Caja de Resultado */
+.resultado-oculto {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    display: none; /* Se muestra con JS */
+    animation: fadeIn 0.5s ease;
+}
+body.dark-mode .resultado-oculto { background: #1a1a1a; }
+
+.resultado-visible {
+    display: block !important;
+}
+
+#scoreLocal, #scoreVisitante {
+    font-size: 3em;
+    font-weight: 800;
+    color: #002244;
+}
+body.dark-mode #scoreLocal, body.dark-mode #scoreVisitante { color: #ffd700; }
+
+.guion { font-size: 2em; margin: 0 15px; color: #ccc; }
+
+#comentarioPartido {
+    font-style: italic;
+    margin-top: 10px;
+    color: #666;
+}
+
+/* ========================================
+   22. ESTILOS DE APUESTAS (NUEVO)
+   ======================================== */
+.banca-container {
+    background: #2ecc71;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 300px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border: 2px solid #27ae60;
+}
+
+.zona-apuestas {
+    background: rgba(0,0,0,0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.opciones-apuesta {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.opciones-apuesta label {
+    cursor: pointer;
+    font-weight: 600;
+    background: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+}
+
+.opciones-apuesta label:hover {
+    background: #ffd700;
+}
+
+/* Input numérico */
+.input-dinero input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+body.dark-mode .banca-container {
+    background: #1e8449;
+    border-color: #145a32;
+}
+
+body.dark-mode .opciones-apuesta label {
+    background: #333;
+    color: white;
+    border-color: #555;
+}
+
+/* ========================================
+   ESTILOS NUEVOS: HISTORIAL Y NARRATIVA
+   ======================================== */
+
+/* 1. Estilos del Historial (Ticker) */
+.ticker-container {
+    margin-top: 30px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    text-align: left;
+    max-width: 100%;
+}
+
+.ticker-container h4 {
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.lista-resultados {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-resultados li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #ddd;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.5s ease;
+}
+
+.lista-resultados li:last-child {
+    border-bottom: none;
+}
+
+.resultado-badge {
+    background: #002244;
+    color: #ffd700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+/* Modo Oscuro para el Historial */
+body.dark-mode .ticker-container {
+    background: #2a2a2a;
+    border-color: #444;
+}
+body.dark-mode .ticker-container h4 {
+    color: #e0e0e0;
+}
+body.dark-mode .lista-resultados li {
+    border-bottom-color: #444;
+    color: #ccc;
+}
+
+/* 2. Estilos de la Narrativa (Alineaciones) */
+.narrativa-box {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    font-size: 0.9em;
+    color: #555;
+    text-align: left;
+    background: rgba(0,0,0,0.02);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dato-tactico {
+    margin-bottom: 5px;
+}
+
+.dato-tactico strong {
+    color: #002244;
+}
+
+body.dark-mode .narrativa-box {
+    border-top-color: #444;
+    color: #bbb;
+    background: rgba(255,255,255,0.05);
+}
+body.dark-mode .dato-tactico strong {
+    color: #ffd700;
+}
+
+/* ========================================
+   ESTILOS FORMA RECIENTE (LAST 5 MATCHES)
+   ======================================== */
+.panel-forma {
+    display: flex;
+    justify-content: space-between;
+    background: white;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 0.85em;
+}
+
+.columna-forma {
+    width: 48%;
+    text-align: left;
+}
+
+.columna-forma h5 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.lista-forma {
+    list-style: none;
+    padding: 0;
+}
+
+.item-partido {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.badge-res {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-right: 8px;
+}
+.badge-W { background: #2ecc71; } /* Ganado */
+.badge-D { background: #95a5a6; } /* Empate */
+.badge-L { background: #e74c3c; } /* Perdido */
+
+/* Modo Oscuro */
+body.dark-mode .panel-forma {
+    background: #252525;
+    border-color: #444;
+}
+body.dark-mode .columna-forma h5 {
+    color: #ccc;
+    border-color: #444;
+}
+body.dark-mode .item-partido {
+    border-bottom-color: #444;
+    color: #bbb;
+}
+
+/* ========================================
+   MEJORAS VISUALES PARA APUESTAS
+   ======================================== */
+
+/* Mejora del contenedor principal para que parezca una tarjeta */
+.simulador-container {
+    background: #ffffff; /* Fondo blanco limpio */
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Sombra más elegante */
+    border: none; /* Quitamos borde gris simple */
+    text-align: center;
+}
+
+/* Modo oscuro para el contenedor */
+body.dark-mode .simulador-container {
+    background: #2a2a2a;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Títulos dentro del simulador */
+.simulador-container h3 {
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+body.dark-mode .simulador-container h3 {
+    border-bottom-color: #444;
+}
+
+/* Mejora inputs de selección */
+.equipo-select select {
+    width: 100%;
+    padding: 12px;
+    background-color: #f9f9f9;
+    transition: all 0.3s;
+}
+.equipo-select select:hover {
+    background-color: #fff;
+    border-color: #ffd700;
+}
+
+/* Zona de apuestas destacada */
+.zona-apuestas {
+    background: linear-gradient(135deg, rgba(0,34,68,0.05) 0%, rgba(0,34,68,0.1) 100%);
+    padding: 25px;
+    border-radius: 12px;
+    margin: 30px 0;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+body.dark-mode .zona-apuestas {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.titulo-zona {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #002244;
+}
+body.dark-mode .titulo-zona { color: #ffd700; }
+
+/* Botón jugar más grande y llamativo */
+.btn-simular {
+    width: 100%;
+    max-width: 300px;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0, 34, 68, 0.4);
+}
+
+/* Marcador final grande */
+.marcador-final {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.resultado-apuesta-texto {
+    font-size: 1.2em;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: rgba(0,0,0,0.05);
+}
+
+/* ========================================
+   23. CORRECCIONES MÓVIL (Mejoras visuales)
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* --- 1. CABECERA Y NAVEGACIÓN --- */
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        padding-bottom: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5em; /* Título un poco más pequeño */
+        margin-bottom: 5px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        width: 100%;
+    }
+
+    nav a {
+        font-size: 0.85em;
+        padding: 8px 10px;
+        flex-grow: 1; /* Los botones ocupan el ancho disponible */
+        text-align: center;
+        background: rgba(255,255,255,0.1); /* Fondo sutil para distinguir botones */
+        margin: 2px;
+    }
+
+    #btnTema {
+        margin-top: 10px;
+        width: 100%; /* Botón tema ancho completo en móvil */
+    }
+
+    /* --- 2. SLIDER Y HERO --- */
+    .hero-section {
+        padding: 40px 15px; /* Menos relleno */
+        margin: 15px 0;
+    }
+    
+    .hero-content h2 {
+        font-size: 1.8em;
+    }
+
+    .slider-container {
+        margin: 20px 0; /* Menos margen vertical */
+    }
+
+    .slide {
+        height: 50vh; /* Altura ajustada para móvil */
+        min-height: 250px;
+    }
+
+    .caption {
+        padding: 15px;
+    }
+    .caption h3 { font-size: 1.2em; }
+    .caption p { font-size: 0.9em; }
+
+    /* --- 3. TABLAS (SCROLL HORIZONTAL MEJORADO) --- */
+    .contenedor-tabla {
+        box-shadow: none; /* Quitar sombra para ganar espacio */
+        margin: 0 -15px; /* Expandir tabla de borde a borde */
+        width: calc(100% + 30px);
+        border-radius: 0;
+    }
+
+    .tabla-pro {
+        border-radius: 0;
+        border: none;
+        font-size: 0.85rem; /* Fuente legible, no muy pequeña */
+    }
+
+    .tabla-pro th, .tabla-pro td {
+        padding: 10px 5px; /* Menos padding lateral en celdas */
+        white-space: nowrap; /* Evita que los nombres se partan mal */
+    }
+    
+    /* El nombre del equipo (columna 2) puede ajustarse si es muy largo */
+    .tabla-pro td:nth-child(2) {
+        white-space: normal;
+        min-width: 120px;
+    }
+
+    /* --- 4. SECCIÓN HISTORIA (TIMELINE) --- */
+    .timeline-container::before {
+        left: 15px; /* Línea pegada a la izquierda */
+    }
+    
+    .timeline-point {
+        left: 15px; /* Punto alineado con la línea */
+    }
+
+    .timeline-event, 
+    .timeline-event:nth-child(even), 
+    .timeline-event:nth-child(odd) {
+        flex-direction: column;
+        padding: 0;
+        margin-left: 45px; /* Espacio para la línea vertical */
+        margin-bottom: 30px;
+        text-align: left; /* Todo alineado a la izquierda */
+        border-left: none; /* Quitar bordes extraños */
+    }
+
+    .timeline-content {
+        width: 100%; /* Tarjeta ancho completo */
+    }
+
+    /* --- 5. BOTONES FLOTANTES (FAVORITOS Y SUBIR) --- */
+    /* Evitar que se solapen */
+    #btnSubir {
+        bottom: 90px; /* Subirlo para que no tape el footer */
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+
+    /* El panel de favoritos que no ocupe toda la pantalla */
+    .panel-favoritos {
+        width: 92%;
+        right: 4%;
+        bottom: 150px; /* Más arriba */
+        max-height: 50vh;
+    }
+    
+    /* Botón flotante de favoritos */
+    button[onclick="togglePanel()"] { 
+        /* Nota: este selector apunta al botón creado en JS */
+        bottom: 20px !important;
+        right: 15px !important;
+        padding: 8px 15px !important;
+        font-size: 0.9em !important;
+        width: auto;
+    }
+
+    /* --- 6. SIMULADOR Y APUESTAS --- */
+    .simulador-wrapper {
+        flex-direction: column;
+    }
+    
+    .equipo-select {
+        width: 100%;
+    }
+    
+    .vs-badge {
+        transform: rotate(90deg); /* Girar el VS para que quede vertical */
+        margin: 5px 0;
+    }
+    
+    .score-board {
+        font-size: 0.8em; /* Ajustar tamaño marcador */
+    }
+    
+    #scoreLocal, #scoreVisitante {
+        font-size: 2.5em;
+    }
+
+    .opciones-apuesta {
+        flex-direction: column; /* Botones de apuesta uno debajo de otro */
+    }
+}
+
+/* Ajustes para móviles muy pequeños (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    header h1 { font-size: 1.2em; }
+    nav a { width: 100%; } /* Botones menú apilados verticalmente */
+}
+
+/* Botón de recarga de saldo */
+.btn-recargar {
+    background: white;
+    color: #27ae60; /* Mismo verde que el fondo */
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: bold;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-recargar:hover {
+    transform: scale(1.15) rotate(90deg); /* Pequeña animación al pasar el mouse */
+    background: #ffd700; /* Se pone amarillo al tocarlo */
+    color: #002244;
+}
+
+.btn-recargar:active {
+    transform: scale(0.9);
 }

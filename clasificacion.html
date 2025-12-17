@@ -9,34 +9,43 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>⚽ SuperLiga Europea</h1>
+            <h1>SuperLiga Europea</h1>
             <nav>
                 <a href="Index.html">Inicio</a>
                 <a href="clasificacion.html" class="activo">Clasificación</a>
+                <a href="apuestas.html">Apuestas</a>
                 <a href="historia.html">Historia</a>
                 <a href="contacto.html">Contacto</a>
             </nav>
-            <button id="btnTema" onclick="cambiarTema()">🌙 Oscuro</button>
+            <button id="btnTema" onclick="cambiarTema()">Oscuro</button>
         </div>
     </header>
 
     <main class="hidden">
-        <h2>🏆 Clasificación en Vivo</h2>
+        <div class="cont-texto">
+        <h2>Clasificación en Vivo</h2>
         <p>Haz clic en los apartados de  (PTS, GF, etc.) para ordenar la tabla de arriba a abajo o lo contrario.</p> 
+        </div>
+
+        <input type="text" id="buscador-equipos" placeholder="🔍 Busca un equipo..." />
 
         <div class="leyenda-box">
-            <span><span class="dot green"></span> Playoffs Título</span>
-            <span><span class="dot yellow"></span> Zona Clasificación</span>
-            <span><span class="dot red"></span> Eliminados</span>
+            <span><span class="punto-azul"></span> Champions League (1-9)</span>
+            <span><span class="punto-naranja"></span> Europa League (10-14)</span>
+            <span><span class="punto-verde"></span> Conference League (15-16)</span>
+            <span><span class="punto-rojo"></span> Descenso (17-20)</span>
         </div>
-        <br>
+
+
+
+
 
         <div class="contenedor-tabla">
             <table class="tabla-pro">
                 <thead>
                     <tr>
                         <th title="Ordenar por posición">Pos</th>
-                        <th style="text-align: left;" title="Ordenar por nombre">Equipo</th>
+                        <th title="Ordenar por nombre">Equipo</th>
                         <th title="Partidos Jugados">PJ</th>
                         <th title="Ganados">PG</th>
                         <th title="Empatados">PE</th>
@@ -47,29 +56,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="zona-champions"><td>1</td><td style="text-align: left;"><b>Real Madrid</b></td><td>28</td><td>23</td><td>3</td><td>2</td><td>72</td><td>21</td><td><b>72</b></td></tr>
-                    <tr class="zona-champions"><td>2</td><td style="text-align: left;"><b>Manchester City</b></td><td>28</td><td>22</td><td>4</td><td>2</td><td>68</td><td>24</td><td><b>70</b></td></tr>
-                    <tr class="zona-champions"><td>3</td><td style="text-align: left;"><b>Bayern München</b></td><td>28</td><td>20</td><td>5</td><td>3</td><td>65</td><td>28</td><td><b>65</b></td></tr>
-                    <tr class="zona-champions"><td>4</td><td style="text-align: left;"><b>FC Barcelona</b></td><td>28</td><td>19</td><td>4</td><td>5</td><td>60</td><td>30</td><td><b>61</b></td></tr>
+                    <tr class="zona-champions"><td>1</td><td><span class="corazon-favorito" data-equipo="Arsenal FC">🤍</span> <b>Arsenal FC</b></td><td>14</td><td>12</td><td>2</td><td>0</td><td>35</td><td>10</td><td><b>38</b></td></tr>
+                    <tr class="zona-champions"><td>2</td><td><span class="corazon-favorito" data-equipo="Manchester City">🤍</span> <b>Manchester City</b></td><td>14</td><td>11</td><td>2</td><td>1</td><td>34</td><td>12</td><td><b>35</b></td></tr>
+                    <tr class="zona-champions"><td>3</td><td><span class="corazon-favorito" data-equipo="FC Barcelona">🤍</span> <b>FC Barcelona</b></td><td>14</td><td>10</td><td>2</td><td>2</td><td>32</td><td>15</td><td><b>32</b></td></tr>
+                    <tr class="zona-champions"><td>4</td><td><span class="corazon-favorito" data-equipo="Real Madrid">🤍</span> <b>Real Madrid</b></td><td>14</td><td>10</td><td>1</td><td>3</td><td>30</td><td>14</td><td><b>31</b></td></tr>
+                    <tr class="zona-champions"><td>5</td><td><span class="corazon-favorito" data-equipo="Bayern München">🤍</span> <b>Bayern München</b></td><td>14</td><td>9</td><td>2</td><td>3</td><td>28</td><td>16</td><td><b>29</b></td></tr>
+                    <tr class="zona-champions"><td>6</td><td><span class="corazon-favorito" data-equipo="Liverpool FC">🤍</span> <b>Liverpool FC</b></td><td>14</td><td>9</td><td>1</td><td>4</td><td>27</td><td>16</td><td><b>28</b></td></tr>
+                    <tr class="zona-champions"><td>7</td><td><span class="corazon-favorito" data-equipo="Paris Saint-Germain">🤍</span> <b>Paris Saint-Germain</b></td><td>14</td><td>8</td><td>2</td><td>4</td><td>26</td><td>18</td><td><b>26</b></td></tr>
+                    <tr class="zona-champions"><td>8</td><td><span class="corazon-favorito" data-equipo="Inter de Milán">🤍</span> <b>Inter de Milán</b></td><td>14</td><td>8</td><td>1</td><td>5</td><td>24</td><td>16</td><td><b>25</b></td></tr>
+                    <tr class="zona-champions"><td>9</td><td><span class="corazon-favorito" data-equipo="Juventus">🤍</span> <b>Juventus</b></td><td>14</td><td>7</td><td>3</td><td>4</td><td>22</td><td>14</td><td><b>24</b></td></tr>
                     
-                    <tr class="zona-europa"><td>5</td><td style="text-align: left;">Liverpool FC</td><td>28</td><td>18</td><td>6</td><td>4</td><td>58</td><td>32</td><td><b>60</b></td></tr>
-                    <tr class="zona-europa"><td>6</td><td style="text-align: left;">Paris Saint-Germain</td><td>28</td><td>17</td><td>7</td><td>4</td><td>62</td><td>35</td><td><b>58</b></td></tr>
-                    <tr class="zona-europa"><td>7</td><td style="text-align: left;">Juventus</td><td>28</td><td>16</td><td>8</td><td>4</td><td>45</td><td>25</td><td><b>56</b></td></tr>
-                    <tr class="zona-europa"><td>8</td><td style="text-align: left;">Inter de Milán</td><td>28</td><td>15</td><td>7</td><td>6</td><td>48</td><td>29</td><td><b>52</b></td></tr>
-                    <tr class="zona-europa"><td>9</td><td style="text-align: left;">Arsenal FC</td><td>28</td><td>14</td><td>8</td><td>6</td><td>50</td><td>33</td><td><b>50</b></td></tr>
-                    <tr class="zona-europa"><td>10</td><td style="text-align: left;">AC Milan</td><td>28</td><td>13</td><td>6</td><td>9</td><td>42</td><td>36</td><td><b>45</b></td></tr>
+                    <tr class="zona-europa"><td>10</td><td><span class="corazon-favorito" data-equipo="AC Milan">🤍</span> AC Milan</td><td>14</td><td>6</td><td>2</td><td>6</td><td>19</td><td>18</td><td><b>20</b></td></tr>
+                    <tr class="zona-europa"><td>11</td><td><span class="corazon-favorito" data-equipo="Atlético de Madrid">🤍</span> Atlético de Madrid</td><td>14</td><td>6</td><td>2</td><td>6</td><td>18</td><td>18</td><td><b>20</b></td></tr>
+                    <tr class="zona-europa"><td>12</td><td><span class="corazon-favorito" data-equipo="Chelsea FC">🤍</span> Chelsea FC</td><td>14</td><td>5</td><td>4</td><td>5</td><td>18</td><td>19</td><td><b>19</b></td></tr>
+                    <tr class="zona-europa"><td>13</td><td><span class="corazon-favorito" data-equipo="Borussia Dortmund">🤍</span> Borussia Dortmund</td><td>14</td><td>5</td><td>3</td><td>6</td><td>22</td><td>22</td><td><b>18</b></td></tr>
+                    <tr class="zona-europa"><td>14</td><td><span class="corazon-favorito" data-equipo="Manchester United">🤍</span> Manchester United</td><td>14</td><td>5</td><td>2</td><td>7</td><td>18</td><td>22</td><td><b>17</b></td></tr>
                     
-                    <tr class="zona-media"><td>11</td><td style="text-align: left;">Atlético de Madrid</td><td>28</td><td>12</td><td>8</td><td>8</td><td>38</td><td>30</td><td><b>44</b></td></tr>
-                    <tr class="zona-media"><td>12</td><td style="text-align: left;">Chelsea FC</td><td>28</td><td>11</td><td>9</td><td>8</td><td>40</td><td>38</td><td><b>42</b></td></tr>
-                    <tr class="zona-media"><td>13</td><td style="text-align: left;">Borussia Dortmund</td><td>28</td><td>10</td><td>8</td><td>10</td><td>45</td><td>45</td><td><b>38</b></td></tr>
-                    <tr class="zona-media"><td>14</td><td style="text-align: left;">Manchester United</td><td>28</td><td>10</td><td>6</td><td>12</td><td>39</td><td>44</td><td><b>36</b></td></tr>
-                    <tr class="zona-media"><td>15</td><td style="text-align: left;">Benfica</td><td>28</td><td>9</td><td>7</td><td>12</td><td>35</td><td>42</td><td><b>34</b></td></tr>
-                    <tr class="zona-media"><td>16</td><td style="text-align: left;">Athletic Bilbao</td><td>28</td><td>8</td><td>8</td><td>12</td><td>33</td><td>40</td><td><b>32</b></td></tr>
-                    <tr class="zona-media"><td>17</td><td style="text-align: left;">Napoli</td><td>28</td><td>7</td><td>9</td><td>12</td><td>30</td><td>41</td><td><b>30</b></td></tr>
-
-                    <tr class="zona-descenso"><td>18</td><td style="text-align: left;">Ajax Amsterdam</td><td>28</td><td>6</td><td>6</td><td>16</td><td>28</td><td>55</td><td><b>24</b></td></tr>
-                    <tr class="zona-descenso"><td>19</td><td style="text-align: left;">FC Porto</td><td>28</td><td>5</td><td>5</td><td>18</td><td>22</td><td>50</td><td><b>20</b></td></tr>
-                    <tr class="zona-descenso"><td>20</td><td style="text-align: left;">Olympique Marseille</td><td>28</td><td>3</td><td>4</td><td>21</td><td>18</td><td>65</td><td><b>13</b></td></tr>
+                    <tr class="zona-conference"><td>15</td><td><span class="corazon-favorito" data-equipo="Benfica">🤍</span> Benfica</td><td>14</td><td>4</td><td>3</td><td>7</td><td>16</td><td>20</td><td><b>15</b></td></tr>
+                    <tr class="zona-conference"><td>16</td><td><span class="corazon-favorito" data-equipo="Athletic Bilbao">🤍</span> Athletic Bilbao</td><td>14</td><td>4</td><td>2</td><td>8</td><td>15</td><td>22</td><td><b>14</b></td></tr>
+                    
+                    <tr class=""><td>17</td><td><span class="corazon-favorito" data-equipo="Napoli">🤍</span> Napoli</td><td>14</td><td>3</td><td>4</td><td>7</td><td>14</td><td>20</td><td><b>13</b></td></tr>
+                    <tr class="zona-descenso"><td>18</td><td><span class="corazon-favorito" data-equipo="Ajax Amsterdam">🤍</span> Ajax Amsterdam</td><td>14</td><td>3</td><td>2</td><td>9</td><td>12</td><td>28</td><td><b>11</b></td></tr>
+                    <tr class="zona-descenso"><td>19</td><td><span class="corazon-favorito" data-equipo="FC Porto">🤍</span> FC Porto</td><td>14</td><td>2</td><td>2</td><td>10</td><td>10</td><td>25</td><td><b>8</b></td></tr>
+                    <tr class="zona-descenso"><td>20</td><td><span class="corazon-favorito" data-equipo="Olympique Marseille">🤍</span> Olympique Marseille</td><td>14</td><td>1</td><td>2</td><td>11</td><td>8</td><td>32</td><td><b>5</b></td></tr>
                 </tbody>
             </table>
         </div>
