@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (saldoDisplay) {
             saldoDisplay.textContent = saldo;
             // Efecto visual de cambio
-            saldoDisplay.style.color = (nuevoSaldo > parseInt(saldoDisplay.textContent)) ? '#2ecc71' : '#e74c3c';
+            saldoDisplay.style.color = (nuevoSaldo > parseInt(saldoDisplay.textContent)) ? '#2ecc71' : '#2ecc71';
             // En la barra verde, forzamos color blanco/amarillo para que se vea
             saldoDisplay.style.textShadow = "0 0 10px #fff"; 
             setTimeout(() => {
